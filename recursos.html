@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Voces del Anime — Recursos</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* Hero con destellos pastel */
+      .hero-visual {
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-visual::before,
+      .hero-visual::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        filter: blur(12px);
+        opacity: 0.8;
+      }
+      .hero-visual::before {
+        inset: auto auto -60px -60px;
+        background: radial-gradient(closest-side, #fbcfe8, transparent 70%);
+      }
+      .hero-visual::after {
+        inset: -60px -60px auto auto;
+        background: radial-gradient(closest-side, #c7d2fe, transparent 70%);
+      }
+
+      /* Card “glass” con borde degradado */
+      .card--glass {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        border-radius: 18px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      }
+      .card--gradient-border {
+        position: relative;
+      }
+      .card--gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #f0abfc, #93c5fd, #a7f3d0);
+        z-index: -1;
+      }
+      .card-inner--lg {
+        padding: 22px;
+      }
+      @media (min-width: 720px) {
+        .card-inner--lg {
+          padding: 28px 30px;
+        }
+      }
+
+      /* Tarjetas internas */
+      .resources-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .resource-item {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #e9d5ff;
+        border-radius: 12px;
+        padding: 14px 16px;
+      }
+      .resource-item .title {
+        font-weight: 800;
+        color: #5b21b6;
+        margin-bottom: 6px;
+      }
+      .muted {
+        color: #6b7280;
+        font-size: 0.95em;
+      }
+      .bullets {
+        list-style: disc;
+        padding-left: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <div class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">Voces del Anime</a>
+        <div class="tabs">
+          <a class="tab" href="index.html">Inicio</a>
+          <a class="tab" href="lengua.html">Lengua</a>
+          <a class="tab" href="cultura.html">Cultura</a>
+          <a class="tab" href="comunidad.html">Comunidad</a>
+          <a class="tab active" href="recursos.html">Recursos</a>
+        </div>
+      </div>
+    </div>
+
+    <main class="main">
+      <!-- HERO -->
+      <section class="hero hero-visual">
+        <div class="container">
+          <h1>Recursos</h1>
+          <p class="lead">
+            Referencias, herramientas y guías para profundizar.
+          </p>
+        </div>
+      </section>
+
+      <div class="container">
+        <section class="section">
+          <!-- Bloque principal con glass + borde degradado -->
+          <div class="card card--glass card--gradient-border">
+            <div class="card-inner card-inner--lg">
+              <div class="resources-grid">
+                <article class="resource-item" aria-label="Fundación Japón">
+                  <div class="title">Fundación Japón — Minato / Marugoto</div>
+                  <p>Cursos introductorios de lengua y cultura.</p>
+                  <p class="muted">
+                    Nivel inicial a intermedio; materiales oficiales y
+                    gratuitos.
+                  </p>
+                </article>
+                <article class="resource-item" aria-label="UNESCO">
+                  <div class="title">UNESCO — Competencias interculturales</div>
+                  <p>
+                    Guía para planificar actividades críticas y
+                    contextualizadas.
+                  </p>
+                  <p class="muted">
+                    Enfoque ético, diversidad, inclusión y diálogo.
+                  </p>
+                </article>
+                <article class="resource-item" aria-label="Herramientas">
+                  <div class="title">Herramientas</div>
+                  <ul class="bullets">
+                    <li>Diccionario J-E (ej. Jisho, Tangorin).</li>
+                    <li>Generadores de furigana para textos.</li>
+                    <li>Tabla de hiragana/katakana imprimible.</li>
+                  </ul>
+                </article>
+                <article class="resource-item" aria-label="Guías docentes">
+                  <div class="title">Guías docentes</div>
+                  <p>Sugerencias de mediación y evaluación formativa.</p>
+                  <p class="muted">
+                    Rúbricas simples, actividades por niveles y contextos.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </div>
+          <!-- /card -->
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="container footer-inner">
+        <div>
+          <div class="title">Voces del Anime</div>
+          <p>
+            Prototipo conceptual para aprendizaje de lengua y cultura japonesa a
+            través del anime.
+          </p>
+        </div>
+        <div>
+          <div class="title">Enlaces</div>
+          <ul>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="creditos.html">Créditos</a></li>
+            <li><a href="politica.html">Política de uso educativo</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="title">Acerca de</div>
+          <p>Glosarios, cultura y comunidad listos para iterar.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

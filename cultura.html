@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Voces del Anime — Cultura</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* Hero con destellos pastel */
+      .hero-visual {
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-visual::before,
+      .hero-visual::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        filter: blur(12px);
+        opacity: 0.8;
+      }
+      .hero-visual::before {
+        inset: auto auto -60px -60px;
+        background: radial-gradient(closest-side, #fbcfe8, transparent 70%);
+      }
+      .hero-visual::after {
+        inset: -60px -60px auto auto;
+        background: radial-gradient(closest-side, #c7d2fe, transparent 70%);
+      }
+
+      /* Card “glass” con borde degradado */
+      .card--glass {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        border-radius: 18px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      }
+      .card--gradient-border {
+        position: relative;
+      }
+      .card--gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #f0abfc, #93c5fd, #a7f3d0);
+        z-index: -1;
+      }
+      .card-inner--lg {
+        padding: 22px;
+      }
+      @media (min-width: 720px) {
+        .card-inner--lg {
+          padding: 28px 30px;
+        }
+      }
+
+      /* Tarjetas internas */
+      .culture-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .culture-item {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #e9d5ff;
+        border-radius: 12px;
+        padding: 14px 16px;
+      }
+      .culture-item .title {
+        font-weight: 800;
+        color: #166534;
+        margin-bottom: 6px;
+      } /* verde oscuro */
+      .muted {
+        color: #6b7280;
+        font-size: 0.95em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <div class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">Voces del Anime</a>
+        <div class="tabs">
+          <a class="tab" href="index.html">Inicio</a>
+          <a class="tab" href="lengua.html">Lengua</a>
+          <a class="tab active" href="cultura.html">Cultura</a>
+          <a class="tab" href="comunidad.html">Comunidad</a>
+          <a class="tab" href="recursos.html">Recursos</a>
+        </div>
+      </div>
+    </div>
+
+    <main class="main">
+      <!-- HERO -->
+      <section class="hero hero-visual">
+        <div class="container">
+          <h1>Cultura</h1>
+          <p class="lead">
+            Gestos, contextos y normas sociales frecuentes en el anime.
+          </p>
+        </div>
+      </section>
+
+      <div class="container">
+        <section class="section">
+          <!-- Bloque principal con glass + borde degradado -->
+          <div class="card card--glass card--gradient-border">
+            <div class="card-inner card-inner--lg">
+              <div class="culture-grid">
+                <div class="culture-item">
+                  <div class="title">Ojigi (reverencia)</div>
+                  <p>
+                    Inclinación para mostrar respeto; el ángulo varía según la
+                    formalidad.
+                  </p>
+                  <p class="muted">
+                    Contexto: saludos, disculpas, agradecimientos.
+                  </p>
+                </div>
+                <div class="culture-item">
+                  <div class="title">Omiyage (souvenirs)</div>
+                  <p>
+                    Regalos regionales al regresar de un viaje; refuerzan lazos
+                    y cortesía.
+                  </p>
+                  <p class="muted">
+                    Contexto: escuela, trabajo, visitas familiares.
+                  </p>
+                </div>
+                <div class="culture-item">
+                  <div class="title">Senpai / Kōhai</div>
+                  <p>
+                    Relación de mentoría y cuidado: el senpai guía; el kōhai
+                    respeta y aprende.
+                  </p>
+                  <p class="muted">Contexto: clubes, deportes, compañías.</p>
+                </div>
+                <div class="culture-item">
+                  <div class="title">TPO (Time, Place, Occasion)</div>
+                  <p>
+                    Adecuar lenguaje y conducta al momento, lugar y ocasión.
+                  </p>
+                  <p class="muted">
+                    Contexto: diferencia entre informal, cortés y honorífico.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /card -->
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="container footer-inner">
+        <div>
+          <div class="title">Voces del Anime</div>
+          <p>
+            Prototipo conceptual para aprendizaje de lengua y cultura japonesa a
+            través del anime.
+          </p>
+        </div>
+        <div>
+          <div class="title">Enlaces</div>
+          <ul>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="creditos.html">Créditos</a></li>
+            <li><a href="politica.html">Política de uso educativo</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="title">Acerca de</div>
+          <p>Basado en tu plan de trabajo: glosarios, cultura y comunidad.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

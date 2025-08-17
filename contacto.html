@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anime•Edu — Contacto</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Estilos extras solo para Contacto (visual) -->
+    <style>
+      .contact-hero--visual {
+        position: relative;
+        overflow: hidden;
+      }
+      .contact-hero--visual::before,
+      .contact-hero--visual::after {
+        content: "";
+        position: absolute;
+        inset: auto auto -60px -60px;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(closest-side, #fbcfe8, transparent 70%);
+        filter: blur(12px);
+        opacity: 0.8;
+      }
+      .contact-hero--visual::after {
+        inset: -60px -60px auto auto;
+        background: radial-gradient(closest-side, #c7d2fe, transparent 70%);
+      }
+      .card--glass {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        border-radius: 18px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      }
+      .card--gradient-border {
+        position: relative;
+      }
+      .card--gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #f0abfc, #93c5fd, #a7f3d0);
+        z-index: -1;
+      }
+      .card-inner--lg {
+        padding: 22px;
+      }
+      @media (min-width: 720px) {
+        .card-inner--lg {
+          padding: 28px 30px;
+        }
+      }
+      .contact-form {
+        display: grid;
+        gap: 16px;
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+      .field__label {
+        font-weight: 700;
+        color: #4c1d95;
+      }
+      .field__wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #e9d5ff;
+        border-radius: 12px;
+        padding: 10px 12px;
+        transition: box-shadow 0.2s ease, border-color 0.2s ease,
+          transform 0.06s ease;
+      }
+      .field__wrap--textarea {
+        align-items: flex-start;
+      }
+      .field__icon {
+        font-size: 20px;
+        line-height: 1;
+      }
+      .field__input,
+      .field__textarea {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: #111827;
+        font: inherit;
+        outline: none;
+      }
+      .field__wrap:focus-within {
+        border-color: #c7bdfc;
+        box-shadow: 0 0 0 4px rgba(199, 189, 252, 0.25);
+        transform: translateY(-1px);
+      }
+      .btn--shine {
+        background: linear-gradient(135deg, #7c3aed, #6d28d9);
+        color: #fff;
+        border: 0;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-weight: 800;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .btn--shine::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.35),
+          transparent 40%,
+          transparent 60%,
+          rgba(255, 255, 255, 0.35)
+        );
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+      }
+      .btn--shine:hover::after {
+        transform: translateX(100%);
+      }
+      .btn--shine.pink {
+        background: linear-gradient(135deg, #f472b6, #ec4899);
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: #9ca3af;
+      }
+      .alert-ok {
+        border-left: 6px solid #86efac;
+        background: rgba(134, 239, 172, 0.15);
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <div class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">Anime•Edu</a>
+        <div class="tabs">
+          <a class="tab" href="index.html">Inicio</a>
+          <a class="tab" href="lengua.html">Lengua</a>
+          <a class="tab" href="cultura.html">Cultura</a>
+          <a class="tab" href="comunidad.html">Comunidad</a>
+          <a class="tab" href="recursos.html">Recursos</a>
+        </div>
+      </div>
+    </div>
+
+    <main class="main">
+      <!-- Hero visual -->
+      <section class="contact-hero contact-hero--visual">
+        <div class="container">
+          <h1>Contacto</h1>
+          <p class="lead">Escribime y te respondo a la brevedad.</p>
+        </div>
+      </section>
+
+      <div class="container">
+        <section class="section">
+          <!-- Aviso de enviado -->
+          <div
+            id="sent-ok"
+            class="card alert-ok"
+            style="display: none; margin-bottom: 12px"
+          >
+            <div class="card-inner">
+              <strong>¡Enviado!</strong> Gracias por tu mensaje. Te responderé
+              pronto.
+            </div>
+          </div>
+
+          <!-- Card con borde degradado y glass -->
+          <div class="card card--glass card--gradient-border">
+            <div class="card-inner card-inner--lg">
+              <form
+                class="contact-form"
+                onsubmit="event.preventDefault(); document.getElementById('sent-ok').style.display='block';"
+              >
+                <!-- Nombre -->
+                <label class="field" for="nombre">
+                  <span class="field__label">Nombre</span>
+                  <div class="field__wrap">
+                    <span class="field__icon" aria-hidden="true">👤</span>
+                    <input
+                      id="nombre"
+                      class="field__input"
+                      type="text"
+                      placeholder="Tu nombre"
+                      required
+                    />
+                  </div>
+                </label>
+
+                <!-- Email -->
+                <label class="field" for="email">
+                  <span class="field__label">Email</span>
+                  <div class="field__wrap">
+                    <span class="field__icon" aria-hidden="true">✉️</span>
+                    <input
+                      id="email"
+                      class="field__input"
+                      type="email"
+                      placeholder="tucorreo@mail.com"
+                      required
+                    />
+                  </div>
+                </label>
+
+                <!-- Mensaje -->
+                <label class="field" for="mensaje">
+                  <span class="field__label">Mensaje</span>
+                  <div class="field__wrap field__wrap--textarea">
+                    <span class="field__icon" aria-hidden="true">📝</span>
+                    <textarea
+                      id="mensaje"
+                      class="field__textarea"
+                      rows="6"
+                      placeholder="Contame en qué te puedo ayudar..."
+                      required
+                    ></textarea>
+                  </div>
+                </label>
+
+                <!-- Botón -->
+                <button class="btn btn--shine pink" type="submit">
+                  Enviar mensaje
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="container footer-inner">
+        <div>
+          <div class="title">Voces del Anime</div>
+          <p>
+            Prototipo conceptual para aprendizaje de lengua y cultura japonesa a
+            través del anime.
+          </p>
+        </div>
+        <div>
+          <div class="title">Enlaces</div>
+          <ul>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="creditos.html">Créditos</a></li>
+            <li><a href="politica.html">Política de uso educativo</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="title">Acerca de</div>
+          <p>Basado en tu plan de trabajo: glosarios, cultura y comunidad.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

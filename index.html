@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Voces del Anime — Inicio</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <style>
+      :root {
+        --ink: #111827;
+        --brand: #5b21b6;
+        --muted: #6b7280;
+        --grad1: #f0abfc;
+        --grad2: #93c5fd;
+        --grad3: #a7f3d0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+      }
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial,
+          sans-serif;
+        color: var(--ink);
+        background: linear-gradient(135deg, #fdf2f8, #eef2ff, #ecfdf5);
+        background-attachment: fixed;
+      }
+      .container {
+        max-width: 1024px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+      a {
+        color: #6d28d9;
+      }
+
+      /* NAV */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid #e9d5ff;
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .brand img {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+      }
+      .brand span {
+        font-weight: 900;
+        color: var(--brand);
+      }
+      .tabs {
+        margin-left: auto;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .tab {
+        font-weight: 700;
+        text-decoration: none;
+        color: #6d28d9;
+      }
+      .tab.active {
+        text-decoration: underline;
+      }
+
+      /* HERO */
+      .hero {
+        padding: 34px 0 26px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        filter: blur(12px);
+        opacity: 0.8;
+      }
+      .hero::before {
+        inset: auto auto -60px -60px;
+        background: radial-gradient(closest-side, #fbcfe8, transparent 70%);
+      }
+      .hero::after {
+        inset: -60px -60px auto auto;
+        background: radial-gradient(closest-side, #c7d2fe, transparent 70%);
+      }
+      .hero-card {
+        display: grid;
+        grid-template-columns: 72px 1fr;
+        gap: 14px;
+        align-items: center;
+      }
+      .hero-logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 14px;
+        background: #fff;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+      }
+      .hero-logo img {
+        width: 58px;
+        height: 58px;
+        object-fit: contain;
+      }
+      .hero h1 {
+        margin: 0;
+        color: var(--brand);
+        font-size: clamp(26px, 5vw, 44px);
+      }
+      .lead {
+        margin: 4px 0 0;
+        color: var(--muted);
+      }
+
+      /* GLASS + BORDE */
+      .frame {
+        border-radius: 18px;
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          var(--grad1),
+          var(--grad2),
+          var(--grad3)
+        );
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      }
+      .glass {
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(10px);
+        padding: 22px;
+      }
+      @media (min-width: 720px) {
+        .glass {
+          padding: 28px;
+        }
+      }
+
+      /* SECCIONES */
+      .section {
+        padding: 24px 0;
+      }
+      .title {
+        font-weight: 800;
+        color: #4c1d95;
+        margin: 0 0 10px;
+      }
+
+      /* GRID TARJETAS */
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .grid-3 {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid #e9d5ff;
+        border-radius: 12px;
+      }
+      .card-inner {
+        padding: 14px 16px;
+      }
+      .muted {
+        color: #6b7280;
+      }
+
+      /* MOCK PLAYER */
+      .player {
+        border: 1px solid #e9d5ff;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 14px 16px;
+      }
+      .screen {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #fbcfe8, #c7d2fe, #a7f3d0);
+      }
+      .screen::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.35;
+        background: radial-gradient(
+            circle at 20% 30%,
+            rgba(255, 255, 255, 0.7),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            rgba(255, 255, 255, 0.5),
+            transparent 35%
+          );
+      }
+      .ratio-16x9 {
+        padding-top: 56.25%;
+      }
+      .btn-play {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 64px;
+        height: 64px;
+        border: 0;
+        border-radius: 999px;
+        cursor: pointer;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.4);
+        display: grid;
+        place-items: center;
+      }
+      .btn-play:hover {
+        background: rgba(0, 0, 0, 0.55);
+      }
+      .progress {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #a78bfa, #f472b6, #60a5fa);
+      }
+      @keyframes vda-progress {
+        from {
+          width: 0%;
+        }
+        to {
+          width: 100%;
+        }
+      }
+      .is-playing .progress {
+        animation: vda-progress 6s linear infinite;
+      }
+      .caption {
+        margin: 10px 0 0;
+        text-align: center;
+        color: #1f2937;
+      }
+
+      /* FOOTER */
+      .footer {
+        margin-top: 28px;
+        border-top: 1px solid #e9d5ff;
+        background: rgba(255, 255, 255, 0.65);
+      }
+      .footer-inner {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        padding: 20px 0;
+        color: #374151;
+      }
+      .footer .title {
+        font-weight: 800;
+        color: #5b21b6;
+        margin-bottom: 6px;
+      }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <div class="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="index.html">
+          <img
+            src="logo-voces.png"
+            alt="Logo Voces del Anime"
+            onerror="this.style.display='none'"
+          />
+          <span>Voces del Anime</span>
+        </a>
+        <div class="tabs">
+          <a class="tab active" href="index.html">Inicio</a>
+          <a class="tab" href="lengua.html">Lengua</a>
+          <a class="tab" href="cultura.html">Cultura</a>
+          <a class="tab" href="comunidad.html">Comunidad</a>
+          <a class="tab" href="recursos.html">Recursos</a>
+        </div>
+      </div>
+    </div>
+
+    <main class="main">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-card">
+            <div class="hero-logo">
+              <img
+                src="logo-voces.png"
+                alt="Voces del Anime"
+                onerror="this.parentElement.style.display='none'"
+              />
+            </div>
+            <div>
+              <h1>Voces del Anime</h1>
+              <p class="lead">
+                Fragmentos simulados con subtítulos — sin archivos externos.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container">
+        <!-- FRAGMENTOS -->
+        <section class="section">
+          <div class="frame">
+            <div class="glass">
+              <h2 class="title" style="color: #7c3aed">
+                Fragmentos Seleccionados
+              </h2>
+              <div class="grid-3">
+                <!-- Player 1 -->
+                <article class="player">
+                  <div class="screen ratio-16x9" data-player>
+                    <button class="btn-play" aria-label="Reproducir">
+                      <svg
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M8 5v14l11-7z"></path>
+                      </svg>
+                    </button>
+                    <div class="progress" style="width: 0%"></div>
+                  </div>
+                  <p class="caption">
+                    『いただきます！』 — “¡A comer! / ¡Buen provecho!”
+                  </p>
+                </article>
+
+                <!-- Player 2 -->
+                <article class="player">
+                  <div class="screen ratio-16x9" data-player>
+                    <button class="btn-play" aria-label="Reproducir">
+                      <svg
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M8 5v14l11-7z"></path>
+                      </svg>
+                    </button>
+                    <div class="progress" style="width: 0%"></div>
+                  </div>
+                  <p class="caption">
+                    『よろしくお願いします』 — “Encantado / Espero que nos
+                    llevemos bien.”
+                  </p>
+                </article>
+
+                <!-- Player 3 -->
+                <article class="player">
+                  <div class="screen ratio-16x9" data-player>
+                    <button class="btn-play" aria-label="Reproducir">
+                      <svg
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M8 5v14l11-7z"></path>
+                      </svg>
+                    </button>
+                    <div class="progress" style="width: 0%"></div>
+                  </div>
+                  <p class="caption">
+                    『先輩！』 — “¡Senpai!” (dirigirse a alguien con más
+                    experiencia)
+                  </p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EXPLICACIÓN DE LAS ESCENAS -->
+        <section class="section">
+          <div class="frame">
+            <div class="glass">
+              <h2 class="title">Explicación breve de las escenas</h2>
+              <div class="grid-3">
+                <div class="card">
+                  <div class="card-inner">
+                    <div class="title" style="color: #c2410c">
+                      ① いただきます
+                    </div>
+                    <p>
+                      Se usa antes de comer para expresar gratitud por la comida
+                      y el esfuerzo de quienes la hicieron posible.
+                    </p>
+                    <p class="muted">
+                      Contexto: comedores escolares, cenas en familia, almuerzos
+                      en clubes.
+                    </p>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-inner">
+                    <div class="title" style="color: #1f7a43">
+                      ② よろしくお願いします
+                    </div>
+                    <p>
+                      Fórmula de cortesía para iniciar una relación o pedir
+                      colaboración con respeto.
+                    </p>
+                    <p class="muted">
+                      Contexto: presentaciones en clase, entrada a un club,
+                      comienzo de proyectos.
+                    </p>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-inner">
+                    <div class="title" style="color: #4f46e5">
+                      ③ 先輩 (senpai)
+                    </div>
+                    <p>
+                      Término para referirse con respeto a alguien con más
+                      antigüedad o experiencia.
+                    </p>
+                    <p class="muted">
+                      Contexto: clubes escolares, equipos deportivos, ámbitos
+                      laborales.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="container footer-inner">
+        <div>
+          <div class="title">Voces del Anime</div>
+          <p>Prototipo conceptual con estética pastel + glass.</p>
+        </div>
+        <div>
+          <div class="title">Enlaces</div>
+          <ul>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="creditos.html">Créditos</a></li>
+            <li><a href="politica.html">Política educativa</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="title">Acerca de</div>
+          <p>Glosarios, cultura y comunidad listos para iterar.</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Mock de reproducción: alterna play/pausa y “progreso” animado
+      document.querySelectorAll("[data-player]").forEach((el) => {
+        const btn = el.querySelector(".btn-play");
+        let playing = false;
+        btn.addEventListener("click", () => {
+          playing = !playing;
+          el.classList.toggle("is-playing", playing);
+          btn.setAttribute("aria-label", playing ? "Pausar" : "Reproducir");
+          btn.innerHTML = playing
+            ? '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>'
+            : '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>';
+        });
+      });
+    </script>
+  </body>
+</html>
