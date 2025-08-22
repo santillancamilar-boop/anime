@@ -14,97 +14,53 @@
         --grad1: #f0abfc;
         --grad2: #93c5fd;
         --grad3: #a7f3d0;
+        --content-max: 860px;
       }
-      * {
-        box-sizing: border-box;
-      }
-      html,
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
       body {
-        margin: 0;
-      }
-      body {
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial,
-          sans-serif;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
         color: var(--ink);
         background: linear-gradient(135deg, #fdf2f8, #eef2ff, #ecfdf5);
         background-attachment: fixed;
+        line-height: 1.45;
       }
-      .container {
-        max-width: 1024px;
-        margin: 0 auto;
-        padding: 0 16px;
-      }
+      .container { max-width: var(--content-max); margin: 0 auto; padding: 0 16px; }
 
       /* NAV */
       .nav {
-        position: sticky;
-        top: 0;
-        z-index: 10;
+        position: sticky; top: 0; z-index: 10;
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(6px);
         border-bottom: 1px solid #e9d5ff;
       }
       .nav-inner {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 0;
+        display: flex; align-items: center; gap: 12px; padding: 8px 0;
       }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .brand img {
-        width: 36px;
-        height: 36px;
-        object-fit: contain;
-      }
+      .brand { display: flex; align-items: center; gap: 10px; }
+      .brand img { width: 28px; height: 28px; object-fit: contain; }
       .brand span {
         font-weight: 700;
-        font-size: clamp(20px, 2.4vw, 26px);
-        color: #6d28d9;
-        letter-spacing: 0.01em;
-        line-height: 1;
+        font-size: clamp(18px, 2vw, 22px);
+        color: #6d28d9; letter-spacing: 0.01em; line-height: 1;
       }
-      .tabs {
-        margin-left: auto;
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-      .tab {
-        font-weight: 600;
-      }
+      .tabs { margin-left: auto; display: flex; gap: 12px; flex-wrap: wrap; }
+      .tab { font-weight: 600; }
 
-      /* HERO (logo centrado) */
+      /* HERO */
       .hero {
-        display: grid;
-        place-items: center;
-        padding: 0;
-        margin: 0;
-        width: 100%;
+        display: grid; place-items: center;
+        padding: 20px 0; margin: 0; width: 100%;
+        position: relative; overflow: hidden;
       }
       .hero img {
-        width: min(80vmin, 800px);
-        height: auto;
-        display: block;
-        margin: 0 auto;
-      }
-
-      /* Decoración hero (opcional) */
-      .hero {
-        position: relative;
-        overflow: hidden;
+        width: min(56vmin, 520px);
+        height: auto; display: block; margin: 0 auto;
       }
       .hero::before,
       .hero::after {
-        content: "";
-        position: absolute;
-        width: 180px;
-        height: 180px;
-        filter: blur(12px);
-        opacity: 0.8;
+        content: ""; position: absolute; width: 180px; height: 180px;
+        filter: blur(12px); opacity: 0.8;
       }
       .hero::before {
         inset: auto auto -60px -60px;
@@ -116,150 +72,86 @@
       }
 
       /* BLOQUES */
-      .section {
-        padding: 24px 0;
-      }
+      .section { padding: 16px 0; }
       .frame {
-        border-radius: 18px;
-        padding: 1px;
-        background: linear-gradient(
-          135deg,
-          var(--grad1),
-          var(--grad2),
-          var(--grad3)
-        );
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        border-radius: 18px; padding: 1px;
+        background: linear-gradient(135deg, var(--grad1), var(--grad2), var(--grad3));
+        box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+        max-width: var(--content-max); margin-inline: auto;
       }
       .glass {
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.65);
-        backdrop-filter: blur(10px);
-        padding: 22px;
+        border-radius: 18px; background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(10px); padding: 18px;
       }
-      @media (min-width: 720px) {
-        .glass {
-          padding: 28px;
-        }
-      }
+      @media (min-width: 720px) { .glass { padding: 22px; } }
       .title {
-        font-weight: 800;
-        color: #4c1d95;
+        font-weight: 800; color: #4c1d95;
         margin: 0 0 10px;
+        font-size: clamp(18px, 2.2vw, 22px);
       }
 
-      /* TARJETAS / MOCK PLAYER */
-      .grid {
-        display: grid;
-        gap: 16px;
-      }
+      /* TARJETAS / PLAYER */
+      .grid { display: grid; gap: 16px; }
       .grid-3 {
-        display: grid;
-        gap: 16px;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        display: grid; gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       }
       .card {
         background: rgba(255, 255, 255, 0.92);
-        border: 1px solid #e9d5ff;
-        border-radius: 12px;
+        border: 1px solid #e9d5ff; border-radius: 12px;
       }
-      .card-inner {
-        padding: 14px 16px;
-      }
-      .muted {
-        color: #6b7280;
-      }
+      .card-inner { padding: 12px 14px; }
+      .muted { color: #6b7280; }
       .player {
-        border: 1px solid #e9d5ff;
-        border-radius: 12px;
+        border: 1px solid #e9d5ff; border-radius: 12px;
         background: rgba(255, 255, 255, 0.95);
-        padding: 14px 16px;
+        padding: 10px 12px;
       }
+      .caption { font-size: 0.95rem; text-align: center; }
+
       .screen {
-        position: relative;
-        width: 100%;
-        overflow: hidden;
+        position: relative; width: 100%; overflow: hidden;
         border-radius: 10px;
         background: linear-gradient(135deg, #fbcfe8, #c7d2fe, #a7f3d0);
       }
       .screen::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        opacity: 0.35;
-        background: radial-gradient(
-            circle at 20% 30%,
-            rgba(255, 255, 255, 0.7),
-            transparent 40%
-          ),
-          radial-gradient(
-            circle at 80% 70%,
-            rgba(255, 255, 255, 0.5),
-            transparent 35%
-          );
+        content: ""; position: absolute; inset: 0; opacity: 0.35;
+        background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7), transparent 40%),
+                    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.5), transparent 35%);
       }
-      .ratio-16x9 {
-        padding-top: 56.25%;
-      }
+      .ratio-16x9 { padding-top: 56.25%; }
+
       .btn-play {
-        position: absolute;
-        left: 50%;
-        top: 50%;
+        position: absolute; left: 50%; top: 50%;
         transform: translate(-50%, -50%);
-        width: 64px;
-        height: 64px;
-        border: 0;
-        border-radius: 999px;
-        cursor: pointer;
-        color: #fff;
-        background: rgba(0, 0, 0, 0.4);
-        display: grid;
-        place-items: center;
+        width: 64px; height: 64px;
+        border: 0; border-radius: 999px;
+        cursor: pointer; color: #fff;
+        background: rgba(0,0,0,0.4);
+        display: grid; place-items: center; z-index: 2;
       }
-      .btn-play:hover {
-        background: rgba(0, 0, 0, 0.55);
-      }
+      .btn-play:hover { background: rgba(0,0,0,0.55); }
+
       .progress {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 4px;
+        position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
         background: linear-gradient(90deg, #a78bfa, #f472b6, #60a5fa);
-      }
-      @keyframes vda-progress {
-        from {
-          width: 0%;
-        }
-        to {
-          width: 100%;
-        }
-      }
-      .is-playing .progress {
-        animation: vda-progress 6s linear infinite;
       }
 
       /* FOOTER */
       .footer {
-        margin-top: 28px;
-        border-top: 1px solid #e9d5ff;
+        margin-top: 28px; border-top: 1px solid #e9d5ff;
         background: rgba(255, 255, 255, 0.65);
       }
       .footer-inner {
-        display: grid;
-        gap: 16px;
+        display: grid; gap: 16px;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        padding: 20px 0;
-        color: #374151;
+        padding: 20px 0; color: #374151;
+        max-width: var(--content-max); margin-inline: auto;
       }
       .footer .title {
-        font-weight: 800;
-        color: #5b21b6;
-        margin-bottom: 6px;
+        font-weight: 800; color: #5b21b6; margin-bottom: 6px;
       }
-      ul {
-        margin: 0;
-        padding-left: 18px;
-      }
+      ul { margin: 0; padding-left: 18px; }
     </style>
   </head>
   <body>
@@ -281,221 +173,92 @@
 
     <main class="main">
       <!-- HERO -->
-      <section
-        style="
-          display: grid;
-          place-items: center;
-          padding: 0;
-          margin: 0;
-          width: 100%;
-        "
-      >
+      <section class="hero">
         <img
           src="https://i.postimg.cc/LXJ6Nj15/logo-voces.png"
           alt="Voces del Anime"
-          style="
-            width: min(80vmin, 800x);
-            height: auto;
-            display: block;
-            margin: 0 auto;
-          "
         />
       </section>
 
-        <!-- FRAGMENTOS -->
-<section class="section">
-  <div class="frame">
-    <div class="glass">
-      <h2 class="title" style="color: #7c3aed">Fragmentos Seleccionados</h2>
-      <div class="grid-3">
+      <!-- FRAGMENTOS -->
+      <section class="section">
+        <div class="frame">
+          <div class="glass">
+            <h2 class="title" style="color:#7c3aed">Fragmentos Seleccionados</h2>
+            <div class="grid-3">
 
-        <!-- Player 1 -->
-        <article class="player">
-          <div class="screen ratio-16x9" data-player>
-            <video preload="metadata" playsinline webkit-playsinline>
-              <source src="itadakimasu.mp4" type="video/mp4">
-            </video>
-            <button class="btn-play" aria-label="Reproducir/Pausar">
-              <span class="dot">
-                <!-- íconos: play y pausa; se alternan por JS -->
-                <svg class="icon-play"  width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
-                <svg class="icon-pause" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
-              </span>
-            </button>
-            <div class="progress"></div>
-          </div>
-          <p class="caption">『いただきます！』 (Itadakimasu) — “¡A comer! / ¡Buen provecho!”</p>
-        </article>
-
-        <!-- Player 2 -->
-        <article class="player">
-          <div class="screen ratio-16x9" data-player>
-            <video preload="metadata" playsinline webkit-playsinline>
-              <source src="yoroshiku onegaishimasu.mp4" type="video/mp4">
-            </video>
-            <button class="btn-play" aria-label="Reproducir/Pausar">
-              <span class="dot">
-                <svg class="icon-play"  width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
-                <svg class="icon-pause" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
-              </span>
-            </button>
-            <div class="progress"></div>
-          </div>
-          <p class="caption">『よろしくお願いします』(Yoroshiku onegaishimasu) — “Encantado / Espero que nos llevemos bien.”</p>
-        </article>
-
-        <!-- Player 3 -->
-        <article class="player">
-          <div class="screen ratio-16x9" data-player>
-            <video preload="metadata" playsinline webkit-playsinline>
-              <source src="ohayou gozaimasu senpai.mp4" type="video/mp4">
-            </video>
-            <button class="btn-play" aria-label="Reproducir/Pausar">
-              <span class="dot">
-                <svg class="icon-play"  width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
-                <svg class="icon-pause" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
-              </span>
-            </button>
-            <div class="progress"></div>
-          </div>
-          <p class="caption">『おはようございます先輩 』 (Ohayou gozaimasu Senpai) —  "Saludando a alguien con más experiencia"</p>
-        </article>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<style>
-/* 16:9 robusto */
-.screen.ratio-16x9{ position:relative; border-radius:14px; overflow:hidden; background:#000; }
-.screen.ratio-16x9::before{ content:""; display:block; padding-top:56.25%; }
-.screen.ratio-16x9 > video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
-.screen.ratio-16x9 > .progress{ position:absolute; left:0; right:0; bottom:0; height:4px; background:#5b21b6; width:0%; opacity:.95; z-index:2; }
-
-/* Botón play centrado SIEMPRE visible (toggle play/pausa) */
-.btn-play{
-  position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
-  background:transparent; border:none; cursor:pointer; z-index:3; padding:0;
-}
-.btn-play .dot{
-  width:70px; height:70px; border-radius:999px; display:grid; place-items:center;
-  background:rgba(0,0,0,.55); backdrop-filter:blur(3px);
-  box-shadow:0 10px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.25);
-}
-.btn-play svg{ width:28px; height:28px; color:#fff; transform:translateX(1px); }
-
-/* opcional: desvanecer botón cuando está reproduciendo pero dejarlo clickeable */
-.playing .btn-play .dot{ background:rgba(0,0,0,.35); }
-</style>
-
-<script>
-(() => {
-  const players = document.querySelectorAll('[data-player]');
-
-  function pauseOthers(currentVideo){
-    players.forEach(s=>{
-      const v = s.querySelector('video');
-      if(v && v !== currentVideo) v.pause();
-    });
-  }
-
-  players.forEach(screen => {
-    const video     = screen.querySelector('video');
-    const playBtn   = screen.querySelector('.btn-play');
-    const iconPlay  = playBtn.querySelector('.icon-play');
-    const iconPause = playBtn.querySelector('.icon-pause');
-    const progress  = screen.querySelector('.progress');
-
-    function setIcons(){
-      const playing = !video.paused && !video.ended;
-      iconPlay.style.display  = playing ? 'none'  : 'block';
-      iconPause.style.display = playing ? 'block' : 'none';
-      screen.classList.toggle('playing', playing);
-    }
-    function togglePlay(){ (video.paused || video.ended) ? video.play() : video.pause(); }
-
-    // Clicks
-    playBtn.addEventListener('click', togglePlay);
-    video.addEventListener('click', togglePlay);
-
-    // Estado
-    video.addEventListener('play',  ()=>{ pauseOthers(video); setIcons(); });
-    video.addEventListener('pause', ()=>{ setIcons(); });
-    video.addEventListener('ended', ()=>{ setIcons(); });
-
-    // Progreso
-    video.addEventListener('timeupdate', ()=>{
-      progress.style.width = ((video.currentTime / (video.duration || 1)) * 100) + '%';
-    });
-
-    // teclado accesible
-    playBtn.addEventListener('keydown', (e)=>{
-      if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); togglePlay(); }
-    });
-
-    // init
-    setIcons();
-  });
-})();
-</script>
-
-
-        <!-- EXPLICACIÓN DE LAS ESCENAS -->
-        <section class="section">
-          <div class="frame">
-            <div class="glass">
-              <h2 class="title">Explicación breve de las escenas</h2>
-              <div class="grid-3">
-                <div class="card">
-                  <div class="card-inner">
-                    <div class="title" style="color: #c2410c">
-                      ① いただきます
-                    </div>
-                    <p>
-                      Se usa antes de comer para expresar gratitud por la comida
-                      y el esfuerzo de quienes la hicieron posible.
-                    </p>
-                    <p class="muted">
-                      Contexto: comedores escolares, cenas en familia, almuerzos
-                      en clubes.
-                    </p>
-                  </div>
+              <!-- Player 1 -->
+              <article class="player">
+                <div class="screen ratio-16x9" data-player>
+                  <video preload="metadata" playsinline webkit-playsinline>
+                    <source src="itadakimasu.mp4" type="video/mp4">
+                  </video>
+                  <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
+                  <div class="progress"></div>
                 </div>
-                <div class="card">
-                  <div class="card-inner">
-                    <div class="title" style="color: #1f7a43">
-                      ② よろしくお願いします
-                    </div>
-                    <p>
-                      Fórmula de cortesía para iniciar una relación o pedir
-                      colaboración con respeto.
-                    </p>
-                    <p class="muted">
-                      Contexto: presentaciones en clase, entrada a un club,
-                      comienzo de proyectos.
-                    </p>
-                  </div>
+                <p class="caption">『いただきます！』 (Itadakimasu) — “¡A comer! / ¡Buen provecho!”</p>
+              </article>
+
+              <!-- Player 2 -->
+              <article class="player">
+                <div class="screen ratio-16x9" data-player>
+                  <video preload="metadata" playsinline webkit-playsinline>
+                    <source src="yoroshiku onegaishimasu.mp4" type="video/mp4">
+                  </video>
+                  <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
+                  <div class="progress"></div>
                 </div>
-                <div class="card">
-                  <div class="card-inner">
-                    <div class="title" style="color: #4f46e5">
-                      ③ おはようございます先輩 (Ohayou gozaimasu, Senpai)
-                    </div>
-                    <p>
-                      Un saludo formal de buenos días dirigido a un senpai, mostrando cortesía y reconocimiento hacia su rol de mayor experiencia.
-                    </p>
-                    <p class="muted">
-                      Contexto: clubes escolares, equipos deportivos, ámbitos
-                      laborale y escolares.
-                    </p>
-                  </div>
+                <p class="caption">『よろしくお願いします』(Yoroshiku onegaishimasu) — “Encantado / Espero que nos llevemos bien.”</p>
+              </article>
+
+              <!-- Player 3 -->
+              <article class="player">
+                <div class="screen ratio-16x9" data-player>
+                  <video preload="metadata" playsinline webkit-playsinline>
+                    <source src="ohayou gozaimasu senpai.mp4" type="video/mp4">
+                  </video>
+                  <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
+                  <div class="progress"></div>
+                </div>
+                <p class="caption">『おはようございます先輩』 (Ohayou gozaimasu Senpai) — "Saludando a alguien con más experiencia"</p>
+              </article>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPLICACIÓN -->
+      <section class="section">
+        <div class="frame">
+          <div class="glass">
+            <h2 class="title">Explicación breve de las escenas</h2>
+            <div class="grid-3">
+              <div class="card">
+                <div class="card-inner">
+                  <div class="title" style="color:#c2410c">① いただきます</div>
+                  <p>Se usa antes de comer para expresar gratitud por la comida y el esfuerzo de quienes la hicieron posible.</p>
+                  <p class="muted">Contexto: comedores escolares, cenas en familia, almuerzos en clubes.</p>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-inner">
+                  <div class="title" style="color:#1f7a43">② よろしくお願いします</div>
+                  <p>Fórmula de cortesía para iniciar una relación o pedir colaboración con respeto.</p>
+                  <p class="muted">Contexto: presentaciones en clase, entrada a un club, comienzo de proyectos.</p>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-inner">
+                  <div class="title" style="color:#4f46e5">③ おはようございます先輩</div>
+                  <p>Un saludo formal de buenos días dirigido a un senpai, mostrando cortesía y reconocimiento hacia su rol de mayor experiencia.</p>
+                  <p class="muted">Contexto: clubes escolares, equipos deportivos, ámbitos laborales y escolares.</p>
                 </div>
               </div>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
 
     <!-- FOOTER -->
@@ -521,18 +284,19 @@
     </div>
 
     <script>
-      // Mock de reproducción: alterna play/pausa y “progreso” animado
+      // Mock: alterna play/pausa y progreso animado
       document.querySelectorAll("[data-player]").forEach((el) => {
         const btn = el.querySelector(".btn-play");
-        let playing = false;
+        const video = el.querySelector("video");
+        const progress = el.querySelector(".progress");
         btn.addEventListener("click", () => {
-          playing = !playing;
-          el.classList.toggle("is-playing", playing);
-          btn.setAttribute("aria-label", playing ? "Pausar" : "Reproducir");
-          btn.innerHTML = playing
-            ? '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>'
-            : '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>';
+          if(video.paused){ video.play(); btn.textContent="⏸"; }
+          else{ video.pause(); btn.textContent="▶"; }
         });
+        video.addEventListener("timeupdate", ()=>{
+          progress.style.width = ((video.currentTime / (video.duration||1))*100) + "%";
+        });
+        video.addEventListener("ended", ()=>{ btn.textContent="▶"; progress.style.width="0%"; });
       });
     </script>
   </body>
