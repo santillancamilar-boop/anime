@@ -28,129 +28,49 @@
       .container { max-width: var(--content-max); margin: 0 auto; padding: 0 16px; }
 
       /* NAV */
-      .nav {
-        position: sticky; top: 0; z-index: 10;
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(6px);
-        border-bottom: 1px solid #e9d5ff;
-      }
-      .nav-inner {
-        display: flex; align-items: center; gap: 12px; padding: 8px 0;
-      }
+      .nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.7); backdrop-filter: blur(6px); border-bottom: 1px solid #e9d5ff; }
+      .nav-inner { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
       .brand { display: flex; align-items: center; gap: 10px; }
       .brand img { width: 28px; height: 28px; object-fit: contain; }
-      .brand span {
-        font-weight: 700;
-        font-size: clamp(18px, 2vw, 22px);
-        color: #6d28d9; letter-spacing: 0.01em; line-height: 1;
-      }
+      .brand span { font-weight: 700; font-size: clamp(18px, 2vw, 22px); color: #6d28d9; letter-spacing: 0.01em; line-height: 1; }
       .tabs { margin-left: auto; display: flex; gap: 12px; flex-wrap: wrap; }
       .tab { font-weight: 600; }
 
       /* HERO */
-      .hero {
-        display: grid; place-items: center;
-        padding: 20px 0; margin: 0; width: 100%;
-        position: relative; overflow: hidden;
-      }
-      .hero img {
-        width: min(56vmin, 520px);
-        height: auto; display: block; margin: 0 auto;
-      }
-      .hero::before,
-      .hero::after {
-        content: ""; position: absolute; width: 180px; height: 180px;
-        filter: blur(12px); opacity: 0.8;
-      }
-      .hero::before {
-        inset: auto auto -60px -60px;
-        background: radial-gradient(closest-side, #fbcfe8, transparent 70%);
-      }
-      .hero::after {
-        inset: -60px -60px auto auto;
-        background: radial-gradient(closest-side, #c7d2fe, transparent 70%);
-      }
+      .hero { display: grid; place-items: center; padding: 20px 0; margin: 0; width: 100%; position: relative; overflow: hidden; }
+      .hero img { width: min(56vmin, 520px); height: auto; display: block; margin: 0 auto; }
+      .hero::before, .hero::after { content: ""; position: absolute; width: 180px; height: 180px; filter: blur(12px); opacity: 0.8; }
+      .hero::before { inset: auto auto -60px -60px; background: radial-gradient(closest-side, #fbcfe8, transparent 70%); }
+      .hero::after { inset: -60px -60px auto auto; background: radial-gradient(closest-side, #c7d2fe, transparent 70%); }
 
       /* BLOQUES */
       .section { padding: 16px 0; }
-      .frame {
-        border-radius: 18px; padding: 1px;
-        background: linear-gradient(135deg, var(--grad1), var(--grad2), var(--grad3));
-        box-shadow: 0 10px 24px rgba(0,0,0,0.08);
-        max-width: var(--content-max); margin-inline: auto;
-      }
-      .glass {
-        border-radius: 18px; background: rgba(255, 255, 255, 0.65);
-        backdrop-filter: blur(10px); padding: 18px;
-      }
+      .frame { border-radius: 18px; padding: 1px; background: linear-gradient(135deg, var(--grad1), var(--grad2), var(--grad3)); box-shadow: 0 10px 24px rgba(0,0,0,0.08); max-width: var(--content-max); margin-inline: auto; }
+      .glass { border-radius: 18px; background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(10px); padding: 18px; }
       @media (min-width: 720px) { .glass { padding: 22px; } }
-      .title {
-        font-weight: 800; color: #4c1d95;
-        margin: 0 0 10px;
-        font-size: clamp(18px, 2.2vw, 22px);
-      }
+      .title { font-weight: 800; color: #4c1d95; margin: 0 0 10px; font-size: clamp(18px, 2.2vw, 22px); }
 
       /* TARJETAS / PLAYER */
       .grid { display: grid; gap: 16px; }
-      .grid-3 {
-        display: grid; gap: 12px;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      }
-      .card {
-        background: rgba(255, 255, 255, 0.92);
-        border: 1px solid #e9d5ff; border-radius: 12px;
-      }
+      .grid-3 { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+      .card { background: rgba(255,255,255,0.92); border: 1px solid #e9d5ff; border-radius: 12px; }
       .card-inner { padding: 12px 14px; }
       .muted { color: #6b7280; }
-      .player {
-        border: 1px solid #e9d5ff; border-radius: 12px;
-        background: rgba(255, 255, 255, 0.95);
-        padding: 10px 12px;
-      }
+      .player { border: 1px solid #e9d5ff; border-radius: 12px; background: rgba(255,255,255,0.95); padding: 10px 12px; }
       .caption { font-size: 0.95rem; text-align: center; }
 
-      .screen {
-        position: relative; width: 100%; overflow: hidden;
-        border-radius: 10px;
-        background: linear-gradient(135deg, #fbcfe8, #c7d2fe, #a7f3d0);
-      }
-      .screen::after {
-        content: ""; position: absolute; inset: 0; opacity: 0.35;
-        background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7), transparent 40%),
-                    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.5), transparent 35%);
-      }
-      .ratio-16x9 { padding-top: 56.25%; }
-
-      .btn-play {
-        position: absolute; left: 50%; top: 50%;
-        transform: translate(-50%, -50%);
-        width: 64px; height: 64px;
-        border: 0; border-radius: 999px;
-        cursor: pointer; color: #fff;
-        background: rgba(0,0,0,0.4);
-        display: grid; place-items: center; z-index: 2;
-      }
-      .btn-play:hover { background: rgba(0,0,0,0.55); }
-
-      .progress {
-        position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
-        background: linear-gradient(90deg, #a78bfa, #f472b6, #60a5fa);
-      }
+      /* Player Fix */
+      .screen.ratio-16x9 { position: relative; aspect-ratio: 16/9; height: auto; border-radius: 14px; overflow: hidden; background:#000; }
+      .ratio-16x9 { padding-top: 0 !important; }
+      .screen.ratio-16x9 > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      .screen.ratio-16x9 > .progress { position: absolute; left:0; right:0; bottom:0; height:4px; background:#5b21b6; width:0%; opacity:.95; z-index:2; }
+      .btn-play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.45); border:0; border-radius:999px; width:64px; height:64px; display:grid; place-items:center; color:#fff; cursor:pointer; z-index:3; }
+      .btn-play:hover { background:rgba(0,0,0,.65); }
 
       /* FOOTER */
-      .footer {
-        margin-top: 28px; border-top: 1px solid #e9d5ff;
-        background: rgba(255, 255, 255, 0.65);
-      }
-      .footer-inner {
-        display: grid; gap: 16px;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        padding: 20px 0; color: #374151;
-        max-width: var(--content-max); margin-inline: auto;
-      }
-      .footer .title {
-        font-weight: 800; color: #5b21b6; margin-bottom: 6px;
-      }
+      .footer { margin-top: 28px; border-top: 1px solid #e9d5ff; background: rgba(255, 255, 255, 0.65); }
+      .footer-inner { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 20px 0; color: #374151; max-width: var(--content-max); margin-inline: auto; }
+      .footer .title { font-weight: 800; color: #5b21b6; margin-bottom: 6px; }
       ul { margin: 0; padding-left: 18px; }
     </style>
   </head>
@@ -174,10 +94,7 @@
     <main class="main">
       <!-- HERO -->
       <section class="hero">
-        <img
-          src="https://i.postimg.cc/LXJ6Nj15/logo-voces.png"
-          alt="Voces del Anime"
-        />
+        <img src="https://i.postimg.cc/LXJ6Nj15/logo-voces.png" alt="Voces del Anime" />
       </section>
 
       <!-- FRAGMENTOS -->
