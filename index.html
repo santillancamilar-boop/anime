@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Voces del Anime — Inicio</title>
+    <title>Voces del Anime — Lengua</title>
     <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="styles.css" />
     <style>
       :root {
         --ink: #111827;
@@ -33,9 +34,6 @@
         margin: 0 auto;
         padding: 0 16px;
       }
-      a {
-        color: #6d28d9;
-      }
 
       /* NAV */
       .nav {
@@ -56,16 +54,18 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        text-decoration: none;
       }
       .brand img {
-        width: 28px;
-        height: 28px;
+        width: 36px;
+        height: 36px;
         object-fit: contain;
       }
       .brand span {
-        font-weight: 900;
-        color: var(--brand);
+        font-weight: 700;
+        font-size: clamp(20px, 2.4vw, 26px);
+        color: #6d28d9;
+        letter-spacing: 0.01em;
+        line-height: 1;
       }
       .tabs {
         margin-left: auto;
@@ -74,17 +74,26 @@
         flex-wrap: wrap;
       }
       .tab {
-        font-weight: 700;
-        text-decoration: none;
-        color: #6d28d9;
-      }
-      .tab.active {
-        text-decoration: underline;
+        font-weight: 600;
       }
 
-      /* HERO */
+      /* HERO (logo centrado) */
       .hero {
-        padding: 34px 0 26px;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+      }
+      .hero img {
+        width: min(80vmin, 800px);
+        height: auto;
+        display: block;
+        margin: 0 auto;
+      }
+
+      /* Decoración hero (opcional) */
+      .hero {
         position: relative;
         overflow: hidden;
       }
@@ -105,37 +114,11 @@
         inset: -60px -60px auto auto;
         background: radial-gradient(closest-side, #c7d2fe, transparent 70%);
       }
-      .hero-card {
-        display: grid;
-        grid-template-columns: 72px 1fr;
-        gap: 14px;
-        align-items: center;
-      }
-      .hero-logo {
-        width: 72px;
-        height: 72px;
-        border-radius: 14px;
-        background: #fff;
-        display: grid;
-        place-items: center;
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-      }
-      .hero-logo img {
-        width: 58px;
-        height: 58px;
-        object-fit: contain;
-      }
-      .hero h1 {
-        margin: 0;
-        color: var(--brand);
-        font-size: clamp(26px, 5vw, 44px);
-      }
-      .lead {
-        margin: 4px 0 0;
-        color: var(--muted);
-      }
 
-      /* GLASS + BORDE */
+      /* BLOQUES */
+      .section {
+        padding: 24px 0;
+      }
       .frame {
         border-radius: 18px;
         padding: 1px;
@@ -158,18 +141,13 @@
           padding: 28px;
         }
       }
-
-      /* SECCIONES */
-      .section {
-        padding: 24px 0;
-      }
       .title {
         font-weight: 800;
         color: #4c1d95;
         margin: 0 0 10px;
       }
 
-      /* GRID TARJETAS */
+      /* TARJETAS / MOCK PLAYER */
       .grid {
         display: grid;
         gap: 16px;
@@ -190,8 +168,6 @@
       .muted {
         color: #6b7280;
       }
-
-      /* MOCK PLAYER */
       .player {
         border: 1px solid #e9d5ff;
         border-radius: 12px;
@@ -261,11 +237,6 @@
       .is-playing .progress {
         animation: vda-progress 6s linear infinite;
       }
-      .caption {
-        margin: 10px 0 0;
-        text-align: center;
-        color: #1f2937;
-      }
 
       /* FOOTER */
       .footer {
@@ -315,24 +286,25 @@
 
     <main class="main">
       <!-- HERO -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-card">
-            <div class="hero-logo">
-              <img
-                src="logo-voces.png"
-                alt="Voces del Anime"
-                onerror="this.parentElement.style.display='none'"
-              />
-            </div>
-            <div>
-              <h1>Voces del Anime</h1>
-              <p class="lead">
-                Fragmentos simulados con subtítulos — sin archivos externos.
-              </p>
-            </div>
-          </div>
-        </div>
+      <section
+        style="
+          display: grid;
+          place-items: center;
+          padding: 0;
+          margin: 0;
+          width: 100%;
+        "
+      >
+        <img
+          src="https://i.postimg.cc/LXJ6Nj15/logo-voces.png"
+          alt="Voces del Anime"
+          style="
+            width: min(80vmin, 800x);
+            height: auto;
+            display: block;
+            margin: 0 auto;
+          "
+        />
       </section>
 
       <div class="container">
@@ -404,23 +376,34 @@
 
 <style>
 /* 16:9 robusto */
-.screen.ratio-16x9{ position:relative; border-radius:14px; overflow:hidden; background:#000; }
-.screen.ratio-16x9::before{ content:""; display:block; padding-top:56.25%; }
-.screen.ratio-16x9 > video,
-.screen.ratio-16x9 > .btn-play,
-.screen.ratio-16x9 > .progress{ position:absolute; inset:0; }
+.screen.ratio-16x9{
+  position:relative; border-radius:14px; overflow:hidden; background:#000;
+}
+.screen.ratio-16x9::before{
+  content:""; display:block; padding-top:56.25%; /* 16:9 */
+}
 
-.screen.ratio-16x9 > video{ width:100%; height:100%; object-fit:cover; display:block; }
+/* posicionar hijos dentro del marco */
+.screen.ratio-16x9 > video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+.screen.ratio-16x9 > .progress{ position:absolute; left:0; right:0; bottom:0; height:4px; background:#5b21b6; width:0%; opacity:.95; z-index:2; }
 
-/* Botón play centrado y visible sobre el poster/video */
-.btn-play{ display:grid; place-items:center; background:transparent; border:none; cursor:pointer; z-index:3; }
+/* Botón play CENTRADO REAL (no se estira) */
+.btn-play{
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  background:transparent;
+  border:none; cursor:pointer; z-index:3;
+  padding:0;
+}
 .btn-play.hidden{ display:none; }
-.btn-play .dot{ width:70px; height:70px; border-radius:999px; display:grid; place-items:center;
-  background:rgba(0,0,0,.55); backdrop-filter:blur(3px); box-shadow:0 10px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.25); }
+.btn-play .dot{
+  width:70px; height:70px; border-radius:999px; display:grid; place-items:center;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(3px);
+  box-shadow:0 10px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.25);
+}
 .btn-play svg{ width:28px; height:28px; color:#fff; transform:translateX(1px); }
-
-/* Barra de progreso */
-.progress{ left:0; bottom:0; height:4px; background:#5b21b6; width:0%; opacity:.95; z-index:2; }
 </style>
 
 <script>
@@ -431,7 +414,7 @@
   function pauseOthers(currentVideo){
     players.forEach(s=>{
       const v = s.querySelector('video');
-      if(v !== currentVideo) v.pause();
+      if(v && v !== currentVideo) v.pause();
     });
   }
 
@@ -440,31 +423,31 @@
     const playBtn  = screen.querySelector('.btn-play');
     const progress = screen.querySelector('.progress');
 
-    // Clicks
     function togglePlay(){ (video.paused || video.ended) ? video.play() : video.pause(); }
+
+    // Clicks
     playBtn.addEventListener('click', togglePlay);
     video.addEventListener('click', togglePlay);
 
-    // Estado botón
+    // Estado del botón
     video.addEventListener('play', () => { playBtn.classList.add('hidden'); pauseOthers(video); });
     video.addEventListener('pause', () => { playBtn.classList.remove('hidden'); });
+    video.addEventListener('ended', () => { playBtn.classList.remove('hidden'); });
 
-    // Progreso
+    // Barra de progreso
     video.addEventListener('timeupdate', () => {
       const p = (video.currentTime / (video.duration || 1)) * 100;
       progress.style.width = p + '%';
     });
 
-    // Accesibilidad (teclado: Enter/Espacio sobre botón)
+    // Accesibilidad
     playBtn.addEventListener('keydown', (e) => {
       if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); togglePlay(); }
     });
-
-    // Fallback: si querés los controles nativos en móviles, descomentá:
-    // video.setAttribute('controls', 'controls');
   });
 })();
 </script>
+
 
 
         <!-- EXPLICACIÓN DE LAS ESCENAS -->
