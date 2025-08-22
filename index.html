@@ -37,8 +37,21 @@
       .tab { font-weight: 600; }
 
       /* HERO */
-      .hero { display: grid; place-items: center; padding: 20px 0; margin: 0; width: 100%; }
-      .hero img { width: min(56vmin, 520px); height: auto; display: block; margin: 0 auto; }
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  background: transparent !important; /* fondo transparente */
+  box-shadow: none;                   /* sin sombra */
+}
+
+.hero-logo img {
+  max-width: 280px; /* ajustá el tamaño según prefieras */
+  height: auto;
+  display: block;
+}
+
 
       /* BLOQUES */
       .section { padding: 16px 0; }
