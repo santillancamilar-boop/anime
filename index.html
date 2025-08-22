@@ -267,10 +267,6 @@
     <div class="nav">
       <div class="container nav-inner">
         <a class="brand" href="index.html">
-          <img
-            src="logo-voces.png"
-            alt="Logo Voces del Anime"
-            onerror="this.style.display='none'"
           />
           <span>Voces del Anime</span>
         </a>
@@ -321,11 +317,11 @@
             <video preload="metadata" playsinline webkit-playsinline>
               <source src="itadakimasu.mp4" type="video/mp4">
             </video>
-            <button class="btn-play" aria-label="Reproducir">
+            <button class="btn-play" aria-label="Reproducir/Pausar">
               <span class="dot">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M8 5v14l11-7z"></path>
-                </svg>
+                <!-- íconos: play y pausa; se alternan por JS -->
+                <svg class="icon-play"  width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+                <svg class="icon-pause" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
               </span>
             </button>
             <div class="progress"></div>
@@ -339,11 +335,10 @@
             <video preload="metadata" playsinline webkit-playsinline>
               <source src="yoroshiku onegaishimasu.mp4" type="video/mp4">
             </video>
-            <button class="btn-play" aria-label="Reproducir">
+            <button class="btn-play" aria-label="Reproducir/Pausar">
               <span class="dot">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M8 5v14l11-7z"></path>
-                </svg>
+                <svg class="icon-play"  width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+                <svg class="icon-pause" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
               </span>
             </button>
             <div class="progress"></div>
@@ -357,11 +352,10 @@
             <video preload="metadata" playsinline webkit-playsinline>
               <source src="ohayou gozaimasu senpai.mp4" type="video/mp4">
             </video>
-            <button class="btn-play" aria-label="Reproducir">
+            <button class="btn-play" aria-label="Reproducir/Pausar">
               <span class="dot">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M8 5v14l11-7z"></path>
-                </svg>
+                <svg class="icon-play"  width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+                <svg class="icon-pause" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
               </span>
             </button>
             <div class="progress"></div>
@@ -376,41 +370,31 @@
 
 <style>
 /* 16:9 robusto */
-.screen.ratio-16x9{
-  position:relative; border-radius:14px; overflow:hidden; background:#000;
-}
-.screen.ratio-16x9::before{
-  content:""; display:block; padding-top:56.25%; /* 16:9 */
-}
-
-/* posicionar hijos dentro del marco */
+.screen.ratio-16x9{ position:relative; border-radius:14px; overflow:hidden; background:#000; }
+.screen.ratio-16x9::before{ content:""; display:block; padding-top:56.25%; }
 .screen.ratio-16x9 > video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
 .screen.ratio-16x9 > .progress{ position:absolute; left:0; right:0; bottom:0; height:4px; background:#5b21b6; width:0%; opacity:.95; z-index:2; }
 
-/* Botón play CENTRADO REAL (no se estira) */
+/* Botón play centrado SIEMPRE visible (toggle play/pausa) */
 .btn-play{
-  position:absolute;
-  top:50%; left:50%;
-  transform:translate(-50%, -50%);
-  background:transparent;
-  border:none; cursor:pointer; z-index:3;
-  padding:0;
+  position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+  background:transparent; border:none; cursor:pointer; z-index:3; padding:0;
 }
-.btn-play.hidden{ display:none; }
 .btn-play .dot{
   width:70px; height:70px; border-radius:999px; display:grid; place-items:center;
-  background:rgba(0,0,0,.55);
-  backdrop-filter:blur(3px);
+  background:rgba(0,0,0,.55); backdrop-filter:blur(3px);
   box-shadow:0 10px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.25);
 }
 .btn-play svg{ width:28px; height:28px; color:#fff; transform:translateX(1px); }
+
+/* opcional: desvanecer botón cuando está reproduciendo pero dejarlo clickeable */
+.playing .btn-play .dot{ background:rgba(0,0,0,.35); }
 </style>
 
 <script>
 (() => {
   const players = document.querySelectorAll('[data-player]');
 
-  // Pausar otros al reproducir uno
   function pauseOthers(currentVideo){
     players.forEach(s=>{
       const v = s.querySelector('video');
@@ -419,35 +403,44 @@
   }
 
   players.forEach(screen => {
-    const video    = screen.querySelector('video');
-    const playBtn  = screen.querySelector('.btn-play');
-    const progress = screen.querySelector('.progress');
+    const video     = screen.querySelector('video');
+    const playBtn   = screen.querySelector('.btn-play');
+    const iconPlay  = playBtn.querySelector('.icon-play');
+    const iconPause = playBtn.querySelector('.icon-pause');
+    const progress  = screen.querySelector('.progress');
 
+    function setIcons(){
+      const playing = !video.paused && !video.ended;
+      iconPlay.style.display  = playing ? 'none'  : 'block';
+      iconPause.style.display = playing ? 'block' : 'none';
+      screen.classList.toggle('playing', playing);
+    }
     function togglePlay(){ (video.paused || video.ended) ? video.play() : video.pause(); }
 
     // Clicks
     playBtn.addEventListener('click', togglePlay);
     video.addEventListener('click', togglePlay);
 
-    // Estado del botón
-    video.addEventListener('play', () => { playBtn.classList.add('hidden'); pauseOthers(video); });
-    video.addEventListener('pause', () => { playBtn.classList.remove('hidden'); });
-    video.addEventListener('ended', () => { playBtn.classList.remove('hidden'); });
+    // Estado
+    video.addEventListener('play',  ()=>{ pauseOthers(video); setIcons(); });
+    video.addEventListener('pause', ()=>{ setIcons(); });
+    video.addEventListener('ended', ()=>{ setIcons(); });
 
-    // Barra de progreso
-    video.addEventListener('timeupdate', () => {
-      const p = (video.currentTime / (video.duration || 1)) * 100;
-      progress.style.width = p + '%';
+    // Progreso
+    video.addEventListener('timeupdate', ()=>{
+      progress.style.width = ((video.currentTime / (video.duration || 1)) * 100) + '%';
     });
 
-    // Accesibilidad
-    playBtn.addEventListener('keydown', (e) => {
+    // teclado accesible
+    playBtn.addEventListener('keydown', (e)=>{
       if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); togglePlay(); }
     });
+
+    // init
+    setIcons();
   });
 })();
 </script>
-
 
 
         <!-- EXPLICACIÓN DE LAS ESCENAS -->
