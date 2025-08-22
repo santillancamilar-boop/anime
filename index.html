@@ -350,9 +350,11 @@
               <source src="itadakimasu.mp4" type="video/mp4">
             </video>
             <button class="btn-play" aria-label="Reproducir">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M8 5v14l11-7z"></path>
-              </svg>
+              <span class="dot">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z"></path>
+                </svg>
+              </span>
             </button>
             <div class="progress"></div>
           </div>
@@ -366,9 +368,11 @@
               <source src="yoroshiku onegaishimasu.mp4" type="video/mp4">
             </video>
             <button class="btn-play" aria-label="Reproducir">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M8 5v14l11-7z"></path>
-              </svg>
+              <span class="dot">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z"></path>
+                </svg>
+              </span>
             </button>
             <div class="progress"></div>
           </div>
@@ -382,9 +386,11 @@
               <source src="ohayou gozaimasu senpai.mp4" type="video/mp4">
             </video>
             <button class="btn-play" aria-label="Reproducir">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M8 5v14l11-7z"></path>
-              </svg>
+              <span class="dot">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5v14l11-7z"></path>
+                </svg>
+              </span>
             </button>
             <div class="progress"></div>
           </div>
@@ -397,35 +403,68 @@
 </section>
 
 <style>
-/* --- FIX 16:9 para todos los players --- */
-.screen.ratio-16x9 {
-  position: relative;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #000;
-}
-
-.screen.ratio-16x9::before {
-  content: "";
-  display: block;
-  padding-top: 56.25%; /* 16:9 */
-}
-
+/* 16:9 robusto */
+.screen.ratio-16x9{ position:relative; border-radius:14px; overflow:hidden; background:#000; }
+.screen.ratio-16x9::before{ content:""; display:block; padding-top:56.25%; }
 .screen.ratio-16x9 > video,
 .screen.ratio-16x9 > .btn-play,
-.screen.ratio-16x9 > .progress {
-  position: absolute;
-  inset: 0;
-}
+.screen.ratio-16x9 > .progress{ position:absolute; inset:0; }
 
-.screen.ratio-16x9 > video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* usa contain si preferís barras negras */
-  display: block;
-}
+.screen.ratio-16x9 > video{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* Botón play centrado y visible sobre el poster/video */
+.btn-play{ display:grid; place-items:center; background:transparent; border:none; cursor:pointer; z-index:3; }
+.btn-play.hidden{ display:none; }
+.btn-play .dot{ width:70px; height:70px; border-radius:999px; display:grid; place-items:center;
+  background:rgba(0,0,0,.55); backdrop-filter:blur(3px); box-shadow:0 10px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.25); }
+.btn-play svg{ width:28px; height:28px; color:#fff; transform:translateX(1px); }
+
+/* Barra de progreso */
+.progress{ left:0; bottom:0; height:4px; background:#5b21b6; width:0%; opacity:.95; z-index:2; }
 </style>
 
+<script>
+(() => {
+  const players = document.querySelectorAll('[data-player]');
+
+  // Pausar otros al reproducir uno
+  function pauseOthers(currentVideo){
+    players.forEach(s=>{
+      const v = s.querySelector('video');
+      if(v !== currentVideo) v.pause();
+    });
+  }
+
+  players.forEach(screen => {
+    const video    = screen.querySelector('video');
+    const playBtn  = screen.querySelector('.btn-play');
+    const progress = screen.querySelector('.progress');
+
+    // Clicks
+    function togglePlay(){ (video.paused || video.ended) ? video.play() : video.pause(); }
+    playBtn.addEventListener('click', togglePlay);
+    video.addEventListener('click', togglePlay);
+
+    // Estado botón
+    video.addEventListener('play', () => { playBtn.classList.add('hidden'); pauseOthers(video); });
+    video.addEventListener('pause', () => { playBtn.classList.remove('hidden'); });
+
+    // Progreso
+    video.addEventListener('timeupdate', () => {
+      const p = (video.currentTime / (video.duration || 1)) * 100;
+      progress.style.width = p + '%';
+    });
+
+    // Accesibilidad (teclado: Enter/Espacio sobre botón)
+    playBtn.addEventListener('keydown', (e) => {
+      if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); togglePlay(); }
+    });
+
+    // Fallback: si querés los controles nativos en móviles, descomentá:
+    // video.setAttribute('controls', 'controls');
+  });
+})();
+</script>
 
 
         <!-- EXPLICACIÓN DE LAS ESCENAS -->
