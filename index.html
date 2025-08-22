@@ -37,11 +37,8 @@
       .tab { font-weight: 600; }
 
       /* HERO */
-      .hero { display: grid; place-items: center; padding: 20px 0; margin: 0; width: 100%; position: relative; overflow: hidden; }
+      .hero { display: grid; place-items: center; padding: 20px 0; margin: 0; width: 100%; }
       .hero img { width: min(56vmin, 520px); height: auto; display: block; margin: 0 auto; }
-      .hero::before, .hero::after { content: ""; position: absolute; width: 180px; height: 180px; filter: blur(12px); opacity: 0.8; }
-      .hero::before { inset: auto auto -60px -60px; background: radial-gradient(closest-side, #fbcfe8, transparent 70%); }
-      .hero::after { inset: -60px -60px auto auto; background: radial-gradient(closest-side, #c7d2fe, transparent 70%); }
 
       /* BLOQUES */
       .section { padding: 16px 0; }
