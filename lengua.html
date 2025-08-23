@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="styles.css" />
     <style>
       :root{
+        --ink:#111827;--brand:#5b21b6;--muted:#6b7280;
+        --grad1:#f0abfc;--grad2:#93c5fd;--grad3:#a7f3d0;
         --page-max:1200px; /* igual de estrecho */
       }
       *{box-sizing:border-box}
@@ -19,15 +21,6 @@
       }
       .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
       a{color:#6d28d9;text-decoration:none}
-
-      /* NAV */
-      .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.7);backdrop-filter:blur(6px);border-bottom:1px solid #e9d5ff}
-      .nav-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
-      .brand{font-weight:600;color:#6d28d9}
-      .tabs{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
-      .tab{font-weight:500}
-      .tab:hover,.tab:focus-visible{font-weight:600}
-      .tab.active{font-weight:800;text-decoration:underline}
 
       /* HERO (sin destellos y con tarjeta degradada) */
  .hero,.hero-visual{padding:56px 0 64px;position:relative}
@@ -297,6 +290,7 @@
     </div>
   </body>
 </html>
+
 
 
 
