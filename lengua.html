@@ -34,6 +34,7 @@
       /* HERO (sin destellos de fondo y con tarjeta degradada) */
       .hero,.hero-visual{padding:56px 0 64px;position:relative}
       .hero::before,.hero::after,.hero-visual::before,.hero-visual::after{content:none!important}
+      .hero-frame{max-width:880px;margin:0 auto;border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08)}
       .hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
       .hero h1{margin:0;color:var(--brand);font-size:clamp(26px,5vw,44px)}
       .lead{margin:6px auto 0;color:var(--muted);max-width:66ch;text-align:center}
@@ -56,14 +57,6 @@
       .tr{color:#374151}
       .related{display:flex;gap:8px;flex-wrap:wrap}
       .chip{border:1px solid #e9d5ff;background:#faf5ff;color:#4c1d95;border-radius:999px;padding:4px 10px;font-size:.82rem}
-
-         /* BLOQUES */
-      .section{padding:20px 0}
-      .frame{border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08)}
-      .glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);padding:22px}
-      @media(min-width:720px){.glass{padding:28px}}
-      .title{font-weight:800;color:#4c1d95;margin:0 0 10px}
-      .muted{color:#6b7280}
 
 
       /* FOOTER */
@@ -296,6 +289,7 @@
     </div>
   </body>
 </html>
+
 
 
 
