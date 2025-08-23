@@ -77,6 +77,14 @@
       .footer-inner { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 20px 0; color: #374151; max-width: var(--content-max); margin-inline: auto; }
       .footer .title { font-weight: 800; color: #5b21b6; margin-bottom: 6px; }
       ul { margin: 0; padding-left: 18px; }
+
+      /* Ancho más estrecho del contenido */
+:root { --page-max: 860px; }      /* ajusta el número a gusto */
+.container { max-width: var(--page-max); }
+
+/* opcional: el recuadro del hero un poco más angosto que el contenedor */
+.hero-frame { max-width: calc(var(--page-max) - 80px); }
+
     </style>
   </head>
   <body>
