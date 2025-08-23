@@ -14,7 +14,6 @@
         --grad1: #f0abfc;
         --grad2: #93c5fd;
         --grad3: #a7f3d0;
-        --content-max: 860px;
       }
       * { box-sizing: border-box; }
       html, body { margin: 0; }
@@ -23,71 +22,85 @@
         color: var(--ink);
         background: linear-gradient(135deg, #fdf2f8, #eef2ff, #ecfdf5);
         background-attachment: fixed;
-        line-height: 1.45;
       }
-      .container { max-width: var(--content-max); margin: 0 auto; padding: 0 16px; }
+      .container { max-width: 1024px; margin: 0 auto; padding: 0 16px; }
+      a { color: #6d28d9; }
 
       /* NAV */
-      .nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.7); backdrop-filter: blur(6px); border-bottom: 1px solid #e9d5ff; }
-      .nav-inner { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
-      .brand { display: flex; align-items: center; gap: 10px; }
-      .brand img { width: 28px; height: 28px; object-fit: contain; }
-      .brand span { font-weight: 700; font-size: clamp(18px, 2vw, 22px); color: #6d28d9; letter-spacing: 0.01em; line-height: 1; }
+      .nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.7); backdrop-filter: blur(6px); border-bottom: 1px solid #e9d5ff; }
+      .nav-inner { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+      .brand { text-decoration: none; color: #6d28d9; font-weight: 700; }
       .tabs { margin-left: auto; display: flex; gap: 12px; flex-wrap: wrap; }
-      .tab { font-weight: 600; }
+      .tab { font-weight: 700; text-decoration: none; color: #6d28d9; }
+      .tab.active { text-decoration: underline; }
 
       /* HERO */
-.hero {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0px 0;
-  background: transparent !important; /* fondo transparente */
-  box-shadow: none;                   /* sin sombra */
-}
+      .hero, .hero-visual { padding: 34px 0 26px; position: relative; overflow: hidden; isolation: isolate; }
+      .hero::before, .hero::after, .hero-visual::before, .hero-visual::after { content: ""; position: absolute; width: 180px; height: 180px; filter: blur(12px); opacity: .8; z-index: -1; }
+      .hero::before, .hero-visual::before { inset: auto auto -60px -60px; background: radial-gradient(closest-side, #fbcfe8, transparent 70%); }
+      .hero::after, .hero-visual::after { inset: -60px -60px auto auto; background: radial-gradient(closest-side, #c7d2fe, transparent 70%); }
+      .hero h1 { margin: 0; color: var(--brand); font-size: clamp(26px, 5vw, 44px); }
+      .lead { margin: 6px auto 0; color: var(--muted); text-align: center; max-width: 66ch; } /* centrado */
 
-
-      /* BLOQUES */
-      .section { padding: 16px 0; }
-      .frame { border-radius: 18px; padding: 1px; background: linear-gradient(135deg, var(--grad1), var(--grad2), var(--grad3)); box-shadow: 0 10px 24px rgba(0,0,0,0.08); max-width: var(--content-max); margin-inline: auto; }
-      .glass { border-radius: 18px; background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(10px); padding: 18px; }
-      @media (min-width: 720px) { .glass { padding: 22px; } }
-      .title { font-weight: 800; color: #4c1d95; margin: 0 0 10px; font-size: clamp(18px, 2.2vw, 22px); }
-
-      /* TARJETAS / PLAYER */
-      .grid { display: grid; gap: 16px; }
-      .grid-3 { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-      .card { background: rgba(255,255,255,0.92); border: 1px solid #e9d5ff; border-radius: 12px; }
-      .card-inner { padding: 12px 14px; }
+      /* GLASS + BORDE */
+      .frame { border-radius: 18px; padding: 1px; background: linear-gradient(135deg, var(--grad1), var(--grad2), var(--grad3)); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+      .glass { border-radius: 18px; background: rgba(255,255,255,.65); backdrop-filter: blur(10px); padding: 22px; }
+      @media (min-width: 720px) { .glass { padding: 28px; } }
+      .section { padding: 24px 0; }
+      .title { font-weight: 800; color: #4c1d95; margin: 0 0 10px; }
       .muted { color: #6b7280; }
-      .player { border: 1px solid #e9d5ff; border-radius: 12px; background: rgba(255,255,255,0.95); padding: 10px 12px; }
-      .caption { font-size: 0.95rem; text-align: center; }
 
-      /* Player Fix */
-      .screen.ratio-16x9 { position: relative; aspect-ratio: 16/9; height: auto; border-radius: 14px; overflow: hidden; background:#000; }
-      .ratio-16x9 { padding-top: 0 !important; }
-      .screen.ratio-16x9 > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-      .screen.ratio-16x9 > .progress { position: absolute; left:0; right:0; bottom:0; height:4px; background:#5b21b6; width:0%; opacity:.95; z-index:2; }
-      .btn-play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.45); border:0; border-radius:999px; width:64px; height:64px; display:grid; place-items:center; color:#fff; cursor:pointer; z-index:3; }
-      .btn-play:hover { background:rgba(0,0,0,.65); }
+      /* GLOSARIO EXTENDIDO */
+      .entry { background: rgba(255,255,255,.95); border: 1px solid #e9d5ff; border-radius: 14px; padding: 16px; }
+      .entry + .entry { margin-top: 10px; }
+      .entry-header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; }
+      .term { font-weight: 900; font-size: 1.2rem; }
+      .reading { color: #6b7280; }
+      .badge { font-size: .78rem; border-radius: 999px; background: #ede9fe; color: #4c1d95; padding: 4px 10px; font-weight: 700; }
+      .entry-grid { display: grid; gap: 8px; }
+      @media (min-width: 860px) { .entry-grid { grid-template-columns: 1fr 1fr; } }
+      .block { background: #fff; border: 1px solid #f3e8ff; border-radius: 10px; padding: 12px; }
+      .block h4 { margin: 0 0 8px; color: #4c1d95; }
+      .ex { margin: 0 0 8px; }
+      .ja { font-weight: 700; }
+      .romaji { color: #6b7280; }
+      .tr { color: #374151; }
+      .related { display: flex; gap: 8px; flex-wrap: wrap; }
+      .chip { border: 1px solid #e9d5ff; background: #faf5ff; color: #4c1d95; border-radius: 999px; padding: 4px 10px; font-size: .82rem; }
 
       /* FOOTER */
-      .footer { margin-top: 28px; border-top: 1px solid #e9d5ff; background: rgba(255, 255, 255, 0.65); }
-      .footer-inner { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 20px 0; color: #374151; max-width: var(--content-max); margin-inline: auto; }
+      .footer { margin-top: 28px; border-top: 1px solid #e9d5ff; background: rgba(255,255,255,.65); }
+      .footer-inner { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); padding: 20px 0; color: #374151; }
       .footer .title { font-weight: 800; color: #5b21b6; margin-bottom: 6px; }
       ul { margin: 0; padding-left: 18px; }
-    </style>
+      /* Asegura que el contenido quede por encima de los destellos */
+  .hero > .container, .hero-visual > .container { position: relative; z-index: 1; }
+  /* Centrar el texto gris bajo el H1 con más especificidad */
+  .hero .lead, .hero-visual .lead { text-align: center !important; margin-left: auto !important; margin-right: auto !important; }
+  /* Nav: más fino por defecto, más grueso al activar */
+  .brand { font-weight: 600; }
+  .tab { font-weight: 500; }
+  .tab:hover, .tab:focus-visible { font-weight: 600; }
+  .tab.active { font-weight: 800; }
+  /* HERO card (degradado alrededor del título y lead) */
+  .hero-frame { max-width: 880px; margin: 0 auto; }
+  .hero-glass { text-align: center; padding: 22px; }
+  @media (min-width: 720px){ .hero-glass { padding: 32px 36px; } }
+  .hero-visual { padding-top: 56px; padding-bottom: 64px; } /* un poco más largo */
+  .hero-visual h1 { margin-bottom: 6px; }
+  .hero-visual .lead { margin-top: 6px; }
+  /* Menos espacio entre "Glosario extendido" y "Expresiones clave" */
+  .main .section:first-of-type { padding-top: 8px; }
+</style>
   </head>
   <body>
     <!-- NAV -->
     <div class="nav">
       <div class="container nav-inner">
-        <a class="brand" href="index.html">
-          <span>Voces del Anime</span>
-        </a>
+        <a class="brand" href="index.html">Voces del Anime</a>
         <div class="tabs">
-          <a class="tab active" href="index.html">Inicio</a>
-          <a class="tab" href="lengua.html">Lengua</a>
+          <a class="tab" href="index.html">Inicio</a>
+          <a class="tab active" href="lengua.html">Lengua</a>
           <a class="tab" href="cultura.html">Cultura</a>
           <a class="tab" href="comunidad.html">Comunidad</a>
           <a class="tab" href="recursos.html">Recursos</a>
@@ -96,15 +109,15 @@
     </div>
 
     <main class="main">
-
-    <main>
       <!-- HERO -->
-      <section class="hero">
+      <section class="hero hero-visual">
         <div class="container">
-          <h1>Glosario extendido</h1>
-          <p class="lead">
-            Significados, registro y ejemplos reales de uso (JA + romaji + ES).
-          </p>
+          <div class="frame hero-frame">
+            <div class="glass hero-glass">
+              <h1>Glosario extendido</h1>
+              <p class="lead">Significados, registro y ejemplos reales de uso (JA + romaji + ES).</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -113,7 +126,7 @@
         <section class="section">
           <div class="frame">
             <div class="glass">
-              <h2 class="title" style="color: #c2410c">Expresiones clave</h2>
+              <h2 class="title" style="color:#c2410c">Expresiones clave</h2>
 
               <!-- 1) Itadakimasu -->
               <article class="entry">
@@ -125,42 +138,16 @@
                 <div class="entry-grid">
                   <div class="block">
                     <h4>Significado y registro</h4>
-                    <p>
-                      Se utiliza <strong>antes de comer</strong> para expresar
-                      gratitud por la comida, la naturaleza y el trabajo de
-                      quienes la prepararon. Registro cortés pero cotidiano.
-                    </p>
-                    <h4 style="margin-top: 10px">Ejemplos</h4>
-                    <p class="ex">
-                      <span class="ja">いただきます！</span> —
-                      <span class="romaji">Itadakimasu!</span><br />
-                      <span class="tr">¡A comer! / ¡Buen provecho!</span>
-                    </p>
-                    <p class="ex">
-                      <span class="ja"
-                        >みんなでいただきますと言いましょう。</span
-                      >
-                      —
-                      <span class="romaji"
-                        >Minna de itadakimasu to iimashō.</span
-                      ><br />
-                      <span class="tr">Digamos “itadakimasu” entre todos.</span>
-                    </p>
-                    <p class="ex">
-                      <span class="ja">手作りのご飯、いただきます。</span> —
-                      <span class="romaji">Tezukuri no gohan, itadakimasu.</span
-                      ><br />
-                      <span class="tr">Comida casera… ¡itadakimasu!</span>
-                    </p>
+                    <p>Se utiliza <strong>antes de comer</strong> para expresar gratitud por la comida, la naturaleza y el trabajo de quienes la prepararon. Registro cortés pero cotidiano.</p>
+                    <h4 style="margin-top:10px">Ejemplos</h4>
+                    <p class="ex"><span class="ja">いただきます！</span> — <span class="romaji">Itadakimasu!</span><br /><span class="tr">¡A comer! / ¡Buen provecho!</span></p>
+                    <p class="ex"><span class="ja">みんなでいただきますと言いましょう。</span> — <span class="romaji">Minna de itadakimasu to iimashō.</span><br /><span class="tr">Digamos “itadakimasu” entre todos.</span></p>
+                    <p class="ex"><span class="ja">手作りのご飯、いただきます。</span> — <span class="romaji">Tezukuri no gohan, itadakimasu.</span><br /><span class="tr">Comida casera… ¡itadakimasu!</span></p>
                   </div>
                   <div class="block">
                     <h4>Notas culturales</h4>
-                    <p>
-                      No es “bendecir” en sentido religioso occidental; enfatiza
-                      la interdependencia. En escenas escolares, suele decirse
-                      al unísono.
-                    </p>
-                    <h4 style="margin-top: 10px">Relacionadas</h4>
+                    <p>No es “bendecir” en sentido religioso occidental; enfatiza la interdependencia. En escenas escolares, suele decirse al unísono.</p>
+                    <h4 style="margin-top:10px">Relacionadas</h4>
                     <div class="related">
                       <span class="chip">ごちそうさまでした</span>
                       <span class="chip">いただく（humilde de “recibir”）</span>
@@ -179,58 +166,16 @@
                 <div class="entry-grid">
                   <div class="block">
                     <h4>Significado y registro</h4>
-                    <p>
-                      Fórmula de cortesía para
-                      <strong>iniciar vínculos</strong> o pedir colaboración
-                      futura con respeto. Registro: cortés/neutral.
-                    </p>
-                    <h4 style="margin-top: 10px">Ejemplos</h4>
-                    <p class="ex">
-                      <span class="ja"
-                        >はじめまして。田中です。よろしくお願いします。</span
-                      >
-                      —
-                      <span class="romaji"
-                        >Hajimemashite. Tanaka desu. Yoroshiku
-                        onegaishimasu.</span
-                      ><br />
-                      <span class="tr"
-                        >Mucho gusto. Soy Tanaka. Encantado.</span
-                      >
-                    </p>
-                    <p class="ex">
-                      <span class="ja">明日の発表、よろしくお願いします。</span>
-                      —
-                      <span class="romaji"
-                        >Ashita no happyō, yoroshiku onegaishimasu.</span
-                      ><br />
-                      <span class="tr"
-                        >Cuento con ustedes para la presentación de
-                        mañana.</span
-                      >
-                    </p>
-                    <p class="ex">
-                      <span class="ja"
-                        >来週から入部します。よろしくお願いします！</span
-                      >
-                      —
-                      <span class="romaji"
-                        >Raishū kara nyūbu shimasu. Yoroshiku
-                        onegaishimasu!</span
-                      ><br />
-                      <span class="tr"
-                        >Me sumo al club desde la semana que viene. ¡Un gusto
-                        trabajar con ustedes!</span
-                      >
-                    </p>
+                    <p>Fórmula de cortesía para <strong>iniciar vínculos</strong> o pedir colaboración futura con respeto. Registro: cortés/neutral.</p>
+                    <h4 style="margin-top:10px">Ejemplos</h4>
+                    <p class="ex"><span class="ja">はじめまして。田中です。よろしくお願いします。</span> — <span class="romaji">Hajimemashite. Tanaka desu. Yoroshiku onegaishimasu.</span><br /><span class="tr">Mucho gusto. Soy Tanaka. Encantado.</span></p>
+                    <p class="ex"><span class="ja">明日の発表、よろしくお願いします。</span> — <span class="romaji">Ashita no happyō, yoroshiku onegaishimasu.</span><br /><span class="tr">Cuento con ustedes para la presentación de mañana.</span></p>
+                    <p class="ex"><span class="ja">来週から入部します。よろしくお願いします！</span> — <span class="romaji">Raishū kara nyūbu shimasu. Yoroshiku onegaishimasu!</span><br /><span class="tr">Me sumo al club desde la semana que viene. ¡Un gusto trabajar con ustedes!</span></p>
                   </div>
                   <div class="block">
                     <h4>Notas culturales</h4>
-                    <p>
-                      No traduce literalmente; “sellado social” que anticipa
-                      cooperación. En clubes y aula, suaviza pedidos.
-                    </p>
-                    <h4 style="margin-top: 10px">Relacionadas</h4>
+                    <p>No traduce literalmente; “sellado social” que anticipa cooperación. En clubes y aula, suaviza pedidos.</p>
+                    <h4 style="margin-top:10px">Relacionadas</h4>
                     <div class="related">
                       <span class="chip">こちらこそ</span>
                       <span class="chip">お願いします（おねがい）</span>
@@ -250,55 +195,19 @@
                 <div class="entry-grid">
                   <div class="block">
                     <h4>Significado y registro</h4>
-                    <p>
-                      Persona con
-                      <strong>mayor antigüedad/experiencia</strong> en un grupo.
-                      Se usa como título/apelativo respetuoso.
-                    </p>
-                    <h4 style="margin-top: 10px">Ejemplos</h4>
-                    <p class="ex">
-                      <span class="ja">先輩、今日の練習は何時からですか。</span>
-                      —
-                      <span class="romaji"
-                        >Senpai, kyō no renshū wa nanji kara desu ka.</span
-                      ><br />
-                      <span class="tr"
-                        >Senpai, ¿a qué hora es la práctica de hoy?</span
-                      >
-                    </p>
-                    <p class="ex">
-                      <span class="ja">先輩に相談してみよう。</span> —
-                      <span class="romaji">Senpai ni sōdan shite miyō.</span
-                      ><br />
-                      <span class="tr">Voy a consultarlo con el senpai.</span>
-                    </p>
-                    <p class="ex">
-                      <span class="ja"
-                        >新入生は先輩の指示に従ってください。</span
-                      >
-                      —
-                      <span class="romaji"
-                        >Shinnyūsei wa senpai no shiji ni shitagatte
-                        kudasai.</span
-                      ><br />
-                      <span class="tr"
-                        >Estudiantes nuevos: sigan las indicaciones del
-                        senpai.</span
-                      >
-                    </p>
+                    <p>Persona con <strong>mayor antigüedad/experiencia</strong> en un grupo. Se usa como título/apelativo respetuoso.</p>
+                    <h4 style="margin-top:10px">Ejemplos</h4>
+                    <p class="ex"><span class="ja">先輩、今日の練習は何時からですか。</span> — <span class="romaji">Senpai, kyō no renshū wa nanji kara desu ka.</span><br /><span class="tr">Senpai, ¿a qué hora es la práctica de hoy?</span></p>
+                    <p class="ex"><span class="ja">先輩に相談してみよう。</span> — <span class="romaji">Senpai ni sōdan shite miyō.</span><br /><span class="tr">Voy a consultarlo con el senpai.</span></p>
+                    <p class="ex"><span class="ja">新入生は先輩の指示に従ってください。</span> — <span class="romaji">Shinnyūsei wa senpai no shiji ni shitagatte kudasai.</span><br /><span class="tr">Estudiantes nuevos: sigan las indicaciones del senpai.</span></p>
                   </div>
                   <div class="block">
                     <h4>Notas culturales</h4>
-                    <p>
-                      Relación <em>senpai–kōhai</em>: mentoría y cuidado. No
-                      implica superioridad formal; sí responsabilidad.
-                    </p>
-                    <h4 style="margin-top: 10px">Relacionadas</h4>
+                    <p>Relación <em>senpai–kōhai</em>: mentoría y cuidado. No implica superioridad formal; sí responsabilidad.</p>
+                    <h4 style="margin-top:10px">Relacionadas</h4>
                     <div class="related">
                       <span class="chip">後輩（こうはい／kōhai）</span>
-                      <span class="chip"
-                        >敬語（けいご／lenguaje honorífico）</span
-                      >
+                      <span class="chip">敬語（けいご／lenguaje honorífico）</span>
                     </div>
                   </div>
                 </div>
@@ -314,46 +223,16 @@
                 <div class="entry-grid">
                   <div class="block">
                     <h4>Significado y registro</h4>
-                    <p>
-                      “Perdón/disculpe” y también “gracias” (cuando se siente
-                      deuda). Registro cortés, muy frecuente.
-                    </p>
-                    <h4 style="margin-top: 10px">Ejemplos</h4>
-                    <p class="ex">
-                      <span class="ja">すみません、もう一度お願いします。</span>
-                      —
-                      <span class="romaji"
-                        >Sumimasen, mō ichido onegaishimasu.</span
-                      ><br />
-                      <span class="tr">Perdón, ¿podría repetirlo?</span>
-                    </p>
-                    <p class="ex">
-                      <span class="ja">昨日は遅れてすみませんでした。</span> —
-                      <span class="romaji"
-                        >Kinō wa okurete sumimasen deshita.</span
-                      ><br />
-                      <span class="tr"
-                        >Perdón por haber llegado tarde ayer.</span
-                      >
-                    </p>
-                    <p class="ex">
-                      <span class="ja">助けてくれて、すみません。</span> —
-                      <span class="romaji">Tasukete kurete, sumimasen.</span
-                      ><br />
-                      <span class="tr"
-                        >Gracias/Perdón por la molestia (gracias por
-                        ayudarme).</span
-                      >
-                    </p>
+                    <p>“Perdón/disculpe” y también “gracias” (cuando se siente deuda). Registro cortés, muy frecuente.</p>
+                    <h4 style="margin-top:10px">Ejemplos</h4>
+                    <p class="ex"><span class="ja">すみません、もう一度お願いします。</span> — <span class="romaji">Sumimasen, mō ichido onegaishimasu.</span><br /><span class="tr">Perdón, ¿podría repetirlo?</span></p>
+                    <p class="ex"><span class="ja">昨日は遅れてすみませんでした。</span> — <span class="romaji">Kinō wa okurete sumimasen deshita.</span><br /><span class="tr">Perdón por haber llegado tarde ayer.</span></p>
+                    <p class="ex"><span class="ja">助けてくれて、すみません。</span> — <span class="romaji">Tasukete kurete, sumimasen.</span><br /><span class="tr">Gracias/Perdón por la molestia (gracias por ayudarme).</span></p>
                   </div>
                   <div class="block">
                     <h4>Notas culturales</h4>
-                    <p>
-                      Puede sonar más suave que “ごめんなさい”. En un local,
-                      también funciona como “¡disculpe!” para llamar al
-                      personal.
-                    </p>
-                    <h4 style="margin-top: 10px">Relacionadas</h4>
+                    <p>Puede sonar más suave que “ごめんなさい”. En un local, también funciona como “¡disculpe!” para llamar al personal.</p>
+                    <h4 style="margin-top:10px">Relacionadas</h4>
                     <div class="related">
                       <span class="chip">ごめんなさい</span>
                       <span class="chip">失礼します</span>
@@ -372,37 +251,16 @@
                 <div class="entry-grid">
                   <div class="block">
                     <h4>Significado y registro</h4>
-                    <p>
-                      Forma para <strong>solicitar</strong> algo de manera
-                      cortés. Estructura: verbo en forma -te + ください.
-                    </p>
-                    <h4 style="margin-top: 10px">Ejemplos</h4>
-                    <p class="ex">
-                      <span class="ja">ちょっと待ってください。</span> —
-                      <span class="romaji">Chotto matte kudasai.</span><br />
-                      <span class="tr">Espere un momento, por favor.</span>
-                    </p>
-                    <p class="ex">
-                      <span class="ja">静かにしてください。</span> —
-                      <span class="romaji">Shizuka ni shite kudasai.</span
-                      ><br />
-                      <span class="tr">Guarden silencio, por favor.</span>
-                    </p>
-                    <p class="ex">
-                      <span class="ja">ここに名前を書いてください。</span> —
-                      <span class="romaji">Koko ni namae o kaite kudasai.</span
-                      ><br />
-                      <span class="tr">Escribí tu nombre aquí, por favor.</span>
-                    </p>
+                    <p>Forma para <strong>solicitar</strong> algo de manera cortés. Estructura: verbo en forma -te + ください.</p>
+                    <h4 style="margin-top:10px">Ejemplos</h4>
+                    <p class="ex"><span class="ja">ちょっと待ってください。</span> — <span class="romaji">Chotto matte kudasai.</span><br /><span class="tr">Espere un momento, por favor.</span></p>
+                    <p class="ex"><span class="ja">静かにしてください。</span> — <span class="romaji">Shizuka ni shite kudasai.</span><br /><span class="tr">Guarden silencio, por favor.</span></p>
+                    <p class="ex"><span class="ja">ここに名前を書いてください。</span> — <span class="romaji">Koko ni namae o kaite kudasai.</span><br /><span class="tr">Escribí tu nombre aquí, por favor.</span></p>
                   </div>
                   <div class="block">
                     <h4>Notas culturales</h4>
-                    <p>
-                      <em>ください</em> suaviza la orden y la vuelve petición.
-                      Con profesores o en atención al público, es la forma
-                      estándar.
-                    </p>
-                    <h4 style="margin-top: 10px">Relacionadas</h4>
+                    <p><em>ください</em> suaviza la orden y la vuelve petición. Con profesores o en atención al público, es la forma estándar.</p>
+                    <h4 style="margin-top:10px">Relacionadas</h4>
                     <div class="related">
                       <span class="chip">〜てくれますか</span>
                       <span class="chip">〜てもらえますか</span>
@@ -411,6 +269,7 @@
                   </div>
                 </div>
               </article>
+
             </div>
           </div>
         </section>
@@ -440,5 +299,7 @@
     </div>
   </body>
 </html>
+
+
 
 
