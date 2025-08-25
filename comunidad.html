@@ -7,6 +7,10 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
+    /* Overrides: autores y aviso */
+.author{ color:#4c1d95 !important; }                 /* violeta oscuro para nombres */
+.compose .muted{ color:#4c1d95; font-weight:800; font-size:1.1rem; } /* aviso más grande y violeta */
+
     :root{
       --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
       --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
@@ -99,7 +103,7 @@
         <div class="glass">
           <!-- Publicación simulada -->
           <div class="compose">
-            <p class="muted">Publicar está deshabilitado en el prototipo.</p>
+    <p class="muted">¿Tenés dudas o sugerencias?</p>
             <input disabled placeholder="Comparte una frase o idea..." />
           </div>
 
@@ -151,5 +155,6 @@
     </div>
   </div>
 </div>
+
 
 
