@@ -7,6 +7,8 @@
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="stylesheet" href="styles.css" />
     <style>
+      html { scroll-behavior: smooth; }
+.entry[id] { scroll-margin-top: 90px; } /* ajustá 80–110px según la altura de tu nav */
       :root{
         --ink:#111827;--brand:#5b21b6;--muted:#6b7280;
         --grad1:#f0abfc;--grad2:#93c5fd;--grad3:#a7f3d0;
@@ -113,7 +115,7 @@ box-shadow:0 10px 24px rgba(0,0,0,.08)
               <h2 class="title" style="color:#c2410c">Expresiones clave</h2>
 
               <!-- 1) Itadakimasu -->
-              <article class="entry">
+<article id="itadakimasu" class="entry">
                 <div class="entry-header">
                   <div class="term">いただきます</div>
                   <div class="reading">(<em>itadakimasu</em>)</div>
@@ -141,7 +143,7 @@ box-shadow:0 10px 24px rgba(0,0,0,.08)
               </article>
 
               <!-- 2) Yoroshiku onegaishimasu -->
-              <article class="entry">
+<article id="yoroshiku-onegaishimasu" class="entry">
                 <div class="entry-header">
                   <div class="term">よろしくお願いします</div>
                   <div class="reading">(<em>yoroshiku onegaishimasu</em>)</div>
@@ -170,7 +172,7 @@ box-shadow:0 10px 24px rgba(0,0,0,.08)
               </article>
 
               <!-- (nuevo) おはようございます -->
-              <article class="entry">
+<article id="ohayou-gozaimasu" class="entry">
                 <div class="entry-header">
                   <div class="term">おはようございます</div>
                   <div class="reading">(<em>ohayō gozaimasu</em>)</div>
@@ -197,7 +199,7 @@ box-shadow:0 10px 24px rgba(0,0,0,.08)
               </article>
 
               <!-- 3) Senpai -->
-              <article class="entry">
+              <article id="senpai" class="entry">
                 <div class="entry-header">
                   <div class="term">先輩</div>
                   <div class="reading">(<em>senpai</em>)</div>
@@ -300,6 +302,7 @@ box-shadow:0 10px 24px rgba(0,0,0,.08)
     </div>
   </body>
 </html>
+
 
 
 
