@@ -1,30 +1,30 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Voces del Anime — Lengua</title>
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <link rel="stylesheet" href="styles.css" />
-    <style>
-      html { scroll-behavior: smooth; }
-.entry[id] { scroll-margin-top: 90px; } /* ajustá 80–110px según la altura de tu nav */
-      :root{
-        --ink:#111827;--brand:#5b21b6;--muted:#6b7280;
-        --grad1:#f0abfc;--grad2:#93c5fd;--grad3:#a7f3d0;
-        --page-max:1200px; /* igual de estrecho */
-      }
-      *{box-sizing:border-box}
-      html,body{margin:0}
-      body{
-        font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-        color:var(--ink);
-        background-attachment:fixed;
-      }
-      .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
-      a{color:#6d28d9;text-decoration:none}
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Voces del Anime — Cultura</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root{
+      --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
+      --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
+      --page-max:1200px; /* mismo ancho estrecho */
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      color:var(--ink);
+      background:linear-gradient(135deg,#fdf2f8,#eef2ff,#ecfdf5);
+      background-attachment:fixed;
+    }
+    .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
+    a{color:#6d28d9;text-decoration:none}
 
-       /* NAV (igual que el resto) */
+    /* NAV (coincide con el diseño estrecho) */
     .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.7);backdrop-filter:blur(6px);border-bottom:1px solid #e9d5ff}
     .nav-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
     .brand{font-weight:600;color:#6d28d9}
@@ -33,17 +33,13 @@
     .tab:hover,.tab:focus-visible{font-weight:600}
     .tab.active{font-weight:800;text-decoration:underline}
 
-/* HERO (tarjeta glass + borde degradado, sin destellos) */
-.hero,.hero-visual{padding:56px 0 64px;position:relative}
-.hero::before,.hero::after,.hero-visual::before,.hero-visual::after{content:none!important}
-.hero-frame{
-max-width:var(--page-max);margin:0 auto;border-radius:18px;padding:1px;
-background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));
-box-shadow:0 10px 24px rgba(0,0,0,.08)
-}
-.hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
-.hero h1{margin:0;color:var(--brand);font-size:clamp(26px,5vw,44px)}
-.lead{margin:6px auto 0;color:var(--muted);max-width:66ch;text-align:center
+    /* HERO (sin destellos; con tarjeta glass + borde degradado) */
+    .hero,.hero-visual{padding:56px 0 64px;position:relative}
+    .hero::before,.hero::after,.hero-visual::before,.hero-visual::after{content:none!important}
+    .hero-frame{max-width:var(--page-max);margin:0 auto;border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08)}
+    .hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
+    .hero h1{margin:0;color:var(--brand);font-size:clamp(26px,5vw,44px)}
+    .lead{margin:6px auto 0;color:var(--muted);max-width:66ch;text-align:center}
 
       /* BLOQUES */
       .section{padding:20px 0}
@@ -302,6 +298,7 @@ box-shadow:0 10px 24px rgba(0,0,0,.08)
     </div>
   </body>
 </html>
+
 
 
 
