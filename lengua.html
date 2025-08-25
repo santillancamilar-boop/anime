@@ -34,15 +34,11 @@
     .tab.active{font-weight:800;text-decoration:underline}
 
 /* HERO (tarjeta glass + borde degradado, sin destellos) */
-.hero,.hero-visual{
-  background:none !important;
-  box-shadow:none !important;
-.hero::before,.hero::after,
-.hero-visual::before,.hero-visual::after{
-  content:none !important;
+.hero,.hero-visual{padding:56px 0 64px;position:relative}
+.hero::before,.hero::after,.hero-visual::before,.hero-visual::after{content:none!important}
 .hero-frame{
 max-width:var(--page-max);margin:0 auto;border-radius:18px;padding:1px;
-background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));
+background:none;
 box-shadow:0 10px 24px rgba(0,0,0,.08)
 }
 .hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
@@ -306,6 +302,7 @@ box-shadow:0 10px 24px rgba(0,0,0,.08)
     </div>
   </body>
 </html>
+
 
 
 
