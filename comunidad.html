@@ -76,7 +76,6 @@
     .reply{border:1px solid #e9d5ff;background:#fff;border-radius:10px;padding:10px 12px;margin-top:8px}
     .reply-form{display:grid;gap:8px;margin-top:10px}
     .reply-form input,.reply-form textarea{border:1px solid #c7d2fe;border-radius:10px;padding:8px 10px;background:#fff;font:inherit}
-    .toggle-replies{margin-top:8px}
 
     /* FOOTER */
     .footer{margin-top:28px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,.65)}
@@ -166,6 +165,12 @@
       return n;
     };
     const nowISO = () => new Date().toISOString();
+    const uuid = () =>
+      (crypto && crypto.randomUUID) ? crypto.randomUUID()
+      : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c=>{
+          const r = Math.random()*16|0, v = c==='x'?r:(r&0x3|0x8);
+          return v.toString(16);
+        });
 
     // --- Storage ---
     const STORAGE_KEY = 'voces_posts_v1';
@@ -180,42 +185,41 @@
     if (posts.length === 0) {
       // Semillas (posts de ejemplo)
       posts = [
-        { id: crypto.randomUUID(), author:'Luna', content:'Mi frase favorita: 『よろしくお願いします』 — abre puertas con buena onda y respeto.', createdAt: nowISO(), replies:[] },
-        { id: crypto.randomUUID(), author:'Kai',  content:'Propongo un glosario colaborativo de 敬語 (keigo) con ejemplos de anime escolar.', createdAt: nowISO(), replies:[] },
-        { id: crypto.randomUUID(), author:'Haru', content:'¿Alguien recomienda animes con diálogos claros para principiantes?', createdAt: nowISO(), replies:[] },
-        { id: crypto.randomUUID(), author:'Mei',  content:'Podemos crear un banco de expresiones según situaciones (comer, saludar, disculparse).', createdAt: nowISO(), replies:[] },
+        { id: uuid(), author:'Luna', content:'Mi frase favorita: 『よろしくお願いします』 — abre puertas con buena onda y respeto.', createdAt: nowISO(), replies:[] },
+        { id: uuid(), author:'Kai',  content:'Propongo un glosario colaborativo de 敬語 (keigo) con ejemplos de anime escolar.', createdAt: nowISO(), replies:[] },
+        { id: uuid(), author:'Haru', content:'¿Alguien recomienda animes con diálogos claros para principiantes?', createdAt: nowISO(), replies:[] },
+        { id: uuid(), author:'Mei',  content:'Podemos crear un banco de expresiones según situaciones (comer, saludar, disculparse).', createdAt: nowISO(), replies:[] },
       ];
       savePosts(posts);
     }
 
-    // --- Render de un post (sin fechas visibles) ---
+    // --- Render de un post (sin fechas, form de respuesta siempre visible) ---
     function renderPostCard(post){
       const card = el('div','card');
       const inner = el('div','card-inner');
       card.appendChild(inner);
 
+      // Autor y contenido
       const author = el('div','author');
       author.textContent = post.author || 'Anónimo';
       inner.appendChild(author);
 
       const p = el('p');
-      p.textContent = post.content; // seguro (textContent evita HTML)
+      p.textContent = post.content; // textContent evita HTML
       inner.appendChild(p);
 
-      // Botón ver/ocultar respuestas
-      const btnToggle = el('button','btn ghost toggle-replies');
-      const replyCount = post.replies?.length || 0;
-      btnToggle.type = 'button';
-      btnToggle.textContent = replyCount > 0 ? `Ver respuestas (${replyCount})` : 'Sin respuestas';
-      btnToggle.disabled = replyCount === 0;
-      inner.appendChild(btnToggle);
-
-      // Contenedor de respuestas
+      // Contenedor de respuestas (siempre visible)
       const repliesWrap = el('div','replies');
-      repliesWrap.style.display = 'none';
+      repliesWrap.style.display = 'block';
       inner.appendChild(repliesWrap);
 
-      // Respuestas existentes (sin fecha)
+      // Contador
+      const h = el('div','meta');
+      const count = (post.replies?.length || 0);
+      h.textContent = count === 1 ? '1 respuesta' : `${count} respuestas`;
+      repliesWrap.appendChild(h);
+
+      // Listado de respuestas existentes
       (post.replies || []).forEach(r => {
         const rEl = el('div','reply');
         const rHead = el('div','author');
@@ -226,46 +230,46 @@
         repliesWrap.appendChild(rEl);
       });
 
-      // Form para responder
+      // Form para nueva respuesta
       const form = el('form','reply-form');
       form.setAttribute('aria-label','Responder a la publicación');
+
       const inName = el('input');
       inName.placeholder = 'Tu nombre (opcional)';
       inName.name = 'replyAuthor';
+
       const inText = el('textarea');
       inText.placeholder = 'Escribe tu respuesta...';
       inText.name = 'replyContent';
+
       const row = el('div');
       row.style.display = 'flex';
       row.style.gap = '8px';
+
       const btnSend = el('button','btn');
       btnSend.type = 'submit';
       btnSend.textContent = 'Responder';
+
       row.appendChild(btnSend);
       form.append(inName, inText, row);
       repliesWrap.appendChild(form);
 
-      // Eventos
-      btnToggle.addEventListener('click', ()=>{
-        const open = repliesWrap.style.display !== 'none';
-        repliesWrap.style.display = open ? 'none' : 'block';
-        btnToggle.textContent = open ? 'Ocultar respuestas' : (replyCount > 0 ? `Ver respuestas (${post.replies.length})` : 'Sin respuestas');
-      });
-
+      // Evento de envío
       form.addEventListener('submit', (e)=>{
         e.preventDefault();
         const author = inName.value.trim() || 'Anónimo';
         const content = inText.value.trim();
         if (!content) { inText.focus(); return; }
-        const reply = { id: crypto.randomUUID(), author, content, createdAt: nowISO() };
-        // Actualiza memoria
+
+        const reply = { id: uuid(), author, content, createdAt: nowISO() };
+
+        // Guardar en memoria/localStorage
         const idx = posts.findIndex(x=>x.id===post.id);
         if (idx !== -1){
           posts[idx].replies = posts[idx].replies || [];
           posts[idx].replies.push(reply);
           savePosts(posts);
-          // Re-render general para actualizar contadores/toggles
-          renderAll();
+          renderAll(); // actualiza contador y lista
         }
       });
 
@@ -276,7 +280,7 @@
     const postsGrid = $('#postsGrid');
     function renderAll(){
       postsGrid.innerHTML = '';
-      // Orden: más recientes primero (aunque no se muestra la fecha)
+      // Orden: más recientes primero (no se muestra fecha, pero sirve para ordenar)
       const ordered = [...posts].sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
       ordered.forEach(post => postsGrid.appendChild(renderPostCard(post)));
     }
@@ -293,7 +297,7 @@
         contentInput.focus();
         return;
       }
-      const post = { id: crypto.randomUUID(), author, content, createdAt: nowISO(), replies:[] };
+      const post = { id: uuid(), author, content, createdAt: nowISO(), replies:[] };
       posts.push(post);
       savePosts(posts);
       authorInput.value = '';
