@@ -166,7 +166,6 @@
       return n;
     };
     const nowISO = () => new Date().toISOString();
-    const fmtDate = iso => new Date(iso).toLocaleString();
 
     // --- Storage ---
     const STORAGE_KEY = 'voces_posts_v1';
@@ -179,7 +178,7 @@
     // Datos
     let posts = loadPosts();
     if (posts.length === 0) {
-      // Semillas (tus posts de ejemplo)
+      // Semillas (posts de ejemplo)
       posts = [
         { id: crypto.randomUUID(), author:'Luna', content:'Mi frase favorita: 『よろしくお願いします』 — abre puertas con buena onda y respeto.', createdAt: nowISO(), replies:[] },
         { id: crypto.randomUUID(), author:'Kai',  content:'Propongo un glosario colaborativo de 敬語 (keigo) con ejemplos de anime escolar.', createdAt: nowISO(), replies:[] },
@@ -189,7 +188,7 @@
       savePosts(posts);
     }
 
-    // --- Render de un post ---
+    // --- Render de un post (sin fechas visibles) ---
     function renderPostCard(post){
       const card = el('div','card');
       const inner = el('div','card-inner');
@@ -200,12 +199,8 @@
       inner.appendChild(author);
 
       const p = el('p');
-      p.textContent = post.content; // seguro
+      p.textContent = post.content; // seguro (textContent evita HTML)
       inner.appendChild(p);
-
-      const meta = el('div','meta');
-      meta.textContent = 'Publicado: ' + fmtDate(post.createdAt);
-      inner.appendChild(meta);
 
       // Botón ver/ocultar respuestas
       const btnToggle = el('button','btn ghost toggle-replies');
@@ -220,11 +215,11 @@
       repliesWrap.style.display = 'none';
       inner.appendChild(repliesWrap);
 
-      // Respuestas existentes
+      // Respuestas existentes (sin fecha)
       (post.replies || []).forEach(r => {
         const rEl = el('div','reply');
         const rHead = el('div','author');
-        rHead.textContent = (r.author || 'Anónimo') + ' — ' + fmtDate(r.createdAt);
+        rHead.textContent = r.author || 'Anónimo';
         const rBody = el('div');
         rBody.textContent = r.content;
         rEl.append(rHead, rBody);
@@ -254,7 +249,7 @@
       btnToggle.addEventListener('click', ()=>{
         const open = repliesWrap.style.display !== 'none';
         repliesWrap.style.display = open ? 'none' : 'block';
-        btnToggle.textContent = open ? (replyCount > 0 ? `Ver respuestas (${post.replies.length})` : 'Sin respuestas') : 'Ocultar respuestas';
+        btnToggle.textContent = open ? 'Ocultar respuestas' : (replyCount > 0 ? `Ver respuestas (${post.replies.length})` : 'Sin respuestas');
       });
 
       form.addEventListener('submit', (e)=>{
@@ -269,7 +264,7 @@
           posts[idx].replies = posts[idx].replies || [];
           posts[idx].replies.push(reply);
           savePosts(posts);
-          // Re-render solo este card: más fácil re-render general
+          // Re-render general para actualizar contadores/toggles
           renderAll();
         }
       });
@@ -281,7 +276,7 @@
     const postsGrid = $('#postsGrid');
     function renderAll(){
       postsGrid.innerHTML = '';
-      // Orden: más recientes primero
+      // Orden: más recientes primero (aunque no se muestra la fecha)
       const ordered = [...posts].sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
       ordered.forEach(post => postsGrid.appendChild(renderPostCard(post)));
     }
@@ -294,7 +289,7 @@
       const author = authorInput.value.trim() || 'Anónimo';
       const content = contentInput.value.trim();
       if (!content){
-        composeMsg.textContent = 'Escribe algo para publicar.';
+        composeMsg.textContent = 'Escribí algo para publicar.';
         contentInput.focus();
         return;
       }
@@ -305,7 +300,7 @@
       contentInput.value = '';
       composeMsg.textContent = '¡Publicado!';
       renderAll();
-      setTimeout(()=> composeMsg.textContent = '', 2000);
+      setTimeout(()=> composeMsg.textContent = '', 1500);
     });
 
     // Inicial
@@ -313,6 +308,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
