@@ -16,6 +16,17 @@
 }
 .btn-link:hover{ background:#f3e8ff }
 
+    /* Furigana */
+ruby{ ruby-position: over; }   /* que vaya arriba */
+rb{ line-height: 1; }
+rt{
+  font-size: .7em;             /* más chiquito */
+  color: #9ca3af;              /* gris claro */
+  line-height: 1;
+  letter-spacing: .02em;
+}
+.term rt{ display:block; text-align:center; } /* centrado bajo el término */
+
     :root{
       --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
       --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
@@ -130,7 +141,7 @@
             </article>
 
             <!-- Player 2 -->
-            <article class="player">
+           <article class="player">
               <div class="screen ratio-16x9" data-player>
                 <video preload="metadata" playsinline webkit-playsinline>
                   <source src="yoroshiku onegaishimasu.mp4" type="video/mp4">
@@ -138,7 +149,7 @@
                 <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
                 <div class="progress"></div>
               </div>
-              <p class="caption">『よろしくお願いします』(Yoroshiku onegaishimasu) — “Encantado / Espero que nos llevemos bien.”</p>
+              <p class="caption">『よろしく<ruby><rb>お願い</rb><rt>おねがい</rt></ruby>します』(Yoroshiku onegaishimasu) — “Encantado / Espero que nos llevemos bien.”</p>
             </article>
 
             <!-- Player 3 -->
@@ -158,36 +169,30 @@
     </section>
 
     <!-- EXPLICACIÓN -->
-<section class="section">
-  <div class="frame">
-    <div class="glass">
-      <h2 class="title">Explicación breve de las escenas</h2>
-      <div class="grid-3">
-        <div class="card"><div class="card-inner">
-          <div class="title" style="color:#c2410c">① いただきます</div>
-          <p>Se usa antes de comer para expresar gratitud por la comida y el esfuerzo de quienes la hicieron posible.</p>
-          <p class="muted">Contexto: comedores escolares, cenas en familia, almuerzos en clubes.</p>
-          <a class="btn-link" href="lengua.html#itadakimasu" aria-label="Ir a la explicación completa de いただきます">Expandir→</a>
-        </div></div>
-
-        <div class="card"><div class="card-inner">
-          <div class="title" style="color:#1f7a43">② よろしくお願いします</div>
-          <p>Fórmula de cortesía para iniciar una relación o pedir colaboración con respeto.</p>
-          <p class="muted">Contexto: presentaciones en clase, entrada a un club, comienzo de proyectos.</p>
-          <a class="btn-link" href="lengua.html#yoroshiku-onegaishimasu" aria-label="Ir a la explicación completa de よろしくお願いします">Expandir→</a>
-        </div></div>
-
-        <div class="card"><div class="card-inner">
-          <div class="title" style="color:#4f46e5">③ おはようございます先輩</div>
-          <p>Un saludo formal de buenos días dirigido a un senpai, mostrando cortesía y reconocimiento hacia su rol de mayor experiencia.</p>
-          <p class="muted">Contexto: clubes escolares, equipos deportivos, ámbitos laborales y escolares.</p>
-          <a class="btn-link" href="lengua.html#ohayou-gozaimasu" aria-label="Ir a la explicación completa de おはようございます">Expandir→</a>
-        </div></div>
+   <section class="section">
+      <div class="frame">
+        <div class="glass">
+          <h2 class="title">Explicación breve de las escenas</h2>
+          <div class="grid-3">
+            <div class="card"><div class="card-inner">
+              <div class="title" style="color:#c2410c">① いただきます</div>
+              <p>Se usa antes de comer para expresar gratitud por la comida y el esfuerzo de quienes la hicieron posible.</p>
+              <p class="muted">Contexto: comedores escolares, cenas en familia, almuerzos en clubes.</p>
+            </div></div>
+            <div class="card"><div class="card-inner">
+              <div class="title" style="color:#1f7a43">② よろしく<ruby><rb>お願い</rb><rt>おねがい</rt></ruby>します</div>
+              <p>Fórmula de cortesía para iniciar una relación o pedir colaboración con respeto.</p>
+              <p class="muted">Contexto: presentaciones en clase, entrada a un club, comienzo de proyectos.</p>
+            </div></div>
+            <div class="card"><div class="card-inner">
+              <div class="title" style="color:#4f46e5">③ おはようございます<ruby><rb>先輩</rb><rt>せんぱい</rt></ruby></div>
+              <p>Un saludo formal de buenos días dirigido a un senpai, mostrando cortesía y reconocimiento hacia su rol de mayor experiencia.</p>
+              <p class="muted">Contexto: clubes escolares, equipos deportivos, ámbitos laborales y escolares.</p>
+            </div></div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
-
+    </section>
   </main>
 
   <!-- FOOTER -->
