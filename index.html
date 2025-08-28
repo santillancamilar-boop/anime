@@ -3,26 +3,31 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Voces del Anime — Lengua</title>
+  <title>Voces del Anime — Inicio</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* Botón para ir al glosario */
-.btn-link{
-  display:inline-block; margin-top:8px; padding:8px 12px;
-  border-radius:999px; border:1px solid #e9d5ff;
-  background:#faf5ff; color:#5b21b6; font-weight:700;
-  font-size:.9rem; text-decoration:none;
-}
-.btn-link:hover{ background:#f3e8ff }
-    /* Furigana */ ruby{ ruby-position: over; } /* que vaya arriba */ rb{ line-height: 1; } rt{ font-size: .7em; /* más chiquito */ color: #9ca3af; /* gris claro */ line-height: 1; letter-spacing: .02em; } .term rt{ display:block; text-align:center; } /* centrado bajo el término */
-}
-.term rt{ display:block; text-align:center; } /* centrado bajo el término */
+    .btn-link{
+      display:inline-block; margin-top:8px; padding:8px 12px;
+      border-radius:999px; border:1px solid #e9d5ff;
+      background:#faf5ff; color:#5b21b6; font-weight:700;
+      font-size:.9rem; text-decoration:none;
+    }
+    .btn-link:hover{ background:#f3e8ff }
+
+    /* Furigana */
+    ruby{ ruby-position: over; }   /* arriba del kanji */
+    rb{ line-height: 1; }
+    rt{
+      font-size:.7em; color:#9ca3af; line-height:1; letter-spacing:.02em;
+    }
+    .term rt{ display:block; text-align:center; }
 
     :root{
       --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
       --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
-      --page-max:1200px; /* ← más estrecho */
+      --page-max:1200px;
     }
     *{box-sizing:border-box}
     html,body{margin:0}
@@ -31,6 +36,7 @@
       color:var(--ink);
       background:linear-gradient(135deg,#fdf2f8,#eef2ff,#ecfdf5);
       background-attachment:fixed;
+      letter-spacing:.01em; /* leve mejora de legibilidad */
     }
     .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
     a{color:#6d28d9;text-decoration:none}
@@ -49,54 +55,88 @@
       display:flex;justify-content:center;align-items:center;
       padding:0; background:transparent !important; box-shadow:none;
     }
-    .hero-logo img{max-width:600px;height:auto;display:block}
+    .hero-logo img{
+      max-width:600px;height:auto;display:block;
+      filter: drop-shadow(0 8px 22px rgba(124,58,237,.25));
+    }
+    .lead{
+      margin-top:10px; color:#6b7280; text-align:center;
+      font-weight:600;
+      background:linear-gradient(90deg,#7c3aed,#60a5fa);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
 
     /* BLOQUES */
-    .section{padding:16px 0}
+    .section{padding:24px 0}
     .frame{
       border-radius:18px;padding:1px;
       background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));
       box-shadow:0 10px 24px rgba(0,0,0,0.08);
-      max-width:var(--page-max); margin-inline:auto; /* ← alinea con el contenedor */
+      max-width:var(--page-max); margin-inline:auto;
     }
     .glass{border-radius:18px;background:rgba(255,255,255,0.65);backdrop-filter:blur(10px);padding:18px}
     @media (min-width:720px){.glass{padding:22px}}
-    .title{font-weight:800;color:#4c1d95;margin:0 0 10px;font-size:clamp(18px,2.2vw,22px)}
-
-    /* TARJETAS / PLAYER */
-    .grid{display:grid;gap:16px}
-    .grid-3{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-    .card{background:rgba(255,255,255,0.92);border:1px solid #e9d5ff;border-radius:12px}
-    .card-inner{padding:12px 14px}
+    .title{
+      font-weight:800;color:#4c1d95;margin:0 0 10px;
+      font-size:clamp(18px,2.2vw,22px);
+      position:relative; padding-bottom:4px;
+    }
+    .title::after{
+      content:""; position:absolute; left:0; bottom:-2px; height:3px; width:64px;
+      border-radius:999px;
+      background:linear-gradient(90deg,#a78bfa,#93c5fd,#86efac);
+      opacity:.9;
+    }
     .muted{color:#6b7280}
-    .player{border:1px solid #e9d5ff;border-radius:12px;background:rgba(255,255,255,0.95);padding:10px 12px}
-    .caption{font-size:.95rem;text-align:center}
 
-    /* Player Fix */
-    .screen.ratio-16x9{position:relative;aspect-ratio:16/9;height:auto;border-radius:14px;overflow:hidden;background:#000}
+    /* TARJETAS / GRID / PLAYER */
+    .grid{display:grid;gap:16px}
+    .grid-3{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .card{
+      background:rgba(255,255,255,0.92);
+      border:1px solid #e9d5ff;border-radius:12px;
+      box-shadow:0 6px 18px rgba(0,0,0,.06);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      box-shadow:0 12px 28px rgba(0,0,0,.10);
+      border-color:#ddd6fe;
+    }
+    .card-inner{padding:12px 14px}
+    .card-inner p { line-height: 1.65; margin-bottom: .8em; }
+    .card-inner p:last-child { margin-bottom: 0; }
+
+    .player{border:1px solid #e9d5ff;border-radius:12px;background:rgba(255,255,255,0.95);padding:12px 14px}
+    .caption{font-size:.95rem;text-align:center;line-height:1.5;color:#4b5563}
+
+    /* Player */
+    .screen.ratio-16x9{position:relative;aspect-ratio:16/9;height:auto;border-radius:16px;overflow:hidden;background:#000; box-shadow:0 10px 24px rgba(0,0,0,.18);}
     .ratio-16x9{padding-top:0 !important}
     .screen.ratio-16x9>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-    .screen.ratio-16x9>.progress{position:absolute;left:0;right:0;bottom:0;height:4px;background:#5b21b6;width:0%;opacity:.95;z-index:2}
-    .btn-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.45);border:0;border-radius:999px;width:64px;height:64px;display:grid;place-items:center;color:#fff;cursor:pointer;z-index:3}
-    .btn-play:hover{background:rgba(0,0,0,.65)}
+    .screen.ratio-16x9>.progress{
+      position:absolute;left:0;right:0;bottom:0;height:6px;border-radius:999px;
+      background:linear-gradient(90deg,#7c3aed,#60a5fa,#34d399);width:0%;opacity:.95;z-index:2}
+    .btn-play{
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.65);
+      border-radius:999px;width:70px;height:70px;display:grid;place-items:center;color:#fff;cursor:pointer;z-index:3;font-size:22px;
+      box-shadow:0 8px 18px rgba(0,0,0,.25); animation: pulse 1.6s ease-in-out infinite;
+    }
+    .btn-play:hover{background:rgba(0,0,0,.65); transform:translate(-50%,-50%) scale(1.04);}
+    @keyframes pulse{
+      0%,100%{ box-shadow:0 8px 18px rgba(124,58,237,.0); }
+      50%{ box-shadow:0 8px 28px rgba(124,58,237,.35); }
+    }
 
     /* FOOTER */
-    .footer{margin-top:28px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,0.65)}
+    .footer{margin-top:36px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,0.65)}
     .footer-inner{
-      display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      padding:20px 0;color:#374151;max-width:var(--page-max);margin-inline:auto; /* ← alinea */
+      display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      padding:20px 0;color:#374151;max-width:var(--page-max);margin-inline:auto;
     }
     .footer .title{font-weight:800;color:#5b21b6;margin-bottom:6px}
     ul{margin:0;padding-left:18px}
-    /* Mejor legibilidad en las tarjetas de ejemplos */
-.card-inner p {
-  line-height: 1.6;      /* más espacio entre líneas */
-  margin-bottom: 0.75em; /* espacio entre párrafos */
-}
-.card-inner p:last-child {
-  margin-bottom: 0;      /* evita espacio extra al final */
-}
-
   </style>
 </head>
 <body>
@@ -119,7 +159,7 @@
     <section class="hero">
       <div class="hero-logo">
         <img src="https://i.postimg.cc/LXJ6Nj15/logo-voces.png" alt="Voces del Anime" />
-        <h2 class="lead" style="color:#7c3aed">Explorá el japonés desde sus voces: significado, registro y uso.</h2>
+        <h2 class="lead">Explorá el japonés desde sus voces: significado, registro y uso.</h2>
       </div>
     </section>
 
@@ -127,7 +167,7 @@
     <section class="section">
       <div class="frame">
         <div class="glass">
-          <h2 class="title" style="title">Fragmentos seleccionados</h2>
+          <h2 class="title" style="color:#7c3aed">Fragmentos seleccionados</h2>
           <div class="grid-3">
             <!-- Player 1 -->
             <article class="player">
@@ -142,7 +182,7 @@
             </article>
 
             <!-- Player 2 -->
-           <article class="player">
+            <article class="player">
               <div class="screen ratio-16x9" data-player>
                 <video preload="metadata" playsinline webkit-playsinline>
                   <source src="yoroshiku onegaishimasu.mp4" type="video/mp4">
@@ -150,11 +190,11 @@
                 <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
                 <div class="progress"></div>
               </div>
-              <p class="caption">『よろしく<ruby><rb>お願い</rb></ruby>します』(Yoroshiku onegaishimasu) — “Encantado / Espero que nos llevemos bien.”</p>
+              <p class="caption">『よろしく<ruby><rb>お願い</rb><rt>ねが</rt></ruby>します』(Yoroshiku onegaishimasu) — “Encantado / Espero que nos llevemos bien.”</p>
             </article>
 
             <!-- Player 3 -->
-        <article class="player">
+            <article class="player">
               <div class="screen ratio-16x9" data-player>
                 <video preload="metadata" playsinline webkit-playsinline>
                   <source src="ohayou gozaimasu senpai.mp4" type="video/mp4">
@@ -162,14 +202,15 @@
                 <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
                 <div class="progress"></div>
               </div>
-              <p class="caption">『おはようございます<ruby><rb>先輩</rb></ruby>』 (Ohayou gozaimasu, Senpai) — "Saludando a alguien con más experiencia"</p>
+              <p class="caption">『おはようございます<ruby><rb>先輩</rb><rt>せんぱい</rt></ruby>』 (Ohayō gozaimasu, Senpai) — “Saludando a alguien con más experiencia”.</p>
             </article>
           </div>
         </div>
       </div>
     </section>
+
     <!-- EXPLICACIÓN -->
-   <section class="section">
+    <section class="section">
       <div class="frame">
         <div class="glass">
           <h2 class="title">Explicación breve de las escenas</h2>
@@ -180,12 +221,12 @@
               <p class="muted">Contexto: comedores escolares, cenas en familia, almuerzos en clubes.</p>
             </div></div>
             <div class="card"><div class="card-inner">
-              <div class="title" style="color:#1f7a43">② よろしく<ruby><rb>お願い</rb></ruby>します</div>
+              <div class="title" style="color:#4f46e5">② よろしく<ruby><rb>お願い</rb><rt>ねが</rt></ruby>します</div>
               <p>Fórmula de cortesía para iniciar una relación o pedir colaboración con respeto.</p>
               <p class="muted">Contexto: presentaciones en clase, entrada a un club, comienzo de proyectos.</p>
             </div></div>
             <div class="card"><div class="card-inner">
-              <div class="title" style="color:#4f46e5">③ おはようございます<ruby><rb>先輩</rb></ruby></div>
+              <div class="title" style="color:#1f7a43">③ おはようございます<ruby><rb>先輩</rb><rt>せんぱい</rt></ruby></div>
               <p>Un saludo formal de buenos días dirigido a un senpai, mostrando cortesía y reconocimiento hacia su rol de mayor experiencia.</p>
               <p class="muted">Contexto: clubes escolares, equipos deportivos, ámbitos laborales y escolares.</p>
             </div></div>
@@ -193,14 +234,12 @@
         </div>
       </div>
     </section>
-  </main>
 
-
-      <!-- SIGNIFICADOS + REGISTRO + EJEMPLOS -->
+    <!-- SIGNIFICADOS + REGISTRO + EJEMPLOS -->
     <section class="section">
       <div class="frame">
         <div class="glass">
-          <h2 class="title" style="title">Significados, registro y ejemplos</h2>
+          <h2 class="title" style="color:#7c3aed">Significados, registro y ejemplos</h2>
           <div class="grid-3">
             <!-- ① いただきます -->
             <article class="card"><div class="card-inner">
@@ -210,11 +249,11 @@
                 Se utiliza antes de comer para expresar gratitud por la comida, la naturaleza y el trabajo de quienes la prepararon. Registro cortés pero cotidiano.
               </p>
               <p><strong>Ejemplos</strong><br/>
-               - いただきます！ — <em>Itadakimasu!</em><br/>
+                いただきます！ — <em>Itadakimasu!</em><br/>
                 <span class="muted">¡A comer! / ¡Buen provecho!</span><br/><br/>
-               - みんなでいただきますと言いましょう。 — <em>Minna de itadakimasu to iimashō.</em><br/>
+                みんなでいただきますと言いましょう。 — <em>Minna de itadakimasu to iimashō.</em><br/>
                 <span class="muted">Digamos “itadakimasu” entre todos.</span><br/><br/>
-               - 手作りのご飯、いただきます。 — <em>Tezukuri no gohan, itadakimasu.</em><br/>
+                手作りのご飯、いただきます。 — <em>Tezukuri no gohan, itadakimasu.</em><br/>
                 <span class="muted">Comida casera… ¡itadakimasu!</span>
               </p>
               <p><strong>Notas culturales</strong><br/>
@@ -227,17 +266,17 @@
 
             <!-- ② よろしくお願いします -->
             <article class="card"><div class="card-inner">
-              <div class="title" style="color:#4f46e5">② よろしく<ruby><rb>お願い</rb></ruby>します <span class="muted">(yoroshiku onegaishimasu)</span></div>
+              <div class="title" style="color:#4f46e5">② よろしく<ruby><rb>お願い</rb><rt>ねが</rt></ruby>します <span class="muted">(yoroshiku onegaishimasu)</span></div>
               <p><strong>Fórmula relacional</strong></p>
               <p><strong>Significado y registro</strong><br/>
                 Fórmula de cortesía para iniciar vínculos o pedir colaboración futura con respeto. Registro: cortés/neutral.
               </p>
               <p><strong>Ejemplos</strong><br/>
-              - はじめまして。田中です。よろしくお願いします。 — <em>Hajimemashite. Tanaka desu. Yoroshiku onegaishimasu.</em><br/>
+                はじめまして。田中です。よろしくお願いします。 — <em>Hajimemashite. Tanaka desu. Yoroshiku onegaishimasu.</em><br/>
                 <span class="muted">Mucho gusto. Soy Tanaka. Encantado.</span><br/><br/>
-              - 明日の発表、よろしくお願いします。 — <em>Ashita no happyō, yoroshiku onegaishimasu.</em><br/>
+                明日の発表、よろしくお願いします。 — <em>Ashita no happyō, yoroshiku onegaishimasu.</em><br/>
                 <span class="muted">Cuento con ustedes para la presentación de mañana.</span><br/><br/>
-              - 来週から入部します。よろしくお願いします！ — <em>Raishū kara nyūbu shimasu. Yoroshiku onegaishimasu!</em><br/>
+                来週から入部します。よろしくお願いします！ — <em>Raishū kara nyūbu shimasu. Yoroshiku onegaishimasu!</em><br/>
                 <span class="muted">Me sumo al club desde la semana que viene. ¡Un gusto trabajar con ustedes!</span>
               </p>
               <p><strong>Notas culturales</strong><br/>
@@ -250,17 +289,17 @@
 
             <!-- ③ おはようございます + 先輩 -->
             <article class="card"><div class="card-inner">
-              <div class="title" style="color:#1f7a43">③ おはようございます, 先輩 <span class="muted">(Ohayou gozaimasu, senpai)</span></div>
+              <div class="title" style="color:#1f7a43">③ おはようございます ／ 先輩 <span class="muted">(ohayō gozaimasu / senpai)</span></div>
               <p><strong>Saludo matinal / Tratamiento social</strong></p>
               <p><strong>Significado y registro</strong><br/>
                 “Buenos días”. Con <em>gozaimasu</em> es cortés; entre amigos/familia se usa おはよう (informal).<br/>
                 <em>Senpai</em>: persona con mayor antigüedad/experiencia en un grupo; se usa como título respetuoso.
               </p>
               <p><strong>Ejemplos</strong><br/>
-               - おはようございます！ — <em>Ohayō gozaimasu!</em> <span class="muted">¡Buenos días!</span><br/><br/>
-               - みなさん、おはよう。 — <em>Minasan, ohayō.</em> <span class="muted">Buenos días, a todos.</span><br/><br/>
-               - 朝練、おはようございます。 — <em>Asaren, ohayō gozaimasu.</em> <span class="muted">Buenos días (al iniciar la práctica).</span><br/><br/>
-               - 先輩、今日の練習は何時からですか。 — <em>Senpai, kyō no renshū wa nanji kara desu ka.</em><br/>
+                おはようございます！ — <em>Ohayō gozaimasu!</em> <span class="muted">¡Buenos días!</span><br/><br/>
+                みなさん、おはよう。 — <em>Minasan, ohayō.</em> <span class="muted">Buenos días, a todos.</span><br/><br/>
+                朝練、おはようございます。 — <em>Asaren, ohayō gozaimasu.</em> <span class="muted">Buenos días (al iniciar la práctica).</span><br/><br/>
+                先輩、今日の練習は何時からですか。 — <em>Senpai, kyō no renshū wa nanji kara desu ka.</em><br/>
                 <span class="muted">¿A qué hora es la práctica de hoy?</span>
               </p>
               <p><strong>Notas culturales</strong><br/>
@@ -268,14 +307,14 @@
                 La relación <em>senpai–kōhai</em> implica mentoría y responsabilidad.
               </p>
               <p><strong>Relacionadas</strong><br/>
-                こんにちは ／ こんばんは ／ 後輩（こうはい） ／ 敬語
+                こんにちは ／ こんばんは ／ 後輩（こうはい） ／ 敬語 (けいご)
               </p>
             </div></article>
           </div>
         </div>
       </div>
     </section>
-
+  </main>
 
   <!-- FOOTER -->
   <div class="footer">
@@ -300,14 +339,19 @@
   </div>
 
   <script>
+    // Reproductores simples
     document.querySelectorAll("[data-player]").forEach((el) => {
       const btn = el.querySelector(".btn-play");
       const video = el.querySelector("video");
       const progress = el.querySelector(".progress");
-      btn.addEventListener("click", () => {
+
+      const toggle = () => {
         if(video.paused){ video.play(); btn.textContent="⏸"; }
         else{ video.pause(); btn.textContent="▶"; }
-      });
+      };
+
+      btn.addEventListener("click", toggle);
+      el.addEventListener("keydown", (e)=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggle(); }});
       video.addEventListener("timeupdate", ()=>{
         progress.style.width = ((video.currentTime / (video.duration||1))*100) + "%";
       });
@@ -316,3 +360,4 @@
   </script>
 </body>
 </html>
+
