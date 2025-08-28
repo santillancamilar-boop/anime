@@ -14,22 +14,20 @@
       --page-max:1200px;
       --vio:#7c3aed;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
+     *{box-sizing:border-box}
+    html,body{margin:0}
     body{
-      display:flex; flex-direction:column; min-height:100vh;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       color:var(--ink);
       background:linear-gradient(135deg,#fdf2f8,#eef2ff,#ecfdf5);
       background-attachment:fixed;
     }
-    main{flex:1}
-    .container{max-width:var(--page-max);margin:0 auto;padding:10px}
+    .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
     a{color:#6d28d9;text-decoration:none}
 
     /* NAV */
     .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.7);backdrop-filter:blur(6px);border-bottom:1px solid #e9d5ff}
-    .nav-inner{display:flex;align-items:center;gap:12px;padding:5px 0}
+    .nav-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
     .brand{font-weight:600;color:#6d28d9}
     .tabs{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
     .tab{font-weight:500}
@@ -422,5 +420,6 @@
   </script>
 </body>
 </html>
+
 
 
