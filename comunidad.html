@@ -7,29 +7,29 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Overrides: autores y aviso */
-    .author{ color:#4c1d95 !important; }
-    .compose .muted{ color:#4c1d95; font-weight:800; font-size:1.1rem; }
-
+  .compose .muted{ color:#4c1d95; font-weight:800; font-size:1.1rem; }
     :root{
       --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
       --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
       --page-max:1200px;
+      --vio:#7c3aed;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
     body{
+      display:flex; flex-direction:column; min-height:100vh;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       color:var(--ink);
       background:linear-gradient(135deg,#fdf2f8,#eef2ff,#ecfdf5);
       background-attachment:fixed;
     }
-    .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
+    main{flex:1}
+    .container{max-width:var(--page-max);margin:0 auto;padding:10px}
     a{color:#6d28d9;text-decoration:none}
 
     /* NAV */
     .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.7);backdrop-filter:blur(6px);border-bottom:1px solid #e9d5ff}
-    .nav-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
+    .nav-inner{display:flex;align-items:center;gap:12px;padding:5px 0}
     .brand{font-weight:600;color:#6d28d9}
     .tabs{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
     .tab{font-weight:500}
@@ -37,15 +37,14 @@
     .tab.active{font-weight:800;text-decoration:underline}
 
     /* HERO */
-    .hero,.hero-visual{padding:56px 0 64px;position:relative}
-    .hero::before,.hero::after,.hero-visual::before,.hero-visual::after{content:none!important}
+    .hero{padding:56px 0 64px}
     .hero-frame{max-width:var(--page-max);margin:0 auto;border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08)}
     .hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
     .hero h1{margin:0;color:var(--brand);font-size:clamp(26px,5vw,44px)}
     .lead{margin:6px auto 0;color:var(--muted);max-width:66ch;text-align:center}
 
     /* BLOQUES */
-    .section{padding:20px 0}
+    .section{padding:1px 0}
     .frame{border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08);max-width:var(--page-max);margin-inline:auto}
     .glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);padding:22px}
     @media(min-width:720px){.glass{padding:28px}}
@@ -60,16 +59,21 @@
     /* Publicar */
     .compose{background:rgba(255,255,255,.92);border:1px solid #e9d5ff;border-radius:12px;padding:14px 16px;margin-bottom:12px}
     .compose .row{display:grid;gap:10px;grid-template-columns:1fr}
-    @media(min-width:640px){ .compose .row{grid-template-columns:180px 1fr 120px} }
+    @media(min-width:680px){ .compose .row{grid-template-columns:180px 1fr 120px} }
     .compose input,.compose textarea{
-      width:100%;border:1px solid #c7d2fe;border-radius:10px;padding:10px 12px;background:#fff;font:inherit
+      width:100%;border:1px solid #c7d2fe;border-radius:10px;padding:14px 16px;background:#fff;font:inherit
     }
     .compose textarea{min-height:70px;resize:vertical}
     .btn{
-      border:1px solid #7c3aed;background:#7c3aed;color:#fff;border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer
+      border:1px solid var(--vio);background:var(--vio);color:#fff;border-radius:10px;padding:10px 12px;font-weight:700;cursor:pointer
     }
-    .btn.ghost{background:#fff;color:#7c3aed}
+    .btn.ghost{background:#fff;color:var(--vio)}
+    .btn.small{padding:6px 10px;font-size:.9rem;border-radius:8px}
     .meta{font-size:.85rem;color:#6b7280;margin-top:6px}
+
+    /* Acciones */
+    .actions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+    .sep{flex:1}
 
     /* Respuestas */
     .replies{margin-top:10px;border-top:1px dashed #e9d5ff;padding-top:8px}
@@ -77,11 +81,16 @@
     .reply-form{display:grid;gap:8px;margin-top:10px}
     .reply-form input,.reply-form textarea{border:1px solid #c7d2fe;border-radius:10px;padding:8px 10px;background:#fff;font:inherit}
 
-    /* FOOTER */
-    .footer{margin-top:28px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,.65)}
-    .footer-inner{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:20px 0;color:#374151;max-width:var(--page-max);margin-inline:auto}
-    .footer .title{font-weight:800;color:#5b21b6;margin-bottom:6px}
-    ul{margin:0;padding-left:18px}
+    /* Buscador */
+    .searchbar{display:grid;gap:10px;grid-template-columns:1fr 120px;margin-bottom:12px}
+    .searchbar input{border:1px solid #c7d2fe;border-radius:10px;padding:10px 12px;background:#fff;font:inherit}
+
+    /* Edición */
+    .edit-area{display:grid;gap:8px;margin-top:10px}
+    .edit-area textarea{border:1px solid #c7d2fe;border-radius:10px;padding:10px 12px;background:#fff;font:inherit;min-height:70px}
+
+    /* Autor destacado */
+    .author{ color:#4c1d95 !important; font-weight:750; }
   </style>
 </head>
 <body>
@@ -99,9 +108,9 @@
     </div>
   </div>
 
-  <main class="main">
+  <main>
     <!-- HERO -->
-    <section class="hero hero-visual">
+    <section class="hero">
       <div class="container">
         <div class="hero-frame">
           <div class="hero-glass">
@@ -112,10 +121,16 @@
       </div>
     </section>
 
-    <!-- CARD PRINCIPAL (compose + posts) -->
+    <!-- CARD PRINCIPAL -->
     <section class="section">
       <div class="frame">
         <div class="glass">
+          <!-- Buscador -->
+          <div class="searchbar" aria-label="Buscador de publicaciones">
+            <input id="searchInput" type="search" placeholder="Buscar por texto o autor..." />
+            <button id="clearSearch" class="btn ghost">Limpiar</button>
+          </div>
+
           <!-- Publicar -->
           <div class="compose" aria-label="Crear publicación">
             <p class="muted">¿Tenés dudas o sugerencias?</p>
@@ -129,166 +144,247 @@
 
           <!-- Grid de posts -->
           <div id="postsGrid" class="grid-3" aria-live="polite"></div>
+          <div id="emptyMsg" class="meta" style="display:none">No hay publicaciones que coincidan con la búsqueda.</div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="container footer-inner">
-      <div>
-        <div class="title">Voces del Anime</div>
-        <p>Prototipo conceptual para aprendizaje de lengua y cultura japonesa a través del anime.</p>
-      </div>
-      <div>
-        <div class="title">Enlaces</div>
-        <ul>
-          <li><a href="contacto.html">Contacto</a></li>
-          <li><a href="creditos.html">Créditos</a></li>
-          <li><a href="politica.html">Política de uso educativo</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="title">Acerca de</div>
-        <p>Glosarios, cultura y comunidad listos para iterar.</p>
+  <!-- FOOTER CORRECTO -->
+  <footer>
+    <div class="container" style="border-top:1px solid #e9d5ff;background:rgba(255,255,255,.65);">
+      <div class="footer-inner" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:20px 0;color:#374151;max-width:var(--page-max);margin-inline:auto">
+        <div>
+          <div class="title" style="color:#5b21b6">Voces del Anime</div>
+          <p>Prototipo conceptual para aprendizaje de lengua y cultura japonesa a través del anime.</p>
+        </div>
+        <div>
+          <div class="title" style="color:#5b21b6">Enlaces</div>
+          <ul style="margin:0;padding-left:18px">
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="creditos.html">Créditos</a></li>
+            <li><a href="politica.html">Política de uso educativo</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="title" style="color:#5b21b6">Acerca de</div>
+          <p>Glosarios, cultura y comunidad listos para iterar.</p>
+        </div>
       </div>
     </div>
-  </div>
+  </footer>
 
   <script>
     // --- Utilidades ---
     const $ = (s, el=document) => el.querySelector(s);
-    const el = (tag, cls) => {
-      const n = document.createElement(tag);
-      if (cls) n.className = cls;
-      return n;
-    };
+    const el = (tag, cls) => { const n = document.createElement(tag); if (cls) n.className = cls; return n; };
     const nowISO = () => new Date().toISOString();
     const uuid = () =>
       (crypto && crypto.randomUUID) ? crypto.randomUUID()
       : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c=>{
-          const r = Math.random()*16|0, v = c==='x'?r:(r&0x3|0x8);
-          return v.toString(16);
+          const r = Math.random()*16|0, v = c==='x'?r:(r&0x3|0x8); return v.toString(16);
         });
+    const clone = obj => JSON.parse(JSON.stringify(obj));
 
     // --- Storage ---
-    const STORAGE_KEY = 'voces_posts_v1';
-    const loadPosts = () => {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-      catch { return []; }
-    };
-    const savePosts = (posts) => localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    const STORAGE_KEY = 'voces_posts_v3'; // nueva versión
+    let posts = [];
+    try { posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { posts = []; }
+    const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
 
-    // Datos
-    let posts = loadPosts();
+    // Semillas si está vacío
     if (posts.length === 0) {
-      // Semillas (posts de ejemplo)
       posts = [
         { id: uuid(), author:'Luna', content:'Mi frase favorita: 『よろしくお願いします』 — abre puertas con buena onda y respeto.', createdAt: nowISO(), replies:[] },
         { id: uuid(), author:'Kai',  content:'Propongo un glosario colaborativo de 敬語 (keigo) con ejemplos de anime escolar.', createdAt: nowISO(), replies:[] },
         { id: uuid(), author:'Haru', content:'¿Alguien recomienda animes con diálogos claros para principiantes?', createdAt: nowISO(), replies:[] },
         { id: uuid(), author:'Mei',  content:'Podemos crear un banco de expresiones según situaciones (comer, saludar, disculparse).', createdAt: nowISO(), replies:[] },
+
       ];
-      savePosts(posts);
+      save();
     }
 
-    // --- Render de un post (sin fechas, form de respuesta siempre visible) ---
+    // --- Estado de búsqueda ---
+    let query = '';
+
+    // --- Render de respuesta con editar/eliminar ---
+    function renderReply(postId, r){
+      const rEl = el('div','reply');
+
+      const head = el('div','actions');
+      const who = el('span','author'); who.textContent = r.author || 'Anónimo';
+      head.appendChild(who);
+      head.appendChild(el('span','sep'));
+      const btnEdit = el('button','btn small ghost'); btnEdit.textContent = 'Editar';
+      const btnDel  = el('button','btn small ghost'); btnDel.textContent  = 'Eliminar';
+      head.append(btnEdit, btnDel);
+      rEl.appendChild(head);
+
+      const body = el('div'); body.textContent = r.content; rEl.appendChild(body);
+
+      // Editar respuesta
+      btnEdit.addEventListener('click', ()=>{
+        const edit = el('div','edit-area');
+        const inName = el('input'); inName.value = r.author || 'Anónimo';
+        const inText = el('textarea'); inText.value = r.content;
+        const row = el('div','actions');
+        const ok = el('button','btn small'); ok.textContent='Guardar';
+        const cancel = el('button','btn small ghost'); cancel.textContent='Cancelar';
+        row.append(ok,cancel);
+        edit.append(inName,inText,row);
+
+        rEl.innerHTML = '';
+        rEl.appendChild(edit);
+
+        ok.addEventListener('click', ()=>{
+          const a = inName.value.trim() || 'Anónimo';
+          const c = inText.value.trim();
+          if(!c) { inText.focus(); return; }
+          const pIdx = posts.findIndex(p=>p.id===postId);
+          if (pIdx>-1) {
+            const rpIdx = posts[pIdx].replies.findIndex(x=>x.id===r.id);
+            if (rpIdx>-1) {
+              posts[pIdx].replies[rpIdx].author = a;
+              posts[pIdx].replies[rpIdx].content = c;
+              save(); renderAll();
+            }
+          }
+        });
+        cancel.addEventListener('click', renderAll);
+      });
+
+      // Eliminar respuesta
+      btnDel.addEventListener('click', ()=>{
+        if (!confirm('¿Eliminar esta respuesta?')) return;
+        const pIdx = posts.findIndex(p=>p.id===postId);
+        if (pIdx>-1) {
+          posts[pIdx].replies = (posts[pIdx].replies||[]).filter(x=>x.id!==r.id);
+          save(); renderAll();
+        }
+      });
+
+      return rEl;
+    }
+
+    // --- Render de post con responder/editar/eliminar ---
     function renderPostCard(post){
       const card = el('div','card');
       const inner = el('div','card-inner');
       card.appendChild(inner);
 
-      // Autor y contenido
-      const author = el('div','author');
-      author.textContent = post.author || 'Anónimo';
-      inner.appendChild(author);
+      // Cabecera: autor + acciones
+      const head = el('div','actions');
+      const author = el('div','author'); author.textContent = post.author || 'Anónimo';
+      head.appendChild(author);
+      head.appendChild(el('span','sep'));
+      const btnEdit = el('button','btn small ghost'); btnEdit.textContent='Editar';
+      const btnDel  = el('button','btn small ghost'); btnDel.textContent ='Eliminar';
+      head.append(btnEdit, btnDel);
+      inner.appendChild(head);
 
-      const p = el('p');
-      p.textContent = post.content; // textContent evita HTML
-      inner.appendChild(p);
-
-      // Contenedor de respuestas (siempre visible)
-      const repliesWrap = el('div','replies');
-      repliesWrap.style.display = 'block';
-      inner.appendChild(repliesWrap);
+      // Contenido
+      const p = el('p'); p.textContent = post.content; inner.appendChild(p);
 
       // Contador
-      const h = el('div','meta');
-      const count = (post.replies?.length || 0);
-      h.textContent = count === 1 ? '1 respuesta' : `${count} respuestas`;
-      repliesWrap.appendChild(h);
+      const meta = el('div','meta'); meta.textContent = (post.replies?.length||0) === 1 ? '1 respuesta' : `${post.replies?.length||0} respuestas`;
+      inner.appendChild(meta);
 
-      // Listado de respuestas existentes
-      (post.replies || []).forEach(r => {
-        const rEl = el('div','reply');
-        const rHead = el('div','author');
-        rHead.textContent = r.author || 'Anónimo';
-        const rBody = el('div');
-        rBody.textContent = r.content;
-        rEl.append(rHead, rBody);
-        repliesWrap.appendChild(rEl);
-      });
+      // Respuestas existentes
+      const repliesWrap = el('div','replies');
+      (post.replies||[]).forEach(r => repliesWrap.appendChild(renderReply(post.id, r)));
+      inner.appendChild(repliesWrap);
 
-      // Form para nueva respuesta
+      // Form nueva respuesta (siempre visible)
       const form = el('form','reply-form');
       form.setAttribute('aria-label','Responder a la publicación');
+      const inName = el('input'); inName.placeholder='Tu nombre (opcional)'; inName.name='replyAuthor';
+      const inText = el('textarea'); inText.placeholder='Escribe tu respuesta...'; inText.name='replyContent';
+      const row = el('div','actions');
+      const btnSend = el('button','btn'); btnSend.type='submit'; btnSend.textContent='Responder';
+      row.append(btnSend);
+      form.append(inName,inText,row);
+      inner.appendChild(form);
 
-      const inName = el('input');
-      inName.placeholder = 'Tu nombre (opcional)';
-      inName.name = 'replyAuthor';
-
-      const inText = el('textarea');
-      inText.placeholder = 'Escribe tu respuesta...';
-      inText.name = 'replyContent';
-
-      const row = el('div');
-      row.style.display = 'flex';
-      row.style.gap = '8px';
-
-      const btnSend = el('button','btn');
-      btnSend.type = 'submit';
-      btnSend.textContent = 'Responder';
-
-      row.appendChild(btnSend);
-      form.append(inName, inText, row);
-      repliesWrap.appendChild(form);
-
-      // Evento de envío
-      form.addEventListener('submit', (e)=>{
+      // Responder
+      form.addEventListener('submit',(e)=>{
         e.preventDefault();
-        const author = inName.value.trim() || 'Anónimo';
-        const content = inText.value.trim();
-        if (!content) { inText.focus(); return; }
-
-        const reply = { id: uuid(), author, content, createdAt: nowISO() };
-
-        // Guardar en memoria/localStorage
-        const idx = posts.findIndex(x=>x.id===post.id);
-        if (idx !== -1){
-          posts[idx].replies = posts[idx].replies || [];
-          posts[idx].replies.push(reply);
-          savePosts(posts);
-          renderAll(); // actualiza contador y lista
+        const a = inName.value.trim() || 'Anónimo';
+        const c = inText.value.trim();
+        if(!c){ inText.focus(); return; }
+        const pIdx = posts.findIndex(x=>x.id===post.id);
+        if (pIdx>-1){
+          posts[pIdx].replies = posts[pIdx].replies || [];
+          posts[pIdx].replies.push({ id: uuid(), author:a, content:c, createdAt: nowISO() });
+          save(); renderAll();
         }
+      });
+
+      // Editar post
+      btnEdit.addEventListener('click', ()=>{
+        const edit = el('div','edit-area');
+        const inAuthor = el('input'); inAuthor.value = post.author || 'Anónimo';
+        const inContent = el('textarea'); inContent.value = post.content;
+        const row = el('div','actions');
+        const ok = el('button','btn small'); ok.textContent='Guardar';
+        const cancel = el('button','btn small ghost'); cancel.textContent='Cancelar';
+        row.append(ok,cancel);
+        edit.append(inAuthor,inContent,row);
+
+        inner.innerHTML = '';
+        inner.appendChild(head);
+        inner.appendChild(edit);
+
+        ok.addEventListener('click', ()=>{
+          const a = inAuthor.value.trim() || 'Anónimo';
+          const c = inContent.value.trim();
+          if(!c){ inContent.focus(); return; }
+          const idx = posts.findIndex(x=>x.id===post.id);
+          if (idx>-1){
+            posts[idx].author = a;
+            posts[idx].content = c;
+            save(); renderAll();
+          }
+        });
+        cancel.addEventListener('click', renderAll);
+      });
+
+      // Eliminar post
+      btnDel.addEventListener('click', ()=>{
+        if (!confirm('¿Eliminar esta publicación y sus respuestas?')) return;
+        posts = posts.filter(x=>x.id!==post.id);
+        save(); renderAll();
       });
 
       return card;
     }
 
-    // --- Render general ---
+    // --- Filtrado + render general ---
     const postsGrid = $('#postsGrid');
+    const emptyMsg  = $('#emptyMsg');
+
+    function getFilteredOrdered(){
+      const q = (query||'').trim().toLowerCase();
+      let list = clone(posts);
+      list.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt)); // orden interno (no visible)
+      if (!q) return list;
+      return list.filter(p=>{
+        const hayPost = (p.author||'').toLowerCase().includes(q) || (p.content||'').toLowerCase().includes(q);
+        const hayReply = (p.replies||[]).some(r => (r.author||'').toLowerCase().includes(q) || (r.content||'').toLowerCase().includes(q));
+        return hayPost || hayReply;
+      });
+    }
+
     function renderAll(){
       postsGrid.innerHTML = '';
-      // Orden: más recientes primero (no se muestra fecha, pero sirve para ordenar)
-      const ordered = [...posts].sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
-      ordered.forEach(post => postsGrid.appendChild(renderPostCard(post)));
+      const data = getFilteredOrdered();
+      emptyMsg.style.display = data.length ? 'none' : 'block';
+      data.forEach(post => postsGrid.appendChild(renderPostCard(post)));
     }
 
     // --- Publicar ---
     const authorInput = $('#author');
     const contentInput = $('#content');
-    const composeMsg = $('#composeMsg');
+    const composeMsg  = $('#composeMsg');
     $('#btnPost').addEventListener('click', ()=>{
       const author = authorInput.value.trim() || 'Anónimo';
       const content = contentInput.value.trim();
@@ -299,7 +395,7 @@
       }
       const post = { id: uuid(), author, content, createdAt: nowISO(), replies:[] };
       posts.push(post);
-      savePosts(posts);
+      save();
       authorInput.value = '';
       contentInput.value = '';
       composeMsg.textContent = '¡Publicado!';
@@ -307,13 +403,24 @@
       setTimeout(()=> composeMsg.textContent = '', 1500);
     });
 
+    // --- Búsqueda ---
+    const searchInput = $('#searchInput');
+    const clearSearch = $('#clearSearch');
+    searchInput.addEventListener('input', ()=>{
+      query = searchInput.value;
+      renderAll();
+    });
+    clearSearch.addEventListener('click', ()=>{
+      searchInput.value = '';
+      query = '';
+      renderAll();
+      searchInput.focus();
+    });
+
     // Inicial
     renderAll();
   </script>
 </body>
 </html>
-
-
-
 
 
