@@ -12,6 +12,8 @@
       --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
       --page-max:1200px;
       --vio:#7c3aed;
+      /* Ritmo tipográfico global */
+      --leading:1.65;
     }
     *{box-sizing:border-box}
     html,body{margin:0}
@@ -40,7 +42,11 @@
     .hero-frame{max-width:var(--page-max);margin:0 auto;border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08)}
     .hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
     .hero h1{margin:0;color:var(--brand);font-size:clamp(26px,5vw,44px)}
-    .lead{margin:6px auto 0;color:var(--muted);max-width:66ch;text-align:center}
+    .lead{
+      margin:6px auto 0; color:var(--muted); max-width:66ch; text-align:center; font-weight:600;
+      background:linear-gradient(90deg,#7c3aed,#60a5fa);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
 
     /* BLOQUES */
     .section{padding:24px 0}
@@ -67,7 +73,7 @@
     .grid-3{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
     .gestures-grid{margin-top:8px}
     .card{
-      background:rgba(255,255,255,.9);border:1px solid #e9d5ff;border-radius:12px;
+      background:rgba(255,255,255,.92);border:1px solid #ede9fe;border-radius:12px;
       box-shadow:0 6px 18px rgba(0,0,0,.06);
       transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
@@ -77,14 +83,18 @@
       border-color:#ddd6fe;
     }
     .card-inner{padding:14px 16px}
-    .card-inner p{ line-height:1.65; margin-bottom:.8em; }
+    .card-inner p{ line-height:var(--leading); margin-bottom:.8em; }
     .card-inner p:last-child{ margin-bottom:0; }
 
     /* Controles */
     .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
     .controls input[type="search"]{
       flex:1;border:1px solid #e9d5ff;border-radius:999px;padding:10px 12px;background:#fff;
-      box-shadow:0 4px 12px rgba(0,0,0,.04);
+      box-shadow:0 4px 12px rgba(0,0,0,.04); transition:box-shadow .15s ease,border-color .15s ease;
+      text-align:center;
+    }
+    .controls input[type="search"]:focus{
+      outline:none; text-align:left; border-color:#a78bfa; box-shadow:0 0 0 3px rgba(167,139,250,.25);
     }
     .btn-chip{
       border:1px solid #c4b5fd;background:#faf5ff;color:#4c1d95;
@@ -114,6 +124,9 @@
     /* Separadores dentro de la grid (gestos vs. quiz) */
     .grid-sep{ grid-column:1 / -1; }
     .section-divider{height:1px;border:0;margin:8px 0 2px;background:linear-gradient(90deg,transparent,#e9d5ff,transparent)}
+
+    /* Accesibilidad foco */
+    a:focus-visible, button:focus-visible, input:focus-visible{outline:3px solid rgba(167,139,250,.4); outline-offset:3px; border-radius:8px;}
 
     /* FOOTER */
     .footer{margin-top:28px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,.65)}
@@ -276,8 +289,8 @@
                     <a href="#" class="btn-link" data-toggle aria-expanded="false" role="button">Ver ejemplos</a>
                     <div class="more" hidden>
                       <ul>
-                       <li>Avisar: “<ruby><rb>風邪</rb><rt>かぜ</rt></ruby>をひいていて… (estoy resfriado)”.</li>
-<li>Evitar quitársela al hablar de cerca; cambiarla si está húmeda.</li>
+                        <li>Avisar: “<ruby><rb>風邪</rb><rt>かぜ</rt></ruby>をひいていて… (estoy resfriado)”.</li>
+                        <li>Evitar quitársela al hablar de cerca; cambiarla si está húmeda.</li>
                       </ul>
                     </div>
                   </div>
@@ -292,8 +305,8 @@
                     <a href="#" class="btn-link" data-toggle aria-expanded="false" role="button">Ver ejemplos</a>
                     <div class="more" hidden>
                       <ul>
-                    <li>En consulta: “お<ruby><rb>大事</rb><rt>だいじ</rt></ruby>にしてください”。</li>
-<li>Con amigos: “<ruby><rb>早</rb><rt>はや</rt></ruby>く<ruby><rb>良</rb><rt>よ</rt></ruby>くなってね”。</li>
+                        <li>En consulta: “お<ruby><rb>大事</rb><rt>だいじ</rt></ruby>にしてください”。</li>
+                        <li>Con amigos: “<ruby><rb>早</rb><rt>はや</rt></ruby>く<ruby><rb>良</rb><rt>よ</rt></ruby>くなってね”。</li>
                       </ul>
                     </div>
                   </div>
@@ -309,7 +322,7 @@
                     <div class="more" hidden>
                       <ul>
                         <li>Dejar los zapatos ordenados con la punta hacia la salida.</li>
-                      <li>Usar <ruby><rb>スリッパ (<em>calzado para interiores</em>) si están disponibles; sin entrar con <ruby><rb>上履</rb><rt>うわば</rt></ruby>き (<em>calzado para interiores escolares</em>) al tatami.</li>
+                        <li>Usar <ruby><rb>スリッパ (calzado para interiores) si están disponibles; no entrar al tatami con <ruby><rb>上履</rb><rt>うわばき</rt></ruby>(calzado escolar para interiores).</li>
                       </ul>
                     </div>
                   </div>
@@ -341,7 +354,7 @@
                     <div class="more" hidden>
                       <ul>
                         <li>Espalda recta, empeines al suelo, manos sobre los muslos.</li>
-                     <li>Para descansar, podés pasar a <ruby><rb>胡坐</rb><rt>あぐら</rt></ruby> (posición sentada cruzada) si el contexto lo permite.</li>
+                        <li>Para descansar, podés pasar a <ruby><rb>胡坐</rb><rt>あぐら</rt></ruby> (posición sentada cruzada) si el contexto lo permite.</li>
                       </ul>
                     </div>
                   </div>
@@ -388,7 +401,7 @@
                   <form id="quiz-templo" style="margin-top:8px">
                     <p class="muted">Frente al altar del santuario, ¿cuál es la secuencia correcta?</p>
                     <label><input type="radio" name="q2" value="una"> Una reverencia, una palmada</label><br>
-                    <label><input type="radio" name="q2" value="ritual"><ruby><rb>二礼二拍手一礼</rb><rt>にれい に はくしゅ いちれい</rt></ruby></label>
+                    <label><input type="radio" name="q2" value="ritual"><ruby><rb>二礼二拍手一礼</rb><rt>にれい に はくしゅ いちれい</rt></ruby></label><br>
                     <label><input type="radio" name="q2" value="tres"> Tres reverencias sin palmadas</label><br>
                     <button class="btn-link" type="submit">Comprobar</button>
                     <p class="feedback" hidden></p>
@@ -398,7 +411,7 @@
 
                   <!-- Mini-quiz 4: Salud -->
                   <form id="quiz-salud" style="margin-top:8px">
-              <p class="muted">¿Cuándo es más adecuado decir “お<ruby><rb>大事</rb><rt>だいじ</rt></ruby>に”？</p>
+                    <p class="muted">¿Cuándo es más adecuado decir “お<ruby><rb>大事</rb><rt>だいじ</rt></ruby>に”？</p>
                     <label><input type="radio" name="q4" value="tarde"> Cuando llegás tarde a clase</label><br>
                     <label><input type="radio" name="q4" value="odaijini"> Al despedirte de alguien enfermo</label><br>
                     <label><input type="radio" name="q4" value="ayuda"> Para pedir ayuda en una tienda</label><br>
@@ -569,7 +582,6 @@
   </script>
 </body>
 </html>
-
 
 
 
