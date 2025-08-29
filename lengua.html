@@ -7,7 +7,17 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    
+    .badge{
+  display:inline-block;
+  font-size:.82rem;
+  font-weight:600;
+  color:#4c1d95;
+  background:#ede9fe;
+  border:1px solid #ddd6fe;
+  border-radius:999px;   /* píldora */
+  padding:4px 12px;
+}
+
     :root{
       --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
       --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
@@ -141,6 +151,13 @@
 
     /* Utilidad para grillas 3 cols responsive (no cambia estructura: solo disponible) */
     .grid-3{ display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+    .caption{
+    margin-top:18px; /* más aire entre el video y el texto */
+    font-size:.95rem;
+    text-align:center;
+    line-height:1.6;
+    color:#4b5563;
+  }
   </style>
 </head>
 <body>
@@ -176,7 +193,7 @@
       <div class="container">
         <div class="frame">
           <div class="glass">
-            <h2 class="title" style="color:#7c3aed">Fragmentos seleccionados</h2>
+            <h2 class="title" style="title">Fragmentos seleccionados</h2>
             <div class="grid-3" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
               <!-- Player 1 -->
               <article class="player" style="border:1px solid #e9d5ff;border-radius:12px;background:rgba(255,255,255,0.95);padding:12px 14px">
@@ -252,12 +269,12 @@
       <div class="container">
         <div class="frame">
           <div class="glass">
-            <h2 class="title" style="color:#7c3aed">Significados, registro y ejemplos</h2>
+            <h2 class="title" style="title">Significados, registro y ejemplos</h2>
             <div class="grid-3" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
               <!-- ① いただきます -->
               <article class="card" style="background:rgba(255,255,255,0.92);border:1px solid #e9d5ff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.06);"><div class="card-inner" style="padding:12px 14px">
                 <div class="title" style="color:#c2410c">① いただきます <span class="muted"></span></div>
-                <p><strong>Cortesía cotidiana</strong></p>
+                <p><span class="badge">Cortesía cotidiana</span></p>
                 <p><strong>Significado y registro</strong><br/>
                   Se utiliza antes de comer para expresar gratitud por la comida, la naturaleza y el trabajo de quienes la prepararon. Registro cortés pero cotidiano.
                 </p>
@@ -287,7 +304,7 @@
               <!-- ② よろしくお願いします -->
               <article class="card" style="background:rgba(255,255,255,0.92);border:1px solid #e9d5ff;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.06);"><div class="card-inner" style="padding:12px 14px">
                 <div class="title" style="color:#4f46e5">② よろしくお<ruby><rb>願</rb><rt>ねが</rt></ruby>いします <span class="muted"></span></div>
-                <p><strong>Fórmula relacional</strong></p>
+                <p><span class="badge">Fórmula relacional</span></p>
                 <p><strong>Significado y registro</strong><br/>
                   Fórmula de cortesía para iniciar vínculos o pedir colaboración futura con respeto. Registro: cortés/neutral.
                 </p>
@@ -327,9 +344,9 @@
   <span class="muted"></span>
 </div>
 
-                <p><strong>Saludo matinal / Tratamiento social</strong></p>
+           <p><span class="badge">Saludo matinal / Tratamiento social</span></p>
                 <p><strong>Significado y registro</strong><br/>
-                  “Buenos días”. Con <em>gozaimasu</em> es cortés; entre amigos/familia se usa おはよう (informal).<br/>
+                  “Buenos días”. Con <em>ございます</em> es cortés; entre amigos/familia se usa <em>おはよう</em> (informal).<br/>
                   <em>Senpai</em>: persona con mayor antigüedad/experiencia en un grupo; se usa como título respetuoso.
                 </p>
                 <p><strong>Ejemplos</strong><br/>
@@ -338,17 +355,8 @@
                  <ruby><rb>朝練</rb><rt>あされん</rt></ruby>、おはようございます。 — 
 <em>Asaren, ohayō gozaimasu.</em> 
 <span class="muted">Buenos días (al iniciar la práctica).</span><br/><br/>
-
-<ruby><rb>先輩</rb><rt>せんぱい</rt></ruby>、
-<ruby><rb>今日</rb><rt>きょう</rt></ruby>の
-<ruby><rb>練習</rb><rt>れんしゅう</rt></ruby>は
-<ruby><rb>何時</rb><rt>なんじ</rt></ruby>からですか。 — 
-<em>Senpai, kyō no renshū wa nanji kara desu ka.</em><br/>
-
-                  <span class="muted">¿A qué hora es la práctica de hoy?</span>
-                </p>
                 <p><strong>Notas culturales</strong><br/>
-                  En clubes y trabajos, おはようございます puede usarse al comenzar el turno a cualquier hora.<br/>
+                  En clubes y trabajos, <em>おはようございます</em> puede usarse al comenzar el turno a cualquier hora.<br/>
                   La relación <em>senpai–kōhai</em> implica mentoría y responsabilidad.
                 </p>
                 <p><strong>Relacionadas</strong><br/>
@@ -408,8 +416,6 @@
   </div>
 </body>
 </html>
-
-
 
 
 
