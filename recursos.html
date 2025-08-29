@@ -10,7 +10,9 @@
     :root{
       --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
       --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
-      --page-max:1200px; /* mismo ancho que el resto */
+      --page-max:1200px;
+      --vio:#7c3aed;
+      --leading:1.65;
     }
     *{box-sizing:border-box}
     html,body{margin:0}
@@ -19,6 +21,7 @@
       color:var(--ink);
       background:linear-gradient(135deg,#fdf2f8,#eef2ff,#ecfdf5);
       background-attachment:fixed;
+      letter-spacing:.01em;
     }
     .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
     a{color:#6d28d9;text-decoration:none}
@@ -32,7 +35,7 @@
     .tab:hover,.tab:focus-visible{font-weight:600}
     .tab.active{font-weight:800;text-decoration:underline}
 
-    /* HERO (tarjeta glass + borde degradado, sin destellos) */
+    /* HERO (tarjeta glass + borde degradado) */
     .hero,.hero-visual{padding:56px 0 64px;position:relative}
     .hero::before,.hero::after,.hero-visual::before,.hero-visual::after{content:none!important}
     .hero-frame{
@@ -42,24 +45,52 @@
     }
     .hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
     .hero h1{margin:0;color:var(--brand);font-size:clamp(26px,5vw,44px)}
-    .lead{margin:6px auto 0;color:var(--muted);max-width:66ch;text-align:center}
+    .lead{
+      margin:6px auto 0;color:var(--muted);max-width:66ch;text-align:center;font-weight:600;
+      background:linear-gradient(90deg,#7c3aed,#60a5fa);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
 
     /* BLOQUES */
-    .section{padding:20px 0}
+    .section{padding:24px 0}
     .frame{border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08);max-width:var(--page-max);margin-inline:auto}
     .glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);padding:22px}
     @media(min-width:720px){.glass{padding:28px}}
-    .title{font-weight:800;color:#4c1d95;margin:0 0 10px}
+    .title{
+      font-weight:800;color:#4c1d95;margin:0 0 10px; position:relative; padding-bottom:4px;
+    }
+    .title::after{
+      content:""; position:absolute; left:0; bottom:-2px; height:3px; width:64px; border-radius:999px;
+      background:linear-gradient(90deg,#a78bfa,#93c5fd,#86efac); opacity:.9;
+    }
     .muted{color:#6b7280}
 
-    /* CARDS (mismo patrón que Comunidad/Cultura) */
+    /* CARDS */
     .resources-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-    .card{background:rgba(255,255,255,.9);border:1px solid #e9d5ff;border-radius:12px}
+    .card{
+      background:rgba(255,255,255,.92);border:1px solid #ede9fe;border-radius:12px;
+      box-shadow:0 6px 18px rgba(0,0,0,.06);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      box-shadow:0 12px 28px rgba(0,0,0,.10);
+      border-color:#ddd6fe;
+    }
     .card-inner{padding:14px 16px}
+    .card-inner p{ line-height:var(--leading); margin-bottom:.8em; }
+    .card-inner p:last-child{ margin-bottom:0; }
+    .bullets{list-style:disc;padding-left:18px;margin:0}
+    .bullets li{ line-height:var(--leading); margin:.4em 0; }
 
-    /* FOOTER (alineado al mismo container) */
+    /* Accesibilidad foco */
+    a:focus-visible, button:focus-visible, input:focus-visible{
+      outline:3px solid rgba(167,139,250,.4); outline-offset:3px; border-radius:8px;
+    }
+
+    /* FOOTER */
     .footer{margin-top:28px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,.65)}
-    .footer-inner{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:20px 0;color:#374151}
+    .footer-inner{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:20px 0;color:#374151;max-width:var(--page-max);margin-inline:auto}
     .footer .title{font-weight:800;color:#5b21b6;margin-bottom:6px}
     ul{margin:0;padding-left:18px}
   </style>
@@ -98,28 +129,28 @@
         <div class="glass">
           <div class="resources-grid">
             <div class="card" aria-label="Fundación Japón"><div class="card-inner">
-              <div class="title" style="color:#5b21b6">Fundación Japón — Minato / Marugoto</div>
+              <div class="title">Fundación Japón — Minato / Marugoto</div>
               <p>Cursos introductorios de lengua y cultura.</p>
               <p class="muted">Nivel inicial a intermedio; materiales oficiales y gratuitos.</p>
             </div></div>
 
             <div class="card" aria-label="UNESCO"><div class="card-inner">
-              <div class="title" style="color:#5b21b6">UNESCO — Competencias interculturales</div>
+              <div class="title">UNESCO — Competencias interculturales</div>
               <p>Guía para planificar actividades críticas y contextualizadas.</p>
               <p class="muted">Enfoque ético, diversidad, inclusión y diálogo.</p>
             </div></div>
 
             <div class="card" aria-label="Herramientas"><div class="card-inner">
-              <div class="title" style="color:#5b21b6">Herramientas</div>
+              <div class="title">Herramientas</div>
               <ul class="bullets">
-                <li>Diccionario J-E (ej. Jisho, Tangorin).</li>
+                <li>Diccionario J-E (p. ej., Jisho, Tangorin).</li>
                 <li>Generadores de furigana para textos.</li>
                 <li>Tabla de hiragana/katakana imprimible.</li>
               </ul>
             </div></div>
 
             <div class="card" aria-label="Guías docentes"><div class="card-inner">
-              <div class="title" style="color:#5b21b6">Guías docentes</div>
+              <div class="title">Guías docentes</div>
               <p>Sugerencias de mediación y evaluación formativa.</p>
               <p class="muted">Rúbricas simples, actividades por niveles y contextos.</p>
             </div></div>
@@ -152,5 +183,4 @@
   </div>
 </body>
 </html>
-
 
