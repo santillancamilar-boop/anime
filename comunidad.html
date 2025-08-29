@@ -89,6 +89,90 @@
 
     /* Autor destacado */
     .author{ color:#4c1d95 !important; font-weight:750; }
+
+    /* ========== MAKEOVER EXTRA ========== */
+
+    /* Títulos con subrayado degradado */
+    .title{ position:relative; padding-bottom:4px; }
+    .title::after{
+      content:""; position:absolute; left:0; bottom:-2px; height:3px; width:64px;
+      border-radius:999px;
+      background:linear-gradient(90deg,#a78bfa,#93c5fd,#86efac);
+      opacity:.9;
+    }
+
+    /* Más aire */
+    .section{ padding:16px 0; }
+    .card-inner p{ line-height:1.65; margin-bottom:.8em; }
+    .card-inner p:last-child{ margin-bottom:0; }
+
+    /* Tarjetas con hover */
+    .card{
+      background:rgba(255,255,255,.92);
+      border:1px solid #ede9fe;
+      box-shadow:0 6px 18px rgba(0,0,0,.06);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      box-shadow:0 12px 28px rgba(0,0,0,.10);
+      border-color:#ddd6fe;
+    }
+
+    /* Botones mejorados */
+    .btn{
+      border:1px solid var(--vio);
+      background:linear-gradient(135deg,#7c3aed,#6d28d9);
+      color:#fff; font-weight:800;
+      box-shadow:0 6px 16px rgba(124,58,237,.25);
+      transition: transform .15s ease, box-shadow .15s ease, opacity .15s;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow:0 10px 22px rgba(124,58,237,.28);
+      opacity:.95;
+    }
+    .btn.ghost{
+      background:#fff; color:#7c3aed; border-color:#c4b5fd;
+    }
+    .btn.ghost:hover{ background:#f5f3ff; }
+
+    /* Inputs con foco y placeholders centrados */
+    .compose input,.compose textarea,
+    .searchbar input{
+      box-shadow:0 4px 12px rgba(0,0,0,.04);
+      transition: box-shadow .15s ease, border-color .15s ease;
+      text-align:center;
+    }
+    .compose input:focus,.compose textarea:focus,
+    .searchbar input:focus{
+      outline: none;
+      border-color:#a78bfa;
+      box-shadow:0 0 0 3px rgba(167,139,250,.25);
+      text-align:left;
+    }
+    .compose input::placeholder,
+    .compose textarea::placeholder{ text-align:center; }
+
+    /* Lead con gradiente */
+    .lead{
+      font-weight:600;
+      background:linear-gradient(90deg,#7c3aed,#60a5fa);
+      -webkit-background-clip:text; background-clip:text;
+      color:transparent;
+    }
+
+    /* Replies más prolijas */
+    .replies{ margin-top:12px; border-top:1px dashed #e9d5ff; padding-top:10px; }
+    .reply{
+      background:#fff;
+      border:1px solid #ede9fe;
+      box-shadow:0 2px 10px rgba(0,0,0,.04);
+    }
+    .reply .actions{ margin-bottom:6px; }
+
+    /* Footer */
+    footer .footer-inner{ row-gap:20px; }
   </style>
 </head>
 <body>
@@ -185,22 +269,36 @@
     const clone = obj => JSON.parse(JSON.stringify(obj));
 
     // --- Storage ---
-    const STORAGE_KEY = 'voces_posts_v3'; // nueva versión
+    const STORAGE_KEY = 'voces_posts_v3';
     let posts = [];
     try { posts = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { posts = []; }
     const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
 
-    // Semillas si está vacío
-    if (posts.length === 0) {
-      posts = [
-        { id: uuid(), author:'Luna', content:'Mi frase favorita: 『よろしくお願いします』 — abre puertas con buena onda y respeto.', createdAt: nowISO(), replies:[] },
-        { id: uuid(), author:'Kai',  content:'Propongo un glosario colaborativo de 敬語 (keigo) con ejemplos de anime escolar.', createdAt: nowISO(), replies:[] },
-        { id: uuid(), author:'Haru', content:'¿Alguien recomienda animes con diálogos claros para principiantes?', createdAt: nowISO(), replies:[] },
-        { id: uuid(), author:'Mei',  content:'Podemos crear un banco de expresiones según situaciones (comer, saludar, disculparse).', createdAt: nowISO(), replies:[] },
+    // --- Publicaciones base (si no están, se agregan) ---
+    const defaultPosts = [
+      { id:'seed-luna', author:'Luna', content:'Mi frase favorita: 『よろしくお願いします』 — abre puertas con buena onda y respeto.', createdAt: nowISO(), replies:[] },
+      { id:'seed-kai',  author:'Kai',  content:'Propongo un glosario colaborativo de 敬語 (keigo) con ejemplos de anime escolar.', createdAt: nowISO(), replies:[] },
+      { id:'seed-haru', author:'Haru', content:'¿Alguien recomienda animes con diálogos claros para principiantes?', createdAt: nowISO(), replies:[] },
+      { id:'seed-mei',  author:'Mei',  content:'Podemos crear un banco de expresiones según situaciones (comer, saludar, disculparse).', createdAt: nowISO(), replies:[] },
+    ];
 
-      ];
-      save();
+    function ensureDefaultPosts(){
+      // Si faltan las publicaciones base, las agregamos sin tocar las existentes
+      const byId = new Set(posts.map(p=>p.id));
+      const bySig = new Set(posts.map(p=>(p.author||'')+'|'+(p.content||'')));
+      let changed = false;
+      defaultPosts.forEach(dp=>{
+        const sig = (dp.author||'')+'|'+(dp.content||'');
+        if(!byId.has(dp.id) && !bySig.has(sig)){
+          posts.push(dp);
+          changed = true;
+        }
+      });
+      if(changed) save();
     }
+
+    // Asegurar que estén las 4
+    ensureDefaultPosts();
 
     // --- Estado de búsqueda ---
     let query = '';
@@ -284,7 +382,8 @@
       const p = el('p'); p.textContent = post.content; inner.appendChild(p);
 
       // Contador
-      const meta = el('div','meta'); meta.textContent = (post.replies?.length||0) === 1 ? '1 respuesta' : `${post.replies?.length||0} respuestas`;
+      const meta = el('div','meta');
+      meta.textContent = (post.replies?.length||0) === 1 ? '1 respuesta' : `${post.replies?.length||0} respuestas`;
       inner.appendChild(meta);
 
       // Respuestas existentes
