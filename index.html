@@ -660,7 +660,13 @@ function longestDictAt(line, pos){
 
     roSpan.classList.add('hl');
 
-    if(!state.showJA) return;
+   /* === CLICK EN JAPO: popover + sincroniza RO === */
+document.addEventListener('click',(e)=>{
+  // (quitado) if(!state.showJA) return;
+  if(!capJA.contains(e.target)) { if(!e.target.closest('#popover')) pop.style.display='none'; return; }
+  ...
+}, true);
+
 
     const toks = Array.from(capRO.querySelectorAll('.word-ro'));
     const idx  = toks.indexOf(roSpan);
