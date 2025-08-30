@@ -7,36 +7,16 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Botón para ir al glosario */
-    .btn-link{
-      display:inline-block; margin-top:8px; padding:8px 12px;
-      border-radius:999px; border:1px solid #e9d5ff;
-      background:#faf5ff; color:#5b21b6; font-weight:700;
-      font-size:.9rem; text-decoration:none;
-    }
-    .btn-link:hover{ background:#f3e8ff }
-
-    /* Furigana */
-    ruby{ ruby-position: over; }   /* arriba del kanji */
-    rb{ line-height: 1; }
-    rt{
-      font-size:.7em; color:#9ca3af; line-height:1; letter-spacing:.02em;
-    }
-    .term rt{ display:block; text-align:center; }
-
     :root{
       --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
-      --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
-      --page-max:1200px;
+      --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0; --page-max:1200px;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0}
+    *{box-sizing:border-box} html,body{margin:0}
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       color:var(--ink);
       background:linear-gradient(135deg,#fdf2f8,#eef2ff,#ecfdf5);
-      background-attachment:fixed;
-      letter-spacing:.01em; /* leve mejora de legibilidad */
+      background-attachment:fixed; letter-spacing:.01em;
     }
     .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
     a{color:#6d28d9;text-decoration:none}
@@ -51,99 +31,110 @@
     .tab.active{font-weight:800;text-decoration:underline}
 
     /* HERO */
-    .hero{
-      display:flex;justify-content:center;align-items:center;
-      padding:0; background:transparent !important; box-shadow:none;
-    }
-    .hero-logo img{
-      max-width:600px;height:auto;display:block;
-      filter: drop-shadow(0 8px 22px rgba(124,58,237,.25));
-    }
-    .lead{
-      margin-top:10px; color:#6b7280; text-align:center;
-      font-weight:600;
-      background:linear-gradient(90deg,#7c3aed,#60a5fa);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
+    .hero{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 0;text-align:center}
+    .hero-logo img{max-width:520px;height:auto;filter:drop-shadow(0 8px 22px rgba(124,58,237,.25))}
+    .lead{margin-top:14px;font-weight:600;font-size:1.2rem;background:linear-gradient(90deg,#7c3aed,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
 
     /* BLOQUES */
-    .section{padding:24px 0}
-    .frame{
-      border-radius:18px;padding:1px;
-      background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));
-      box-shadow:0 10px 24px rgba(0,0,0,0.08);
-      max-width:var(--page-max); margin-inline:auto;
-    }
-    .glass{border-radius:18px;background:rgba(255,255,255,0.65);backdrop-filter:blur(10px);padding:18px}
-    @media (min-width:720px){.glass{padding:22px}}
-    .title{
-      font-weight:800;color:#4c1d95;margin:0 0 10px;
-      font-size:clamp(18px,2.2vw,22px);
-      position:relative; padding-bottom:4px;
-    }
-    .title::after{
-      content:""; position:absolute; left:0; bottom:-2px; height:3px; width:64px;
-      border-radius:999px;
-      background:linear-gradient(90deg,#a78bfa,#93c5fd,#86efac);
-      opacity:.9;
-    }
-    .muted{color:#6b7280}
+    .section{padding:32px 0}
+    .frame{border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08);max-width:var(--page-max);margin-inline:auto}
+    .glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);padding:24px}
+    .title{font-weight:800;color:#4c1d95;margin:0 0 12px;position:relative;padding-bottom:4px}
+    .title::after{content:"";position:absolute;left:0;bottom:-2px;height:3px;width:64px;border-radius:999px;background:linear-gradient(90deg,#a78bfa,#93c5fd,#86efac);opacity:.9}
+    .muted{color:var(--muted)}
 
-    /* TARJETAS / GRID / PLAYER */
-    .grid{display:grid;gap:16px}
-    .grid-3{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-    .card{
-      background:rgba(255,255,255,0.92);
-      border:1px solid #e9d5ff;border-radius:12px;
-      box-shadow:0 6px 18px rgba(0,0,0,.06);
-      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    }
-    .card:hover{
-      transform: translateY(-3px);
-      box-shadow:0 12px 28px rgba(0,0,0,.10);
-      border-color:#ddd6fe;
-    }
-    .card-inner{padding:12px 14px}
-    .card-inner p { line-height: 1.65; margin-bottom: .8em; }
-    .card-inner p:last-child { margin-bottom: 0; }
+    /* ===== Reproductor pastel (ajustes visuales) ===== */
+    .player{display:flex;flex-direction:column;gap:12px;max-width:960px;margin:0 auto;background:transparent;border:none}
 
-    .player{border:1px solid #e9d5ff;border-radius:12px;background:rgba(255,255,255,0.95);padding:12px 14px}
-    .caption{font-size:.95rem;text-align:center;line-height:1.5;color:#4b5563}
+    /* Header suavizado */
+    .header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;
+      background:rgba(255,255,255,.62);
+      color:var(--brand);
+      border-radius:14px 14px 0 0;
+      border-bottom:1px solid rgba(91,33,182,.12);
+      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    }
+    .title{margin:0;font-size:16px;font-weight:700;color:var(--brand)}
+    .badge{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(167,139,250,.22);color:var(--ink);border:1px solid rgba(91,33,182,.12)}
 
-    /* Player */
-    .screen.ratio-16x9{position:relative;aspect-ratio:16/9;height:auto;border-radius:16px;overflow:hidden;background:#000; box-shadow:0 10px 24px rgba(0,0,0,.18);}
-    .ratio-16x9{padding-top:0 !important}
-    .screen.ratio-16x9>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-    .screen.ratio-16x9>.progress{
-      position:absolute;left:0;right:0;bottom:0;height:6px;border-radius:999px;
-      background:linear-gradient(90deg,#7c3aed,#60a5fa,#34d399);width:0%;opacity:.95;z-index:2}
-    .btn-play{
-      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-      background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.65);
-      border-radius:999px;width:70px;height:70px;display:grid;place-items:center;color:#fff;cursor:pointer;z-index:3;font-size:22px;
-      box-shadow:0 8px 18px rgba(0,0,0,.25); animation: pulse 1.6s ease-in-out infinite;
+    /* Pantalla del video */
+    .stage{position:relative;background:#000;border-radius:0 0 14px 14px;overflow:hidden}
+    video{width:100%;height:auto;display:block;background:#000}
+
+    .center-play{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+    .center-play .btn-big{pointer-events:auto;--size:72px;width:var(--size);height:var(--size);border-radius:999px;border:none;display:grid;place-items:center;font-size:28px;color:white;
+      background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.45));box-shadow:0 10px 30px rgba(0,0,0,.25)}
+
+    /* Panel blanco para controles + foot */
+    .controls-panel{
+      background:#fff;border:1px solid #e9d5ff;border-radius:14px;box-shadow:0 6px 18px rgba(23,15,41,.08);
+      overflow:hidden;
     }
-    .btn-play:hover{background:rgba(0,0,0,.65); transform:translate(-50%,-50%) scale(1.04);}
-    @keyframes pulse{
-      0%,100%{ box-shadow:0 8px 18px rgba(124,58,237,.0); }
-      50%{ box-shadow:0 8px 28px rgba(124,58,237,.35); }
-    }
+    .controls{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px 16px;padding:14px 16px 12px;background:#fff}
+    .row{display:flex;align-items:center;gap:8px}
+    /* Centrar los botones de transporte en su fila */
+    .controls .row:first-child{grid-column:1/-1;justify-content:center}
+
+    .btn{--size:40px;width:var(--size);height:var(--size);display:grid;place-items:center;border-radius:12px;border:1px solid #e9d5ff;
+      background:linear-gradient(180deg,#fff,#fafafe);box-shadow:0 6px 16px rgba(23,15,41,.08);cursor:pointer;color:var(--ink)}
+    .btn[aria-pressed="true"]{outline:2px solid rgba(167,139,250,.45)}
+
+    .seek{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px}
+    .time{font-variant-numeric:tabular-nums;color:var(--muted);font-size:14px;min-width:70px;text-align:center}
+    .range{position:relative;height:22px;display:grid;align-items:center}
+    .buffered,.progress{pointer-events:none;position:absolute;left:0;height:4px;border-radius:999px}
+    .buffered{width:0%;background:#e9d5ff}.progress{width:0%;background:linear-gradient(90deg,#7c3aed,#60a5fa,#34d399)}
+    input[type="range"].slider{-webkit-appearance:none;width:100%;height:4px;background:transparent}
+    input[type="range"].slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:white;border:2px solid var(--brand)}
+
+    .vol{width:min(180px,25vw)}
+    input[type="range"].vol-slider{-webkit-appearance:none;width:100%;height:4px;background:#efeef8;border-radius:999px}
+    input[type="range"].vol-slider::-webkit-slider-thumb{width:14px;height:14px;border-radius:50%;background:var(--brand)}
+
+    .select{padding:8px 10px;border-radius:12px;border:1px solid #e9d5ff;background:linear-gradient(180deg,#fff,#fafafe);color:var(--ink)}
+    .foot{color:#6b7280;font-size:13px;padding:10px 16px;border-top:1px solid #e9d5ff;background:#fff}
+
+    .captions{position:absolute;left:0;right:0;bottom:6%;display:flex;flex-direction:column;gap:6px;align-items:center;padding:0 12px;z-index:5}
+    .cap-line{max-width:min(86%,900px);color:#111;font-weight:600;line-height:1.35;border-radius:14px;padding:8px 12px;box-shadow:0 6px 20px rgba(0,0,0,.16)}
+    .track-ja{background:rgba(167,243,208,.95)} .track-romaji{background:rgba(240,171,252,.95)} .track-es{background:rgba(147,197,253,.95)} .track-en{background:rgba(216,180,254,.95)}
 
     /* FOOTER */
-    .footer{margin-top:36px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,0.65)}
+    .footer{margin-top:36px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,.65)}
     .footer-inner{
       display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
       padding:20px 0;color:#374151;max-width:var(--page-max);margin-inline:auto;
     }
     .footer .title{font-weight:800;color:#5b21b6;margin-bottom:6px}
     ul{margin:0;padding-left:18px}
+
+    /* ——— Ajustes solicitados ——— */
+    #about-title::after{width:100% !important; left:0; right:0} /* línea larga solo aquí */
+    #about-copy{ color:#374151; } /* párrafo más oscuro */
+
+    /* Grid de funciones con más espacio debajo del título */
+    .functions-grid{
+      display:grid; gap:14px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      margin-top:22px;
+    }
+    .card{border:1px solid #e9d5ff;border-radius:12px;background:rgba(255,255,255,.92);box-shadow:0 6px 18px rgba(0,0,0,.06);}
+    .card-inner{padding:12px 14px}
+    .card .title{color:#5b21b6}
+
+    /* Responsivo */
+    @media (max-width:600px){
+      .header{padding:12px}
+      .controls{gap:10px 12px;padding:12px}
+      .time{min-width:58px;font-size:13px}
+    }
   </style>
 </head>
 <body>
   <!-- NAV -->
   <div class="nav">
     <div class="container nav-inner">
-      <a class="brand" href="index.html"><span>Voces del Anime</span></a>
+      <a class="brand" href="index.html">Voces del Anime</a>
       <div class="tabs">
         <a class="tab active" href="index.html">Inicio</a>
         <a class="tab" href="lengua.html">Lengua</a>
@@ -163,154 +154,171 @@
       </div>
     </section>
 
-    <!-- FRAGMENTOS -->
+    <!-- BLOQUE INTRO -->
     <section class="section">
       <div class="frame">
-        <div class="glass">
-          <h2 class="title" style="color:#7c3aed">Fragmentos seleccionados</h2>
-          <div class="grid-3">
-            <!-- Player 1 -->
-            <article class="player">
-              <div class="screen ratio-16x9" data-player>
-                <video preload="metadata" playsinline webkit-playsinline>
-                  <source src="itadakimasu.mp4" type="video/mp4">
-                </video>
-                <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
-                <div class="progress"></div>
-              </div>
-              <p class="caption">『いただきます！』 (Itadakimasu) — “¡A comer! / ¡Buen provecho!”</p>
-            </article>
+        <div class="glass" style="text-align:center; padding:40px 28px">
+          <h2 id="about-title" class="title" style="color:#7c3aed; font-size:clamp(26px,4vw,34px); margin-bottom:20px; display:inline-block; position:relative; padding-bottom:6px;">
+            Sobre el reproductor
+          </h2>
+          <p id="about-copy" class="muted" style="max-width:720px; margin:0 auto; font-size:1.1rem; line-height:1.7; text-align:justify">
+            Este reproductor interactivo permite explorar escenas con subtítulos en 
+            <strong>japonés</strong>, <strong>rōmaji</strong>, <strong>español</strong> e <strong>inglés</strong>. 
+            Podés alternar pistas, ajustar velocidad y hacer clic en palabras japonesas para ver su 
+            <em>lectura</em> y <em>significado</em>.
+          </p>
+        </div>
+      </div>
+    </section>
 
-            <!-- Player 2 -->
-            <article class="player">
-              <div class="screen ratio-16x9" data-player>
-                <video preload="metadata" playsinline webkit-playsinline>
-                  <source src="yoroshiku onegaishimasu.mp4" type="video/mp4">
-                </video>
-                <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
-                <div class="progress"></div>
-              </div>
-              <p class="caption">『よろしく<ruby><rb>お願い</rb><rt>ねが</rt></ruby>します』(Yoroshiku onegaishimasu) — “Encantado / Espero que nos llevemos bien.”</p>
-            </article>
+    <!-- BLOQUE REPRODUCTOR -->
+    <section class="section">
+      <div class="frame">
+        <div class="glass" style="padding:16px">
+          <div class="player" id="player" aria-label="Reproductor de video con subtítulos y panel flotante">
+            <div class="header">
+              <h1 class="title">Proyecto integral — Reproductor</h1>
+              <span class="badge" id="badgeDur">00:00</span>
+            </div>
 
-            <!-- Player 3 -->
-            <article class="player">
-              <div class="screen ratio-16x9" data-player>
-                <video preload="metadata" playsinline webkit-playsinline>
-                  <source src="ohayou gozaimasu senpai.mp4" type="video/mp4">
-                </video>
-                <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
-                <div class="progress"></div>
+            <div class="stage">
+              <video id="video" preload="metadata" playsinline webkit-playsinline>
+                <source id="src" src="video.mp4" type="video/mp4" />
+                <track id="trk-ja" label="日本語"   kind="subtitles" srclang="ja"      src="subs-ja.vtt" default />
+                <track id="trk-ro" label="Rōmaji"  kind="subtitles" srclang="ja-Latn" src="subs-ro.vtt" />
+                <track id="trk-es" label="Español" kind="subtitles" srclang="es"      src="subs-es.vtt" />
+                <track id="trk-en" label="Inglés"  kind="subtitles" srclang="en"      src="subs-en.vtt" />
+                Tu navegador no soporta la etiqueta <code>video</code>.
+              </video>
+
+              <!-- Botón central -->
+              <div class="center-play"><button class="btn-big" id="bigPlay">▶</button></div>
+
+              <!-- Subtítulos (overlays) -->
+              <div class="captions" id="captions">
+                <div class="cap-line track-ja"     id="cap-ja" hidden></div>
+                <div class="cap-line track-romaji" id="cap-romaji" hidden></div>
+                <div class="cap-line track-es"     id="cap-es" hidden></div>
+                <div class="cap-line track-en"     id="cap-en" hidden></div>
               </div>
-              <p class="caption">『おはようございます<ruby><rb>先輩</rb><rt>せんぱい</rt></ruby>』 (Ohayō gozaimasu, Senpai) — “Saludando a alguien con más experiencia”.</p>
-            </article>
+            </div>
+
+            <!-- Panel blanco de controles -->
+            <div class="controls-panel">
+              <div class="controls">
+                <div class="row">
+                  <button class="btn" id="back10" title="Retroceder 10s">⟲</button>
+                  <button class="btn" id="play"   title="Reproducir/Pausar"><span id="icon-play">▶</span></button>
+                  <button class="btn" id="fwd10"  title="Avanzar 10s">⟳</button>
+                </div>
+                <div class="row seek" aria-label="Barra de progreso">
+                  <div class="time" id="currentTime">0:00</div>
+                  <div class="range">
+                    <div class="buffered" id="bufferedBar"></div>
+                    <div class="progress" id="progressBar"></div>
+                    <input id="seek" class="slider" type="range" min="0" max="1000" step="1" value="0" />
+                  </div>
+                  <div class="time" id="duration">0:00</div>
+                </div>
+                <div class="row">
+                  <button class="btn" id="mute" title="Silenciar/Activar">🔊</button>
+                  <div class="vol"><input id="volume" class="vol-slider" type="range" min="0" max="1" step="0.01" value="1" /></div>
+                </div>
+                <div class="row">
+                  <select id="speed" class="select" aria-label="Velocidad">
+                    <option value="0.5">0.5×</option><option value="0.75">0.75×</option>
+                    <option value="1" selected>1×</option><option value="1.25">1.25×</option>
+                    <option value="1.5">1.5×</option><option value="1.75">1.75×</option><option value="2">2×</option>
+                  </select>
+                  <button class="btn" id="tog-ja"      aria-pressed="true"  title="Alternar Japonés">JA</button>
+                  <button class="btn" id="tog-romaji"  aria-pressed="false" title="Alternar Rōmaji">RO</button>
+                  <button class="btn" id="tog-es"      aria-pressed="false" title="Alternar Español">ES</button>
+                  <button class="btn" id="tog-en"      aria-pressed="false" title="Alternar Inglés">EN</button>
+                  <button class="btn" id="fs"          title="Pantalla completa">⤢</button>
+                </div>
+              </div>
+              <div class="foot">
+                Atajos: Espacio · ←/→ ±5s · ↑/↓ volumen · M mute · F fullscreen · J/A/E/N alternar subtítulos
+              </div>
+            </div>
+            <!-- /controls-panel -->
           </div>
         </div>
       </div>
     </section>
 
-    <!-- EXPLICACIÓN -->
+    <!-- NUEVO BLOQUE: Funciones del reproductor (6 tarjetas) -->
     <section class="section">
       <div class="frame">
         <div class="glass">
-          <h2 class="title">Explicación breve de las escenas</h2>
-          <div class="grid-3">
+          <h2 class="title" style="color:#7c3aed">Funciones del reproductor</h2>
+
+          <div class="functions-grid">
+            <!-- 1 -->
             <div class="card"><div class="card-inner">
-              <div class="title" style="color:#c2410c">① いただきます</div>
-              <p>Se usa antes de comer para expresar gratitud por la comida y el esfuerzo de quienes la hicieron posible.</p>
-              <p class="muted">Contexto: comedores escolares, cenas en familia, almuerzos en clubes.</p>
+              <div class="title">Reproducción & navegación</div>
+              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
+                <li><strong>Play/Pause</strong> con botón central o barra espaciadora.</li>
+                <li><strong>Retroceder/Avanzar 10s</strong> con ⟲ / ⟳ o flechas ← / → (±5s).</li>
+                <li><strong>Progreso</strong> con buffer (lila) y barra degradé.</li>
+                <li><strong>Pantalla completa</strong> con botón ⤢ o tecla F.</li>
+              </ul>
             </div></div>
+
+            <!-- 2 -->
             <div class="card"><div class="card-inner">
-              <div class="title" style="color:#4f46e5">② よろしく<ruby><rb>お願い</rb><rt>ねが</rt></ruby>します</div>
-              <p>Fórmula de cortesía para iniciar una relación o pedir colaboración con respeto.</p>
-              <p class="muted">Contexto: presentaciones en clase, entrada a un club, comienzo de proyectos.</p>
+              <div class="title">Audio & velocidad</div>
+              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
+                <li><strong>Volumen</strong> con deslizador o teclas ↑ / ↓.</li>
+                <li><strong>Mute</strong> con botón 🔊 (o tecla M).</li>
+                <li><strong>Velocidad</strong> de 0.5× a 2×.</li>
+              </ul>
             </div></div>
+
+            <!-- 3 -->
             <div class="card"><div class="card-inner">
-              <div class="title" style="color:#1f7a43">③ おはようございます<ruby><rb>先輩</rb><rt>せんぱい</rt></ruby></div>
-              <p>Un saludo formal de buenos días dirigido a un senpai, mostrando cortesía y reconocimiento hacia su rol de mayor experiencia.</p>
-              <p class="muted">Contexto: clubes escolares, equipos deportivos, ámbitos laborales y escolares.</p>
+              <div class="title">Subtítulos superpuestos</div>
+              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
+                <li><strong>Capas</strong> JA, RO, ES, EN sobre el video.</li>
+                <li><strong>Legibilidad</strong> con colores pastel y sombra suave.</li>
+                <li><strong>Auto-ocultado</strong> cuando no hay líneas activas.</li>
+              </ul>
+            </div></div>
+
+            <!-- 4 -->
+            <div class="card"><div class="card-inner">
+              <div class="title">Accesibilidad & atajos</div>
+              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
+                <li><strong>Teclado</strong>: Espacio, F, M, J/A/E/N.</li>
+                <li><strong>Estados</strong> de foco/activo visibles.</li>
+                <li><strong>Compatibilidad</strong> móvil y desktop (playsinline).</li>
+              </ul>
+            </div></div>
+
+            <!-- 5 NUEVA -->
+            <div class="card"><div class="card-inner">
+              <div class="title">Conmutadores de idioma</div>
+              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
+                <li><strong>JA / RO / ES / EN</strong> activables en paralelo.</li>
+                <li><strong>Estados</strong> accesibles con <code>aria-pressed</code>.</li>
+                <li><strong>Sincronía</strong> inmediata al alternar pistas.</li>
+              </ul>
+            </div></div>
+
+            <!-- 6 NUEVA -->
+            <div class="card"><div class="card-inner">
+              <div class="title">Indicadores de tiempo</div>
+              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
+                <li><strong>Tiempo actual</strong> y <strong>duración total</strong> visibles.</li>
+                <li><strong>Badge</strong> superior con duración del medio.</li>
+                <li><strong>Arrastre</strong> en la barra para saltos precisos.</li>
+              </ul>
             </div></div>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- SIGNIFICADOS + REGISTRO + EJEMPLOS -->
-    <section class="section">
-      <div class="frame">
-        <div class="glass">
-          <h2 class="title" style="color:#7c3aed">Significados, registro y ejemplos</h2>
-          <div class="grid-3">
-            <!-- ① いただきます -->
-            <article class="card"><div class="card-inner">
-              <div class="title" style="color:#c2410c">① いただきます <span class="muted">(itadakimasu)</span></div>
-              <p><strong>Cortesía cotidiana</strong></p>
-              <p><strong>Significado y registro</strong><br/>
-                Se utiliza antes de comer para expresar gratitud por la comida, la naturaleza y el trabajo de quienes la prepararon. Registro cortés pero cotidiano.
-              </p>
-              <p><strong>Ejemplos</strong><br/>
-                いただきます！ — <em>Itadakimasu!</em><br/>
-                <span class="muted">¡A comer! / ¡Buen provecho!</span><br/><br/>
-                みんなでいただきますと言いましょう。 — <em>Minna de itadakimasu to iimashō.</em><br/>
-                <span class="muted">Digamos “itadakimasu” entre todos.</span><br/><br/>
-                手作りのご飯、いただきます。 — <em>Tezukuri no gohan, itadakimasu.</em><br/>
-                <span class="muted">Comida casera… ¡itadakimasu!</span>
-              </p>
-              <p><strong>Notas culturales</strong><br/>
-                No es “bendecir” en sentido religioso occidental; enfatiza la interdependencia. En escenas escolares, suele decirse al unísono.
-              </p>
-              <p><strong>Relacionadas</strong><br/>
-                ごちそうさまでした ／ いただく（humilde de “recibir”）
-              </p>
-            </div></article>
-
-            <!-- ② よろしくお願いします -->
-            <article class="card"><div class="card-inner">
-              <div class="title" style="color:#4f46e5">② よろしく<ruby><rb>お願い</rb><rt>ねが</rt></ruby>します <span class="muted">(yoroshiku onegaishimasu)</span></div>
-              <p><strong>Fórmula relacional</strong></p>
-              <p><strong>Significado y registro</strong><br/>
-                Fórmula de cortesía para iniciar vínculos o pedir colaboración futura con respeto. Registro: cortés/neutral.
-              </p>
-              <p><strong>Ejemplos</strong><br/>
-                はじめまして。田中です。よろしくお願いします。 — <em>Hajimemashite. Tanaka desu. Yoroshiku onegaishimasu.</em><br/>
-                <span class="muted">Mucho gusto. Soy Tanaka. Encantado.</span><br/><br/>
-                明日の発表、よろしくお願いします。 — <em>Ashita no happyō, yoroshiku onegaishimasu.</em><br/>
-                <span class="muted">Cuento con ustedes para la presentación de mañana.</span><br/><br/>
-                来週から入部します。よろしくお願いします！ — <em>Raishū kara nyūbu shimasu. Yoroshiku onegaishimasu!</em><br/>
-                <span class="muted">Me sumo al club desde la semana que viene. ¡Un gusto trabajar con ustedes!</span>
-              </p>
-              <p><strong>Notas culturales</strong><br/>
-                No traduce literalmente; “sellado social” que anticipa cooperación. En clubes y en el aula, suaviza pedidos.
-              </p>
-              <p><strong>Relacionadas</strong><br/>
-                こちらこそ ／ お願いします（おねがい） ／ どうぞよろしく
-              </p>
-            </div></article>
-
-            <!-- ③ おはようございます + 先輩 -->
-            <article class="card"><div class="card-inner">
-              <div class="title" style="color:#1f7a43">③ おはようございます ／ 先輩 <span class="muted">(ohayō gozaimasu / senpai)</span></div>
-              <p><strong>Saludo matinal / Tratamiento social</strong></p>
-              <p><strong>Significado y registro</strong><br/>
-                “Buenos días”. Con <em>gozaimasu</em> es cortés; entre amigos/familia se usa おはよう (informal).<br/>
-                <em>Senpai</em>: persona con mayor antigüedad/experiencia en un grupo; se usa como título respetuoso.
-              </p>
-              <p><strong>Ejemplos</strong><br/>
-                おはようございます！ — <em>Ohayō gozaimasu!</em> <span class="muted">¡Buenos días!</span><br/><br/>
-                みなさん、おはよう。 — <em>Minasan, ohayō.</em> <span class="muted">Buenos días, a todos.</span><br/><br/>
-                朝練、おはようございます。 — <em>Asaren, ohayō gozaimasu.</em> <span class="muted">Buenos días (al iniciar la práctica).</span><br/><br/>
-                先輩、今日の練習は何時からですか。 — <em>Senpai, kyō no renshū wa nanji kara desu ka.</em><br/>
-                <span class="muted">¿A qué hora es la práctica de hoy?</span>
-              </p>
-              <p><strong>Notas culturales</strong><br/>
-                En clubes y trabajos, おはようございます puede usarse al comenzar el turno a cualquier hora.<br/>
-                La relación <em>senpai–kōhai</em> implica mentoría y responsabilidad.
-              </p>
-              <p><strong>Relacionadas</strong><br/>
-                こんにちは ／ こんばんは ／ 後輩（こうはい） ／ 敬語 (けいご)
-              </p>
-            </div></article>
-          </div>
+          <p class="muted" style="margin-top:12px;color:#475569">
+            Consejo: combiná <em>rōmaji</em> con japonés para seguir la lectura y comparar estructuras en tiempo real.
+          </p>
         </div>
       </div>
     </section>
@@ -338,26 +346,128 @@
     </div>
   </div>
 
-  <script>
-    // Reproductores simples
-    document.querySelectorAll("[data-player]").forEach((el) => {
-      const btn = el.querySelector(".btn-play");
-      const video = el.querySelector("video");
-      const progress = el.querySelector(".progress");
+<!-- === Script del reproductor (sin cambios funcionales) === -->
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const player = $('#player');
+  const video  = $('#video');
+  const bigPlay= $('#bigPlay');
+  const playBt = $('#play'); const iconPlay = $('#icon-play');
+  const back10 = $('#back10'); const fwd10 = $('#fwd10');
+  const seek   = $('#seek'); const prog = $('#progressBar'); const buf = $('#bufferedBar');
+  const curT   = $('#currentTime'); const durT = $('#duration'); const badgeDur = $('#badgeDur');
+  const muteBt = $('#mute'); const vol = $('#volume'); const speed = $('#speed'); const fs = $('#fs');
 
-      const toggle = () => {
-        if(video.paused){ video.play(); btn.textContent="⏸"; }
-        else{ video.pause(); btn.textContent="▶"; }
-      };
+  const capJA = $('#cap-ja'), capRO = $('#cap-romaji'), capES = $('#cap-es'), capEN = $('#cap-en');
+  const trkJA = $('#trk-ja'), trkRO = $('#trk-ro'), trkES = $('#trk-es'), trkEN = $('#trk-en');
+  const togJA = $('#tog-ja'), togRO = $('#tog-romaji'), togES = $('#tog-es'), togEN = $('#tog-en');
 
-      btn.addEventListener("click", toggle);
-      el.addEventListener("keydown", (e)=>{ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggle(); }});
-      video.addEventListener("timeupdate", ()=>{
-        progress.style.width = ((video.currentTime / (video.duration||1))*100) + "%";
-      });
-      video.addEventListener("ended", ()=>{ btn.textContent="▶"; progress.style.width="0%"; });
-    });
-  </script>
+  const state = { ja:true, ro:false, es:false, en:false };
+
+  function fmt(s){
+    if(!isFinite(s)) return '0:00';
+    const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=String(Math.floor(s%60)).padStart(2,'0');
+    return (h? h+':'+String(m).padStart(2,'0') : m)+':'+sec;
+  }
+
+  function togglePlay(){ (video.paused||video.ended)?video.play():video.pause(); }
+  [playBt, video, bigPlay].forEach(el => el.addEventListener('click', togglePlay));
+  video.addEventListener('play',  ()=>{ iconPlay.textContent='⏸'; bigPlay.style.display='none'; });
+  video.addEventListener('pause', ()=>{ iconPlay.textContent='▶';  bigPlay.style.display='grid'; });
+
+  back10.addEventListener('click', ()=> video.currentTime = Math.max(0, (video.currentTime||0)-10));
+  fwd10 .addEventListener('click', ()=> video.currentTime = Math.min(video.duration||0, (video.currentTime||0)+10));
+
+  function updateTime(){
+    curT.textContent = fmt(video.currentTime);
+    prog.style.width = ((video.currentTime/(video.duration||1))*100)+'%';
+    seek.value = Math.round((video.currentTime/(video.duration||1))*1000)||0;
+  }
+  function updateBuffered(){
+    try{
+      if(video.buffered && video.buffered.length){
+        const end = video.buffered.end(video.buffered.length-1);
+        buf.style.width = ((end/(video.duration||1))*100)+'%';
+      }
+    }catch(e){}
+  }
+  video.addEventListener('loadedmetadata', ()=>{ durT.textContent=fmt(video.duration); badgeDur.textContent=fmt(video.duration); updateBuffered(); });
+  video.addEventListener('timeupdate', updateTime);
+  video.addEventListener('progress', updateBuffered);
+  video.addEventListener('loadeddata', updateBuffered);
+  seek.addEventListener('input', ()=>{ video.currentTime=(seek.value/1000)*(video.duration||0); updateTime(); });
+
+  function setMuteIcon(){
+    const level = video.muted || video.volume===0 ? 0 : video.volume;
+    muteBt.textContent = level===0?'🔇':(level<.5?'🔈':'🔊');
+  }
+  vol.addEventListener('input', ()=>{ video.volume = Number(vol.value); if(video.volume>0) video.muted=false; setMuteIcon(); });
+  muteBt.addEventListener('click', ()=>{ video.muted = !video.muted; setMuteIcon(); });
+  video.addEventListener('volumechange', setMuteIcon); setMuteIcon();
+
+  speed.addEventListener('change', ()=>{ video.playbackRate = Number(speed.value); });
+
+  function toggleFS(){ if(document.fullscreenElement) document.exitFullscreen(); else player.requestFullscreen().catch(()=>{}); }
+  fs.addEventListener('click', toggleFS);
+
+  // Subtítulos -> overlays
+  const tracks = {
+    ja: trkJA?.track || null,
+    ro: trkRO?.track || null,
+    es: trkES?.track || null,
+    en: trkEN?.track || null
+  };
+  Object.values(tracks).forEach(t => { if(t){ try{ t.mode='hidden'; }catch(_){} } });
+
+  function activeText(t){
+    if(!t) return '';
+    const cue = t.activeCues && t.activeCues[0] ? t.activeCues[0] : null;
+    return cue ? cue.text : '';
+  }
+  function renderCaps(){
+    const show = (flag, el, txt) => {
+      if(!flag || !txt){ el.hidden = true; el.textContent=''; }
+      else { el.hidden = false; el.textContent = txt; }
+    };
+    show(state.ja, capJA, activeText(tracks.ja));
+    show(state.ro, capRO, activeText(tracks.ro));
+    show(state.es, capES, activeText(tracks.es));
+    show(state.en, capEN, activeText(tracks.en));
+  }
+  Object.values(tracks).forEach(t => { t && t.addEventListener('cuechange', renderCaps); });
+  ['timeupdate','seeked','ratechange'].forEach(ev => video.addEventListener(ev, renderCaps));
+  window.addEventListener('load', renderCaps);
+
+  function setPressed(btn, on){ btn && btn.setAttribute('aria-pressed', on); }
+  function syncToggles(){
+    setPressed(togJA, state.ja); setPressed(togRO, state.ro);
+    setPressed(togES, state.es); setPressed(togEN, state.en);
+    renderCaps();
+  }
+  toggler(togJA,'ja'); toggler(togRO,'ro'); toggler(togES,'es'); toggler(togEN,'en');
+  function toggler(btn,key){
+    btn && btn.addEventListener('click', ()=>{ state[key]=!state[key]; syncToggles(); });
+  }
+  syncToggles();
+
+  // Atajos
+  document.addEventListener('keydown', (e)=>{
+    if(e.target && ['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+    if(e.code==='Space'){ e.preventDefault(); togglePlay(); }
+    if(e.key==='ArrowLeft'){ video.currentTime=Math.max(0,(video.currentTime||0)-5); }
+    if(e.key==='ArrowRight'){ video.currentTime=Math.min(video.duration||0,(video.currentTime||0)+5); }
+    if(e.key==='ArrowUp'){ e.preventDefault(); video.volume=Math.min(1,(video.volume||0)+0.05); setMuteIcon(); }
+    if(e.key==='ArrowDown'){ e.preventDefault(); video.volume=Math.max(0,(video.volume||0)-0.05); setMuteIcon(); }
+    if(e.key.toLowerCase()==='m'){ video.muted=!video.muted; setMuteIcon(); }
+    if(e.key.toLowerCase()==='f'){ toggleFS(); }
+    if(e.key.toLowerCase()==='j'){ togJA?.click(); }
+    if(e.key.toLowerCase()==='a'){ togRO?.click(); }
+    if(e.key.toLowerCase()==='e'){ togES?.click(); }
+    if(e.key.toLowerCase()==='n'){ togEN?.click(); }
+  });
+})();
+</script>
 </body>
 </html>
 
