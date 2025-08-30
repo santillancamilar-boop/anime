@@ -181,93 +181,89 @@
     </section>
 
     <!-- BLOQUE REPRODUCTOR -->
-    <section class="section">
-      <div class="frame">
-        <div class="glass" style="padding:16px">
-          <div class="player" id="player" aria-label="Reproductor de video con subtítulos y panel flotante">
-            <div class="header">
-              <h1 class="title">Proyecto integral — Reproductor</h1>
-              <span class="badge" id="badgeDur">00:00</span>
-            </div>
+ <div class="player" id="player" tabindex="0" aria-label="Reproductor de video con subtítulos y panel flotante">
+    <div class="header">
+      <h1 class="title">Proyecto integral — Reproductor</h1>
+      <span class="badge" id="badgeDur">00:00</span>
+    </div>
 
-            <div class="stage">
-              <video id="video" preload="metadata" playsinline webkit-playsinline poster="poster.jpg">
-                <source id="src" src="video.mp4" type="video/mp4" />
-                <track id="trk-ja" label="日本語"   kind="subtitles" srclang="ja"      src="subs-ja.vtt" default />
-                <track id="trk-ro" label="Rōmaji"  kind="subtitles" srclang="ja-Latn" src="subs-ro.vtt" />
-                <track id="trk-es" label="Español" kind="subtitles" srclang="es"      src="subs-es.vtt" />
-                <track id="trk-en" label="Inglés"  kind="subtitles" srclang="en"      src="subs-en.vtt" />
-                Tu navegador no soporta la etiqueta <code>video</code>.
-              </video>
+    <div class="stage">
+      <video id="video" preload="metadata" playsinline webkit-playsinline poster="poster.jpg">
+        <source id="src" src="video.mp4" type="video/mp4" />
+        <track id="trk-ja" label="日本語"   kind="subtitles" srclang="ja"      src="subs-ja.vtt" default />
+        <track id="trk-ro" label="Rōmaji"  kind="subtitles" srclang="ja-Latn" src="subs-ro.vtt" />
+        <track id="trk-es" label="Español" kind="subtitles" srclang="es"      src="subs-es.vtt" />
+        <track id="trk-en" label="Inglés" kind="subtitles" srclang="es"      src="subs-en.vtt" />
+        Tu navegador no soporta la etiqueta <code>video</code>.
+      </video>
 
-              <div class="center-play"><button class="btn-big" id="bigPlay">▶</button></div>
+      <div class="center-play"><button class="btn-big" id="bigPlay" title="Reproducir">▶</button></div>
 
-              <div class="captions" id="captions">
-                <div class="cap-line track-ja"     id="cap-ja" hidden></div>
-                <div class="cap-line track-romaji" id="cap-romaji" hidden></div>
-                <div class="cap-line track-es"     id="cap-es" hidden></div>
-                <div class="cap-line track-en"     id="cap-en" hidden></div>
-              </div>
-
-              <div class="popover" id="popover">
-                <div><span class="word" id="pv-word">—</span></div>
-                <div class="hint" id="pv-read">Lectura: —</div>
-                <div class="meaning" id="pv-meaning">Significado: —</div>
-              </div>
-            </div>
-
-            <div class="controls-panel">
-              <div class="controls">
-                <div class="row">
-                  <button class="btn" id="back10" title="Retroceder 10s">⟲</button>
-                  <button class="btn" id="play"   title="Reproducir/Pausar"><span id="icon-play">▶</span></button>
-                  <button class="btn" id="fwd10"  title="Avanzar 10s">⟳</button>
-                </div>
-                <div class="row seek" aria-label="Barra de progreso">
-                  <div class="time" id="currentTime">0:00</div>
-                  <div class="range">
-                    <div class="buffered" id="bufferedBar"></div>
-                    <div class="progress" id="progressBar"></div>
-                    <input id="seek" class="slider" type="range" min="0" max="1000" step="1" value="0" />
-                  </div>
-                  <div class="time" id="duration">0:00</div>
-                </div>
-                <div class="row">
-                  <button class="btn" id="mute" title="Silenciar/Activar">🔊</button>
-                  <div class="vol"><input id="volume" class="vol-slider" type="range" min="0" max="1" step="0.01" value="1" /></div>
-                </div>
-                <div class="row">
-                  <select id="speed" class="select" aria-label="Velocidad">
-                    <option value="0.5">0.5×</option><option value="0.75">0.75×</option>
-                    <option value="1" selected>1×</option><option value="1.25">1.25×</option>
-                    <option value="1.5">1.5×</option><option value="1.75">1.75×</option><option value="2">2×</option>
-                  </select>
-                  <button class="btn" id="tog-ja"      aria-pressed="true"  title="Alternar Japonés">JA</button>
-                  <button class="btn" id="tog-romaji"  aria-pressed="false" title="Alternar Rōmaji">RO</button>
-                  <button class="btn" id="tog-es"      aria-pressed="false" title="Alternar Español">ES</button>
-                  <button class="btn" id="tog-en"      aria-pressed="false" title="Alternar Inglés">EN</button>
-                  <button class="btn" id="tog-fg"      aria-pressed="false" title="Furigana en JA">FG</button>
-                  <button class="btn" id="fs"          title="Pantalla completa">⤢</button>
-                </div>
-              </div>
-              <div class="foot">
-                Atajos: Espacio · ←/→ ±5s · ↑/↓ volumen · M mute · F fullscreen · J/A/E/N alternar subtítulos · G furigana
-              </div>
-            </div>
-
-            <div class="tools">
-              <button class="btn" id="btnTest">Probar video de prueba (MDN)</button>
-              <button class="btn" id="btnURL">Cargar por URL…</button>
-              <span class="pill" id="statusSrc">src: video.mp4</span>
-              <span class="pill" id="pillJA">JA: —</span>
-              <span class="pill" id="pillRO">RO: —</span>
-              <span class="pill" id="pillES">ES: —</span>
-              <span class="pill" id="pillEN">EN: —</span>
-            </div>
-          </div>
-        </div>
+      <div class="captions" id="captions">
+        <div class="cap-line track-ja"     id="cap-ja" hidden></div>
+        <div class="cap-line track-romaji" id="cap-romaji" hidden></div>
+        <div class="cap-line track-es"     id="cap-es" hidden></div>
+        <div class="cap-line track-en"     id="cap-en" hidden></div>
       </div>
-    </section>
+
+      <div class="popover" id="popover">
+        <div><span class="word" id="pv-word">—</span></div>
+        <div class="hint" id="pv-read">Lectura: —</div>
+        <div class="meaning" id="pv-meaning">Significado: —</div>
+      </div>
+    </div>
+
+    <div class="controls" role="group" aria-label="Controles">
+      <div class="row">
+        <button class="btn" id="back10" title="Retroceder 10s">⟲</button>
+        <button class="btn" id="play"   title="Reproducir/Pausar"><span id="icon-play">▶</span></button>
+        <button class="btn" id="fwd10"  title="Avanzar 10s">⟳</button>
+      </div>
+      <div class="row seek" aria-label="Barra de progreso">
+        <div class="time" id="currentTime">0:00</div>
+        <div class="range">
+          <div class="buffered" id="bufferedBar"></div>
+          <div class="progress" id="progressBar"></div>
+          <input id="seek" class="slider" type="range" min="0" max="1000" step="1" value="0" />
+        </div>
+        <div class="time" id="duration">0:00</div>
+      </div>
+      <div class="row">
+        <button class="btn" id="mute" title="Silenciar/Activar">🔊</button>
+        <div class="vol"><input id="volume" class="vol-slider" type="range" min="0" max="1" step="0.01" value="1" /></div>
+      </div>
+      <div class="row">
+        <select id="speed" class="select" aria-label="Velocidad">
+          <option value="0.5">0.5×</option>
+          <option value="0.75">0.75×</option>
+          <option value="1" selected>1×</option>
+          <option value="1.25">1.25×</option>
+          <option value="1.5">1.5×</option>
+          <option value="1.75">1.75×</option>
+          <option value="2">2×</option>
+        </select>
+        <button class="btn" id="tog-ja"      aria-pressed="true"  title="Alternar Japonés">JA</button>
+        <button class="btn" id="tog-romaji"  aria-pressed="false" title="Alternar Rōmaji">RO</button>
+        <button class="btn" id="tog-es"      aria-pressed="false" title="Alternar Español">ES</button>
+        <button class="btn" id="tog-en"      aria-pressed="false" title="Alternar Inglés">EN</button>
+        <button class="btn" id="tog-fg"      aria-pressed="false" title="Furigana en JA">FG</button>
+        <button class="btn" id="fs"          title="Pantalla completa">⤢</button>
+      </div>
+    </div>
+
+    <div class="tools">
+      <button class="btn" id="btnTest">Probar video de prueba (MDN)</button>
+      <button class="btn" id="btnURL">Cargar por URL…</button>
+      <span class="pill" id="statusSrc">src: video.mp4</span>
+      <span class="pill" id="pillJA">JA: —</span>
+      <span class="pill" id="pillRO">RO: —</span>
+      <span class="pill" id="pillES">ES: —</span>
+      <span class="pill" id="pillES">EN: —</span>
+    </div>
+    <div class="diag" id="diag"></div>
+
+    <div class="foot">Atajos: Espacio · ←/→ ±5s · ↑/↓ volumen · M mute · F pantalla completa · J/A/E alternar JA/RO/ES · G furigana</div>
+  </div>
   </main>
 
   <!-- FOOTER -->
