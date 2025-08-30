@@ -86,7 +86,7 @@
     .buffered,.progress{pointer-events:none;position:absolute;left:0;height:4px;border-radius:999px}
     .buffered{width:0%;background:#e9d5ff}.progress{width:0%;background:linear-gradient(90deg,#7c3aed,#60a5fa,#34d399)}
     input[type="range"].slider{-webkit-appearance:none;width:100%;height:4px;background:transparent}
-    input[type="range"].slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:white;border:2px solid var(--brand)}
+    input[type="range"].slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:white;border:2px solid --brand}
 
     .vol{width:min(180px,25vw)}
     input[type="range"].vol-slider{-webkit-appearance:none;width:100%;height:4px;background:#efeef8;border-radius:999px}
@@ -171,7 +171,7 @@
       </div>
     </section>
 
-    <!-- BLOQUE REPRODUCTOR -->
+    <!-- BLOQUE REPRODUCTOR (añadido para que el script funcione) -->
     <section class="section">
       <div class="frame">
         <div class="glass" style="padding:16px">
@@ -203,7 +203,7 @@
               </div>
             </div>
 
-            <!-- Panel blanco de controles -->
+            <!-- Panel de controles -->
             <div class="controls-panel">
               <div class="controls">
                 <div class="row">
@@ -247,62 +247,7 @@
       </div>
     </section>
 
-    <!-- NUEVO BLOQUE: Funciones del reproductor (6 tarjetas) -->
-    <section class="section">
-      <div class="frame">
-        <div class="glass">
-          <h2 class="title" style="color:#7c3aed">Funciones del reproductor</h2>
-
-          <div class="functions-grid">
-            <!-- 1 -->
-            <div class="card"><div class="card-inner">
-              <div class="title">Reproducción & navegación</div>
-              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
-                <li><strong>Play/Pause</strong> con botón central o barra espaciadora.</li>
-                <li><strong>Retroceder/Avanzar 10s</strong> con ⟲ / ⟳ o flechas ← / → (±5s).</li>
-                <li><strong>Progreso</strong> con buffer (lila) y barra degradé.</li>
-                <li><strong>Pantalla completa</strong> con botón ⤢ o tecla F.</li>
-              </ul>
-            </div></div>
-
-            <!-- 3 -->
-            <div class="card"><div class="card-inner">
-              <div class="title">Subtítulos superpuestos</div>
-              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
-                <li><strong>Capas</strong> JA, RO, ES, EN sobre el video.</li>
-                <li><strong>Legibilidad</strong> con colores pastel y sombra suave.</li>
-                <li><strong>Auto-ocultado</strong> cuando no hay líneas activas.</li>
-              </ul>
-            </div></div>
-
-
-            <!-- 5 NUEVA -->
-            <div class="card"><div class="card-inner">
-              <div class="title">Conmutadores de idioma</div>
-              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
-                <li><strong>JA / RO / ES / EN</strong> activables en paralelo.</li>
-                <li><strong>Estados</strong> accesibles con <code>aria-pressed</code>.</li>
-                <li><strong>Sincronía</strong> inmediata al alternar pistas.</li>
-              </ul>
-            </div></div>
-
-            <!-- 6 NUEVA -->
-            <div class="card"><div class="card-inner">
-              <div class="title">Indicadores de tiempo</div>
-              <ul style="margin:8px 0 0; padding-left:18px; color:#374151">
-                <li><strong>Tiempo actual</strong> y <strong>duración total</strong> visibles.</li>
-                <li><strong>Badge</strong> superior con duración del medio.</li>
-                <li><strong>Arrastre</strong> en la barra para saltos precisos.</li>
-              </ul>
-            </div></div>
-          </div>
-
-          <p class="muted" style="margin-top:12px;color:#475569">
-            Consejo: combiná <em>rōmaji</em> con japonés para seguir la lectura y comparar estructuras en tiempo real.
-          </p>
-        </div>
-      </div>
-    </section>
+    <!-- (tu bloque de funciones puede ir aquí si lo usás) -->
   </main>
 
   <!-- FOOTER -->
@@ -327,7 +272,7 @@
     </div>
   </div>
 
-<!-- === Script del reproductor (sin cambios funcionales) === -->
+<!-- === Script del reproductor (tuyo, sin tocar) === -->
 <script>
 (() => {
   const $ = s => document.querySelector(s);
