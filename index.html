@@ -46,7 +46,6 @@
     /* ===== Reproductor pastel (ajustes visuales) ===== */
     .player{display:flex;flex-direction:column;gap:12px;max-width:960px;margin:0 auto;background:transparent;border:none}
 
-    /* Header suavizado */
     .header{
       display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;
       background:rgba(255,255,255,.62);
@@ -58,7 +57,6 @@
     .title{margin:0;font-size:16px;font-weight:700;color:var(--brand)}
     .badge{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(167,139,250,.22);color:var(--ink);border:1px solid rgba(91,33,182,.12)}
 
-    /* Pantalla del video */
     .stage{position:relative;background:#000;border-radius:0 0 14px 14px;overflow:hidden}
     video{width:100%;height:auto;display:block;background:#000}
 
@@ -66,14 +64,12 @@
     .center-play .btn-big{pointer-events:auto;--size:72px;width:var(--size);height:var(--size);border-radius:999px;border:none;display:grid;place-items:center;font-size:28px;color:white;
       background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.45));box-shadow:0 10px 30px rgba(0,0,0,.25)}
 
-    /* Panel blanco para controles + foot */
     .controls-panel{
       background:#fff;border:1px solid #e9d5ff;border-radius:14px;box-shadow:0 6px 18px rgba(23,15,41,.08);
       overflow:hidden;
     }
     .controls{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px 16px;padding:14px 16px 12px;background:#fff}
     .row{display:flex;align-items:center;gap:8px}
-    /* Centrar los botones de transporte en su fila */
     .controls .row:first-child{grid-column:1/-1;justify-content:center}
 
     .btn{--size:40px;width:var(--size);height:var(--size);display:grid;place-items:center;border-radius:12px;border:1px solid #e9d5ff;
@@ -86,7 +82,6 @@
     .buffered,.progress{pointer-events:none;position:absolute;left:0;height:4px;border-radius:999px}
     .buffered{width:0%;background:#e9d5ff}.progress{width:0%;background:linear-gradient(90deg,#7c3aed,#60a5fa,#34d399)}
     input[type="range"].slider{-webkit-appearance:none;width:100%;height:4px;background:transparent}
-    /* FIX: usar var(--brand) */
     input[type="range"].slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:white;border:2px solid var(--brand)}
 
     .vol{width:min(180px,25vw)}
@@ -122,7 +117,7 @@
     .card-inner{padding:12px 14px}
     .card .title{color:#5b21b6}
 
-    /* === Estilos avanzados SIEMPRE activos (no dentro de @media) === */
+    /* === Extensiones para funciones avanzadas (siempre activas) === */
     .tools{ display:flex; gap:8px; padding:10px 16px 0; flex-wrap:wrap }
     .tools .btn{ height:auto; padding:8px 12px; width:auto }
     .pill{ padding:4px 8px; border-radius:999px; border:1px solid #e9d5ff; background:rgba(255,255,255,.92); white-space:nowrap }
@@ -205,10 +200,8 @@
                 Tu navegador no soporta la etiqueta <code>video</code>.
               </video>
 
-              <!-- Botón central -->
               <div class="center-play"><button class="btn-big" id="bigPlay">▶</button></div>
 
-              <!-- Subtítulos (overlays) -->
               <div class="captions" id="captions">
                 <div class="cap-line track-ja"     id="cap-ja" hidden></div>
                 <div class="cap-line track-romaji" id="cap-romaji" hidden></div>
@@ -216,7 +209,6 @@
                 <div class="cap-line track-en"     id="cap-en" hidden></div>
               </div>
 
-              <!-- Popover diccionario -->
               <div class="popover" id="popover">
                 <div><span class="word" id="pv-word">—</span></div>
                 <div class="hint" id="pv-read">Lectura: —</div>
@@ -224,7 +216,6 @@
               </div>
             </div>
 
-            <!-- Panel de controles -->
             <div class="controls-panel">
               <div class="controls">
                 <div class="row">
@@ -264,7 +255,6 @@
               </div>
             </div>
 
-            <!-- Herramientas -->
             <div class="tools">
               <button class="btn" id="btnTest">Probar video de prueba (MDN)</button>
               <button class="btn" id="btnURL">Cargar por URL…</button>
@@ -278,8 +268,6 @@
         </div>
       </div>
     </section>
-
-    <!-- (tu bloque de funciones puede ir aquí si lo usás) -->
   </main>
 
   <!-- FOOTER -->
@@ -304,13 +292,13 @@
     </div>
   </div>
 
-<!-- === Script del reproductor (arreglado) === -->
+<!-- === Script del reproductor === -->
 <script>
 (function(){
   const $ = s => document.querySelector(s);
   const player=$('#player'), video=$('#video'), srcEl=$('#src');
 
-  /* permitir click en rōmaji (para popover y sync inversa) */
+  /* habilitar click en rōmaji para popover/inversa */
   const roClickCSS = document.createElement('style');
   roClickCSS.textContent = '.track-romaji .word-ro{pointer-events:auto;cursor:pointer}';
   document.head.appendChild(roClickCSS);
@@ -319,7 +307,7 @@
   const back10=$('#back10'), fwd10=$('#fwd10'), seek=$('#seek'),
         progressBar=$('#progressBar'), bufferedBar=$('#bufferedBar');
   const cur=$('#currentTime'), dur=$('#duration'), muteBtn=$('#mute'),
-        vol=$('#volume'), speed=$('#speed'), fs=$('#fs'), badgeDur=$('#badgeDur']);
+        vol=$('#volume'), speed=$('#speed'), fs=$('#fs'), badgeDur=$('#badgeDur');
   const statusSrc=$('#statusSrc');
   const pillJA=$('#pillJA'), pillRO=$('#pillRO'), pillES=$('#pillES'), pillEN=$('#pillEN');
 
@@ -376,7 +364,7 @@
   togEN?.addEventListener('click', ()=>{ state.showEN=!state.showEN; syncToggles(); rerenderAndClean(); });
   togFG?.addEventListener('click', ()=>{ state.showFG=!state.showFG; syncToggles(); renderCue(); });
 
-  /* ======== Diccionario (ejemplo) ======== */
+  /* ======== Diccionario (recortado del tuyo) ======== */
   const JA_DICT={
     "孫悟飯":{yomi:"そんごはん",gloss:"Son Gohan (nombre propio)",ro:"son gohan"},
     "正しい":{yomi:"ただしい",gloss:"correcto; justo",ro:"tadashii"},
@@ -395,7 +383,7 @@
   };
   const DICT_KEYS=Object.keys(JA_DICT).sort((a,b)=>b.length-a.length);
 
-  // Segmentación JA con preferencia por diccionario (fallback a chars)
+  // Segmentación JA (preferencia diccionario)
   const segJA = (typeof Intl!=='undefined' && Intl.Segmenter)? new Intl.Segmenter('ja',{granularity:'word'}) : null;
   function sliceWithDict(line){
     const out=[]; let i=0;
@@ -533,7 +521,7 @@
   ['timeupdate','seeked','ratechange'].forEach(ev => video.addEventListener(ev, renderCue));
   window.addEventListener('load', renderCue);
 
-  /* ======== Popover + highlight ======== */
+  /* ======== Popover + highlight (declarado UNA sola vez) ======== */
   const pop=$('#popover'), pvWord=$('#pv-word'), pvRead=$('#pv-read'), pvMeaning=$('#pv-meaning');
 
   function clearRO(){ capRO.querySelectorAll('.hl').forEach(el=>el.classList.remove('hl')); const b=capRO.querySelector('.ro-badge'); b?.remove(); }
@@ -579,7 +567,7 @@
   });
   capJA.addEventListener('mouseleave', () => { clearJA(); if (state.showRO) clearRO(); });
 
-  // Hover RO -> JA (aproxima por diccionario)
+  // Inversa: RO -> JA (aproxima por diccionario)
   function normAllRoDict(){ const out=[]; for(const k of DICT_KEYS){ const e=JA_DICT[k]; if(e?.ro) out.push([k, norm(e.ro)]); } return out; }
   const RO_DICT = normAllRoDict();
 
@@ -626,23 +614,23 @@
   });
   capRO.addEventListener('mouseleave', ()=>{ clearRO(); if(state.showJA) clearJA(); });
 
-  // Popover: clic en JA -> muestra info y resalta RO
-  function longestDictAt(line, pos){
-    let best=null;
-    for(const k of DICT_KEYS){
-      const i=line.indexOf(k);
-      if(i!==-1 && i<=pos && pos<i+k.length){ if(!best || k.length>best.text.length) best={text:k,start:i,end:i+k.length,entry:JA_DICT[k]}; }
-    }
-    return best;
-  }
+  // Click en JA -> popover + resalta RO
   document.addEventListener('click',(e)=>{
-    // Clic en JA
     if(state.showJA && capJA.contains(e.target)){
       const span=e.target.closest('.word-ja'); if(!span) return;
       const wrap=span.closest('.line-ja');
       const line=wrap?(wrap.dataset.text||''):'';
       const start=Number(span.dataset.start)||0, end=Number(span.dataset.end)||start+(span.textContent||'').length;
       const pos=Math.floor((start+end)/2);
+
+      function longestDictAt(line, pos){
+        let best=null;
+        for(const k of DICT_KEYS){
+          const i=line.indexOf(k);
+          if(i!==-1 && i<=pos && pos<i+k.length){ if(!best || k.length>best?.text?.length) best={text:k,start:i,end:i+k.length,entry:JA_DICT[k]}; }
+        }
+        return best;
+      }
 
       let surface = span.dataset.word || span.textContent;
       let entry = (span.dataset.dict==='1') ? {yomi:span.dataset.yomi,gloss:span.dataset.gloss,ro:span.dataset.roma,note:span.dataset.note} : null;
@@ -661,7 +649,7 @@
       if(romaOut) highlightInRO(romaOut);
       return;
     }
-    // Ocultar popover si clic fuera
+    // ocultar popover si clic fuera
     if(!e.target.closest('#popover')) pop.style.display='none';
   }, true);
 
@@ -689,11 +677,6 @@
   renderCue();
 })();
 </script>
-
-<!-- (Opcional rápido de prueba: activar controles nativos)
-<script>document.querySelector('#video').setAttribute('controls','');</script>
--->
-
 </body>
 </html>
 
