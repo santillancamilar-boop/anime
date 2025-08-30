@@ -559,8 +559,13 @@ function placePopoverAtSpan(span){
         tokens.forEach((tok,idx)=>{
           const sp=document.createElement('span');
           sp.className='word-ja';
-          if(state.showFG && tok.dict){ sp.innerHTML = `<ruby><rb>${tok.text}</rb><rt>${tok.dict.yomi}</rt></ruby>`; }
-          else { sp.textContent = tok.text; }
+        const hasKanji = /[\u4E00-\u9FFF]/.test(tok.text);
+if (state.showFG && tok.dict && hasKanji){
+  sp.innerHTML = `<ruby><rb>${tok.text}</rb><rt>${tok.dict.yomi}</rt></ruby>`;
+} else {
+  sp.textContent = tok.text;
+}
+
           sp.dataset.word=tok.text.trim();
           sp.dataset.start=tok.start; sp.dataset.end=tok.end; sp.dataset.idx=idx;
           if(tok.dict){
