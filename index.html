@@ -535,6 +535,52 @@ function placePopoverAtSpan(span){
     return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
   };
 
+  const isKanji = ch => /[\u3400-\u9FFF]/.test(ch);
+const isKana  = ch => /[\u3040-\u309F\u30A0-\u30FFー]/.test(ch);
+const kataToHira = s => s.replace(/[\u30A1-\u30F6]/g, c => String.fromCharCode(c.charCodeAt(0)-0x60));
+
+function makeRubyKanjiOnly(surface, yomi){
+  if(!surface || !yomi) return surface;
+  const y = kataToHira(yomi);
+  const chars = Array.from(surface);
+
+  // anclamos las sílabas que ya vienen en la palabra (kana) dentro de la lectura:
+  let p=0;
+  const anchors=[]; // [{i: idxSurface, q: idxYomi, len}]
+  for(let i=0;i<chars.length;i++){
+    const ch = chars[i];
+    if(isKana(ch)){
+      const h = kataToHira(ch);
+      const q = y.indexOf(h, p);
+      if(q !== -1){ anchors.push({i, q, len:h.length}); p = q + h.length; }
+    }
+  }
+
+  let lastY = 0, out = '';
+  const findAnchorFrom = (idx) => anchors.find(a => a.i >= idx);
+
+  for(let i=0;i<chars.length;){
+    if(isKanji(chars[i])){
+      // agrupamos kanji contiguos como un solo <ruby>
+      let j=i; while(j<chars.length && isKanji(chars[j])) j++;
+      const next = findAnchorFrom(j);
+      const endY = next ? next.q : y.length;
+      let read = y.slice(lastY, endY);
+      const group = chars.slice(i, j).join('');
+      out += `<ruby><rb>${group}</rb><rt>${read}</rt></ruby>`;
+      lastY = endY;
+      i = j;
+    }else{
+      out += chars[i];
+      const a = anchors.find(a => a.i === i);
+      if(a) lastY = Math.max(lastY, a.q + a.len);
+      i++;
+    }
+  }
+  return out;
+}
+
+
   /* ======== Render ======== */
   function renderLine(track, el, mode){
     const show=(state.showJA&&mode==='ja')||(state.showRO&&mode==='ro')||(state.showES&&mode==='es')||(state.showEN&&mode==='en');
@@ -556,15 +602,39 @@ function placePopoverAtSpan(span){
         const tokens = segmentJapanese(lineText);
         const wrap = document.createElement('span');
         wrap.className='line-ja'; wrap.dataset.text=lineText;
-        tokens.forEach((tok,idx)=>{
-          const sp=document.createElement('span');
-          sp.className='word-ja';
-        const hasKanji = /[\u4E00-\u9FFF]/.test(tok.text);
-if (state.showFG && tok.dict && hasKanji){
-  sp.innerHTML = `<ruby><rb>${tok.text}</rb><rt>${tok.dict.yomi}</rt></ruby>`;
-} else {
-  sp.textContent = tok.text;
-}
+      tokens.forEach((tok, idx) => {
+  const sp = document.createElement('span');
+  sp.className = 'word-ja';
+
+  // ¿Este token tiene algún kanji?
+  const hasKanji = Array.from(tok.text).some(isKanji);
+
+  // Furigana solo en los kanji (si FG está activo y hay entrada en el diccionario)
+  if (state.showFG && tok.dict && hasKanji) {
+    sp.innerHTML = makeRubyKanjiOnly(tok.text, tok.dict.yomi);
+  } else {
+    sp.textContent = tok.text;
+  }
+
+  // Metadatos que usa el popover / highlight
+  sp.dataset.word  = tok.text.trim();
+  sp.dataset.start = tok.start;
+  sp.dataset.end   = tok.end;
+  sp.dataset.idx   = idx;
+
+  if (tok.dict) {
+    sp.dataset.dict  = '1';
+    sp.dataset.yomi  = tok.dict.yomi  || '';
+    sp.dataset.gloss = tok.dict.gloss || '';
+    if (tok.dict.ro)   sp.dataset.roma = tok.dict.ro;
+    if (tok.dict.note) sp.dataset.note = tok.dict.note;
+  } else {
+    sp.dataset.dict = '0';
+  }
+
+  wrap.appendChild(sp);
+});
+
 
           sp.dataset.word=tok.text.trim();
           sp.dataset.start=tok.start; sp.dataset.end=tok.end; sp.dataset.idx=idx;
