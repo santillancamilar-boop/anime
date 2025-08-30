@@ -582,93 +582,96 @@ function makeRubyKanjiOnly(surface, yomi){
 
 
   /* ======== Render ======== */
-  function renderLine(track, el, mode){
-    const show=(state.showJA&&mode==='ja')||(state.showRO&&mode==='ro')||(state.showES&&mode==='es')||(state.showEN&&mode==='en');
-    if(!show){ el.hidden=true; el.innerHTML=''; return; }
+ function renderLine(track, el, mode){
+  const show = (state.showJA && mode==='ja') ||
+               (state.showRO && mode==='ro') ||
+               (state.showES && mode==='es') ||
+               (state.showEN && mode==='en');
+  if(!show){ el.hidden=true; el.innerHTML=''; return; }
 
-    let cue=null;
-    if(track?.activeCues?.length) cue=track.activeCues[0];
-    else if(track?.cues?.length){
-      const t=video.currentTime;
-      for(let i=0;i<track.cues.length;i++){ const c=track.cues[i]; if(t>=c.startTime && t<=c.endTime){ cue=c; break; } }
+  // localizar cue activo
+  let cue=null;
+  if(track?.activeCues?.length) cue=track.activeCues[0];
+  else if(track?.cues?.length){
+    const t=video.currentTime;
+    for(let i=0;i<track.cues.length;i++){
+      const c=track.cues[i];
+      if(t>=c.startTime && t<=c.endTime){ cue=c; break; }
     }
-    if(!cue){ el.hidden=true; el.innerHTML=''; return; }
+  }
+  if(!cue){ el.hidden=true; el.innerHTML=''; return; }
 
-    el.hidden=false; el.innerHTML='';
-    const lines = cue.text.split(/\r?\n/);
-    for(let li=0; li<lines.length; li++){
-      const lineText = lines[li];
-      if(mode==='ja'){
-        const tokens = segmentJapanese(lineText);
-        const wrap = document.createElement('span');
-        wrap.className='line-ja'; wrap.dataset.text=lineText;
+  el.hidden=false; el.innerHTML='';
+  const lines = cue.text.split(/\r?\n/);
+
+  for(let li=0; li<lines.length; li++){
+    const lineText = lines[li];
+
+    if(mode==='ja'){
+      const tokens = segmentJapanese(lineText);
+      const wrap = document.createElement('span');
+      wrap.className = 'line-ja';
+      wrap.dataset.text = lineText;
+
       tokens.forEach((tok, idx) => {
-  const sp = document.createElement('span');
-  sp.className = 'word-ja';
+        const sp = document.createElement('span');
+        sp.className = 'word-ja';
 
-  // ¿Este token tiene algún kanji?
-  const hasKanji = Array.from(tok.text).some(isKanji);
+        // ¿este token tiene kanji?
+        const hasKanji = Array.from(tok.text).some(isKanji);
 
-  // Furigana solo en los kanji (si FG está activo y hay entrada en el diccionario)
-  if (state.showFG && tok.dict && hasKanji) {
-    sp.innerHTML = makeRubyKanjiOnly(tok.text, tok.dict.yomi);
-  } else {
-    sp.textContent = tok.text;
-  }
+        // Furigana solo sobre los kanji si FG está activo y hay lectura en el diccionario
+        if (state.showFG && tok.dict && hasKanji) {
+          sp.innerHTML = makeRubyKanjiOnly(tok.text, tok.dict.yomi);
+        } else {
+          sp.textContent = tok.text;
+        }
 
-  // Metadatos que usa el popover / highlight
-  sp.dataset.word  = tok.text.trim();
-  sp.dataset.start = tok.start;
-  sp.dataset.end   = tok.end;
-  sp.dataset.idx   = idx;
+        // metadatos
+        sp.dataset.word  = tok.text.trim();
+        sp.dataset.start = tok.start;
+        sp.dataset.end   = tok.end;
+        sp.dataset.idx   = idx;
 
-  if (tok.dict) {
-    sp.dataset.dict  = '1';
-    sp.dataset.yomi  = tok.dict.yomi  || '';
-    sp.dataset.gloss = tok.dict.gloss || '';
-    if (tok.dict.ro)   sp.dataset.roma = tok.dict.ro;
-    if (tok.dict.note) sp.dataset.note = tok.dict.note;
-  } else {
-    sp.dataset.dict = '0';
-  }
+        if (tok.dict) {
+          sp.dataset.dict  = '1';
+          sp.dataset.yomi  = tok.dict.yomi  || '';
+          sp.dataset.gloss = tok.dict.gloss || '';
+          if (tok.dict.ro)   sp.dataset.roma = tok.dict.ro;
+          if (tok.dict.note) sp.dataset.note = tok.dict.note;
+        } else {
+          sp.dataset.dict = '0';
+        }
 
-  wrap.appendChild(sp);
-});
+        wrap.appendChild(sp);
+      });
 
+      el.appendChild(wrap);
 
-          sp.dataset.word=tok.text.trim();
-          sp.dataset.start=tok.start; sp.dataset.end=tok.end; sp.dataset.idx=idx;
-          if(tok.dict){
-            sp.dataset.dict='1';
-            sp.dataset.yomi = tok.dict.yomi || '';
-            sp.dataset.gloss= tok.dict.gloss || '';
-            if(tok.dict.ro) sp.dataset.roma = tok.dict.ro;
-            if(tok.dict.note) sp.dataset.note = tok.dict.note;
-          } else sp.dataset.dict='0';
-          wrap.appendChild(sp);
-        });
-        el.appendChild(wrap);
-      } else if(mode==='ro'){
-        const parts = lineText.split(/(\s+|[.,!?¡¿…:;()\[\]'"-])/).filter(Boolean);
-        let idx=0;
-        parts.forEach(tok=>{
-          if(/\s+|[.,!?¡¿…:;()\[\]'"-]/.test(tok)){
-            el.appendChild(document.createTextNode(tok));
-          }else{
-            const sp=document.createElement('span');
-            sp.className='word-ro';
-            sp.textContent=tok;
-            sp.dataset.norm = norm(tok);
-            sp.dataset.idx = String(idx++);
-            el.appendChild(sp);
-          }
-        });
-      } else {
-        el.appendChild(document.createTextNode(lineText));
-      }
-      if(li<lines.length-1) el.appendChild(document.createElement('br'));
+    } else if(mode==='ro'){
+      const parts = lineText.split(/(\s+|[.,!?¡¿…:;()\[\]'"-])/).filter(Boolean);
+      let idx=0;
+      parts.forEach(tok=>{
+        if(/\s+|[.,!?¡¿…:;()\[\]'"-]/.test(tok)){
+          el.appendChild(document.createTextNode(tok));
+        }else{
+          const sp=document.createElement('span');
+          sp.className='word-ro';
+          sp.textContent=tok;
+          sp.dataset.norm = norm(tok);
+          sp.dataset.idx = String(idx++);
+          el.appendChild(sp);
+        }
+      });
+
+    } else {
+      el.appendChild(document.createTextNode(lineText));
     }
+
+    if(li<lines.length-1) el.appendChild(document.createElement('br'));
   }
+}
+
 
   function renderCue(){
     renderLine(tracks.ja,capJA,'ja');
