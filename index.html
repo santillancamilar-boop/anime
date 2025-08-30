@@ -122,9 +122,21 @@
     .tools .btn{ height:auto; padding:8px 12px; width:auto }
     .pill{ padding:4px 8px; border-radius:999px; border:1px solid #e9d5ff; background:rgba(255,255,255,.92); white-space:nowrap }
 
-    .popover{ position:absolute; z-index:10; min-width:220px; max-width:320px; background:#fff;
-      border:1px solid #e9d5ff; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.15); padding:10px 12px; display:none }
-    .popover .word{ font-weight:800 } .popover .hint{ color:var(--muted); font-size:12px } .popover .meaning{ margin-top:6px }
+    .popover{
+  position:fixed;           /* <- clave: ya no se recorta por overflow */
+  z-index:9999;
+  min-width:220px; max-width:320px;
+  background:#fff;
+  border:1px solid #e9d5ff;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+  padding:10px 12px;
+  display:none;
+}
+.popover .word{ font-weight:800 }
+.popover .hint{ color:var(--muted); font-size:12px }
+.popover .meaning{ margin-top:6px }
+
 
     .word-ja{ cursor:pointer; padding:0 2px; border-radius:6px }
     .word-ja:hover{ background:rgba(0,0,0,.06) }
@@ -327,7 +339,29 @@
   ;[playBtn, video, bigPlay].forEach(el=>el.addEventListener('click', togglePlay));
   video.addEventListener('play', ()=>{ iconPlay.textContent='⏸'; bigPlay.style.display='none'; });
   video.addEventListener('pause', ()=>{ iconPlay.textContent='▶';  bigPlay.style.display='grid'; });
+function placePopoverAtSpan(span){
+  const rect = span.getBoundingClientRect();
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const margin = 8;
 
+  // mostrar y medir
+  pop.style.visibility = 'hidden';
+  pop.style.display = 'block';
+  const pr = pop.getBoundingClientRect();
+
+  // preferir arriba; si no entra, abajo
+  let top = rect.top - pr.height - 12;
+  if (top < margin) top = rect.bottom + 12;
+
+  // centrar en X y limitar a viewport
+  let left = rect.left + (rect.width - pr.width)/2;
+  left = Math.max(margin, Math.min(left, vw - pr.width - margin));
+  top  = Math.max(margin, Math.min(top , vh - pr.height - margin));
+
+  pop.style.left = left + 'px';
+  pop.style.top  = top  + 'px';
+  pop.style.visibility = 'visible';
+}
   back10.addEventListener('click', ()=> video.currentTime=Math.max(0, (video.currentTime||0)-10));
   fwd10 .addEventListener('click', ()=> video.currentTime=Math.min(video.duration||0, (video.currentTime||0)+10));
 
@@ -754,77 +788,81 @@
     pvRead.textContent = 'Lectura: ' + (entry?.yomi || '—');
     pvMeaning.textContent = 'Significado: ' + (entry?.gloss || '—') + (entry?.note ? ' · Uso: ' + entry.note : '');
 
-    const rect=player.getBoundingClientRect();
-    pop.style.display='block';
-    pop.style.left=(Math.min(rect.width-10, Math.max(10, e.clientX - rect.left + 8)))+'px';
-    pop.style.top =(Math.min(rect.height-10, Math.max(10, e.clientY - rect.top + 8)) - 10)+'px';
+  pop.style.display='block';
+requestAnimationFrame(()=> placePopoverAtSpan(span));
 
     const romaOut = entry?.ro || (entry?.yomi ? hiraToRoma(entry.yomi) : '');
     if(romaOut) highlightInRO(romaOut);
   }, true);
 
-  /* === CLICK EN ROMAJI: popover + reflejo JA === */
-  document.addEventListener('click',(e)=>{
-    if(!state.showRO) return;
-    if(!capRO.contains(e.target)) return;
-    const roSpan = e.target.closest('.word-ro'); if(!roSpan) return;
+/* === CLICK EN ROMAJI: popover + reflejo JA === */
+document.addEventListener('click',(e)=>{
+  if(!state.showRO) return;
+  if(!capRO.contains(e.target)) return;
+  const roSpan = e.target.closest('.word-ro'); if(!roSpan) return;
 
-    const toks = Array.from(capRO.querySelectorAll('.word-ro'));
-    const idx  = toks.indexOf(roSpan);
-    const get  = i => (i>=0 && i<toks.length)? toks[i].textContent.trim() : null;
+  const toks = Array.from(capRO.querySelectorAll('.word-ro'));
+  const idx  = toks.indexOf(roSpan);
+  const get  = i => (i>=0 && i<toks.length)? toks[i].textContent.trim() : null;
 
-    const candidates = [];
-    for (let w=4; w>=1; w--) {
-      for (let start=idx-(w-1); start<=idx; start++) {
-        if (start<0) continue;
-        const parts=[];
-        for (let k=0;k<w;k++){ const t=get(start+k); if(!t){ parts.length=0; break; } parts.push(t); }
-        if(parts.length) candidates.push({start, end:start+w-1, text:parts.join(' ')});
-      }
+  // candidatos de 1 a 4 tokens alrededor del clic
+  const candidates = [];
+  for (let w=4; w>=1; w--) {
+    for (let start=idx-(w-1); start<=idx; start++) {
+      if (start<0) continue;
+      const parts=[];
+      for (let k=0;k<w;k++){ const t=get(start+k); if(!t){ parts.length=0; break; } parts.push(t); }
+      if(parts.length) candidates.push({start, end:start+w-1, text:parts.join(' ')});
     }
+  }
 
-    let match=null, entry=null, key=null;
-    const keysWithRO = DICT_KEYS.filter(k => JA_DICT[k]?.ro);
-    for (const cand of candidates) {
-      const cn = norm(cand.text);
-      for (const k of keysWithRO) {
-        if (norm(JA_DICT[k].ro) === cn) { match=cand; entry=JA_DICT[k]; key=k; break; }
-      }
-      if (match) break;
+  // encontrar el candidato que coincide con el diccionario (por rōmaji normalizado)
+  let match=null, entry=null, key=null;
+  const keysWithRO = DICT_KEYS.filter(k => JA_DICT[k]?.ro);
+  for (const cand of candidates) {
+    const cn = norm(cand.text);
+    for (const k of keysWithRO) {
+      if (norm(JA_DICT[k].ro) === cn) { match=cand; entry=JA_DICT[k]; key=k; break; }
     }
-    if(!entry) return;
+    if (match) break;
+  }
+  if(!entry || !match) return;
 
-    pvWord.textContent = key;
-    pvRead.textContent = 'Lectura: ' + (entry.yomi || '—');
-    pvMeaning.textContent = 'Significado: ' + (entry.gloss || '—') + (entry.note ? ' · Uso: ' + entry.note : '');
-    const rect=player.getBoundingClientRect();
-    pop.style.display='block';
-    pop.style.left=(Math.min(rect.width-10, Math.max(10, e.clientX - rect.left + 8)))+'px';
-    pop.style.top =(Math.min(rect.height-10, Math.max(10, e.clientY - rect.top + 8)) - 10)+'px';
+  // llenar popover
+  pvWord.textContent = key;
+  pvRead.textContent = 'Lectura: ' + (entry.yomi || '—');
+  pvMeaning.textContent = 'Significado: ' + (entry.gloss || '—') + (entry.note ? ' · Uso: ' + entry.note : '');
 
-    clearROHighlight();
-    for (let i = candidates[0].start; i <= candidates[0].end; i++) toks[i].classList.add('hl');
+  // mostrar popover bien posicionado (usa position:fixed en CSS)
+  pop.style.display='block';
+  requestAnimationFrame(()=> placePopoverAtSpan(roSpan));
 
-    if (state.showJA) {
-      clearJAHighlight();
-      const spans = Array.from(capJA.querySelectorAll('.word-ja'));
-      const wrap = capJA.querySelector('.line-ja');
-      const lineText = wrap ? (wrap.dataset.text || '') : '';
-      let jStart = lineText.indexOf(key);
-      if (jStart >= 0) {
-        spans.forEach(sp=>{
-          const s = Number(sp.dataset.start)||0, e2 = Number(sp.dataset.end)||0;
-          if (s < jStart + key.length && e2 > jStart) sp.classList.add('hl');
-        });
-      } else {
-        const byRo = norm(entry.ro);
-        spans.forEach(sp=>{
-          const r = sp.dataset.roma || (sp.dataset.yomi ? hiraToRoma(sp.dataset.yomi) : '');
-          if (r && norm(r) && byRo.includes(norm(r))) sp.classList.add('hl');
-        });
-      }
+  // highlight correcto en RO
+  clearROHighlight();
+  for (let i = match.start; i <= match.end; i++) toks[i].classList.add('hl');
+
+  // reflejo en JA si está visible
+  if (state.showJA) {
+    clearJAHighlight();
+    const spans = Array.from(capJA.querySelectorAll('.word-ja'));
+    const wrap = capJA.querySelector('.line-ja');
+    const lineText = wrap ? (wrap.dataset.text || '') : '';
+    let jStart = lineText.indexOf(key);
+    if (jStart >= 0) {
+      spans.forEach(sp=>{
+        const s = Number(sp.dataset.start)||0, e2 = Number(sp.dataset.end)||0;
+        if (s < jStart + key.length && e2 > jStart) sp.classList.add('hl');
+      });
+    } else {
+      const byRo = norm(entry.ro);
+      spans.forEach(sp=>{
+        const r = sp.dataset.roma || (sp.dataset.yomi ? hiraToRoma(sp.dataset.yomi) : '');
+        if (r && norm(r) && byRo.includes(norm(r))) sp.classList.add('hl');
+      });
     }
-  });
+  }
+});
+
 
   // limpieza global
   document.addEventListener('mouseleave', ()=>{ clearJAHighlight(); clearROHighlight(); }, true);
