@@ -44,7 +44,12 @@
     .muted{color:var(--muted)}
 
     /* ===== Reproductor pastel (ajustes visuales) ===== */
-    .player{display:flex;flex-direction:column;gap:12px;max-width:960px;margin:0 auto;background:transparent;border:none}
+   .player{
+  display:flex; flex-direction:column; gap:12px;
+  max-width:var(--page-max);
+  margin:0 auto;
+  background:transparent; border:none;
+}
 
     .header{
       display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;
@@ -54,7 +59,13 @@
       border-bottom:1px solid rgba(91,33,182,.12);
       backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
     }
-    .title{margin:0;font-size:16px;font-weight:700;color:var(--brand)}
+    .player .header .title{
+  margin:0;
+  font-size:16px;
+  font-weight:700;
+  color:var(--brand);
+}
+
     .badge{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(167,139,250,.22);color:var(--ink);border:1px solid rgba(91,33,182,.12)}
 
     .stage{position:relative;background:#000;border-radius:0 0 14px 14px;overflow:hidden}
@@ -95,6 +106,7 @@
     .cap-line{max-width:min(86%,900px);color:#111;font-weight:600;line-height:1.35;border-radius:14px;padding:8px 12px;box-shadow:0 6px 20px rgba(0,0,0,.16)}
     .track-ja{background:rgba(167,243,208,.95)} .track-romaji{background:rgba(240,171,252,.95)} .track-es{background:rgba(147,197,253,.95)} .track-en{background:rgba(216,180,254,.95)}
 
+    
     /* FOOTER */
     .footer{margin-top:36px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,.65)}
     .footer-inner{
@@ -149,6 +161,47 @@
       .controls{gap:10px 12px;padding:12px}
       .time{min-width:58px;font-size:13px}
     }
+          .tools{ display:none !important; }
+
+ /* —— Paleta suave celeste + acentos lila —— */
+.player .header{
+  background: rgba(232,242,255,.72);      /* glass celeste */
+  border-bottom: 1px solid #D8E6FF;
+}
+
+.player .controls,
+.player .foot{
+  background:#F6FAFF;                      /* superficie casi blanca */
+  border: 1px solid #D8E6FF;
+}
+
+/* Botones/select: blanco → celeste muy leve */
+.player .btn,
+.player .select{
+  background: linear-gradient(180deg,#FFFFFF,#EFF5FF);
+  border-color:#D8E6FF;
+  box-shadow: 0 6px 16px rgba(23,15,41,.06);
+}
+
+/* Acento lila discreto en “activo/pressed” y badge */
+.player .btn[aria-pressed="true"]{ outline:2px solid #EFD9FF; }
+.badge{ background:#F4E9FF; border-color:#EFD9FF; }
+
+/* Sliders */
+input[type="range"].vol-slider{ background:#E4EEFF; }  /* pista volumen */
+.buffered{ background:#D8E6FF; }                       /* <- aquí iba # */
+.progress{ background:linear-gradient(90deg,#7c3aed,#60A5FA,#34D399); }
+
+/* Popover */
+.player .popover{
+  background:#FFFFFF;
+  border-color:#D8E6FF;
+}
+
+/* (opcional) hover/focus un poco más marcado */
+.player .btn:hover,
+.player .select:focus{ box-shadow:0 8px 20px rgba(23,15,41,.10); }
+
   </style>
 </head>
 <body>
@@ -261,22 +314,51 @@
           <button class="btn" id="tog-fg"      aria-pressed="false" title="Furigana en JA">FG</button>
           <button class="btn" id="fs"          title="Pantalla completa">⤢</button>
         </div>
-      </div>
+      </div>  
+    </div> 
+<!-- BLOQUE: Funciones destacadas -->
+<section class="section" aria-labelledby="feat-title">
+  <div class="frame">
+    <div class="glass" style="padding:24px">
+      <h2 id="feat-title" class="title" style="color:#7c3aed">Funciones destacadas</h2>
 
-      <div class="tools">
-        <button class="btn" id="btnTest">Probar video de prueba (MDN)</button>
-        <button class="btn" id="btnURL">Cargar por URL…</button>
-        <span class="pill" id="statusSrc">src: video.mp4</span>
-        <span class="pill" id="pillJA">JA: —</span>
-        <span class="pill" id="pillRO">RO: —</span>
-        <span class="pill" id="pillES">ES: —</span>
-        <span class="pill" id="pillEN">EN: —</span>
-      </div>
-      <div class="diag" id="diag"></div>
+      <div class="functions-grid">
+        <div class="card"><div class="card-inner">
+          <div class="title">Subtítulos multilingües</div>
+          <p class="muted">
+            Alterná al instante entre <strong>JA</strong> (japonés), <strong>RO</strong> (rōmaji), <strong>ES</strong> e <strong>EN</strong> sin recargar el video.
+            Usá los botones o los atajos <strong>J/A/E/N</strong> para cambiar rápido de pista.
+          </p>
+        </div></div>
 
-      <div class="foot">Atajos: Espacio · ←/→ ±5s · ↑/↓ volumen · M mute · F pantalla completa · J/A/E alternar JA/RO/ES · G furigana</div>
+        <div class="card"><div class="card-inner">
+          <div class="title">FG: Furigana</div>
+          <p class="muted">
+            Activá <strong>FG</strong> para mostrar la lectura solo sobre los <em>kanji</em> (no todo el texto), ideal para estudio.
+            Funciona en la línea japonesa y respeta las partes que ya están en kana. Atajo: <strong>G</strong>.
+          </p>
+        </div></div>
+
+        <div class="card"><div class="card-inner">
+          <div class="title">Diccionario emergente</div>
+          <p class="muted">
+            Hacé clic en una palabra (JA o RO) y aparece un panel con <strong>lectura</strong>, <strong>significado</strong> y <strong>nota de uso</strong>.
+            El popover se posiciona cerca de la palabra y se cierra al hacer clic fuera.
+          </p>
+        </div></div>
+
+        <div class="card"><div class="card-inner">
+          <div class="title">Sincronía JA ⇄ RO</div>
+          <p class="muted">
+            Al pasar el mouse o hacer clic, se resalta el segmento equivalente en rōmaji y en japonés.
+            Útil para detectar <em>frases hechas</em> y correspondencias reales, incluso en multi-palabra.
+          </p>
+        </div></div>
+      </div>
     </div>
-  </main>
+  </div>
+</section>
+</main>
 
   <!-- FOOTER -->
   <div class="footer">
