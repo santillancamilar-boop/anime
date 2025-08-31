@@ -128,6 +128,41 @@
     .card{border:1px solid #e9d5ff;border-radius:12px;background:rgba(255,255,255,.92);box-shadow:0 6px 18px rgba(0,0,0,.06);}
     .card-inner{padding:12px 14px}
     .card .title{color:#5b21b6}
+/* Hover lift para las tarjetas */
+.functions-grid .card{
+  transition:
+    transform .25s cubic-bezier(.22,1,.36,1),
+    box-shadow .25s,
+    border-color .25s;
+  will-change: transform;
+}
+
+.functions-grid .card:hover,
+.functions-grid .card:focus-within{
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(23,15,41,.14), 0 4px 10px rgba(23,15,41,.06);
+  border-color: #d8b4fe; /* lila suave */
+}
+
+/* Feedback al hacer click/press */
+.functions-grid .card:active{
+  transform: translateY(-2px);
+}
+
+/* (opcional) solo en dispositivos con hover real */
+@media (hover: hover) and (pointer: fine){
+  .functions-grid .card:hover,
+  .functions-grid .card:focus-within{ transform: translateY(-6px); }
+}
+
+/* (opcional) accesible: foco visible si la card es focusable */
+.functions-grid .card:focus-visible{
+  outline: 2px solid #d8b4fe;
+  outline-offset: 2px;
+}
+
+/* (opcional) cambia el color del título al hover para más “vida” */
+.functions-grid .card:hover .title{ color:#6d28d9; }
 
     /* === Extensiones para funciones avanzadas (siempre activas) === */
     .tools{ display:flex; gap:8px; padding:10px 16px 0; flex-wrap:wrap }
