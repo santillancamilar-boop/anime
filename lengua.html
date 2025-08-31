@@ -158,6 +158,25 @@
     line-height:1.6;
     color:#4b5563;
   }
+    /* Lift más marcado para las tarjetas */
+.card{
+  background:rgba(255,255,255,.92);
+  border:1px solid #ede9fe;
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  transition: transform .25s cubic-bezier(.22,1,.36,1),
+              box-shadow .25s,
+              border-color .25s;
+  will-change: transform;
+}
+.card:hover,
+.card:focus-within{
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(23,15,41,.14), 0 4px 10px rgba(23,15,41,.06) !important;
+  border-color: #d8b4fe !important;
+}
+.card:active{ transform: translateY(-2px); }
+
   </style>
 </head>
 <body>
@@ -416,6 +435,7 @@
   </div>
 </body>
 </html>
+
 
 
 
