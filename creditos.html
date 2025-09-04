@@ -91,6 +91,27 @@
     .card-inner{padding:16px}
     .bullets{list-style:disc;padding-left:18px;margin:0}
 
+    /* —— Agradecimientos: ancho completo y centrado —— */
+    .credits-grid .card--full{
+      grid-column: 1 / -1; /* ocupa todas las columnas */
+    }
+    .credits-grid .card--full .card-inner{
+      padding: 20px;
+      max-width: 900px;   /* limita el ancho del texto */
+      margin: 0 auto;     /* centra el bloque dentro del contenedor */
+      text-align: center; /* centra el contenido */
+    }
+    .credits-grid .card--full .title{
+      text-align: center;
+    }
+    .credits-grid .card--full .title::after{
+      left: 50%;
+      transform: translateX(-50%); /* centra la línea decorativa */
+    }
+    @media (min-width:720px){
+      .credits-grid .card--full .card-inner{ padding: 24px; }
+    }
+
     /* FOOTER */
     .footer{margin-top:28px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,.65)}
     .footer-inner{
@@ -157,12 +178,15 @@
               </ul>
             </div></div>
 
-            <div class="card"><div class="card-inner">
-              <div class="title" style="color:#4c1d95">Agradecimientos</div>
-              <p>A docentes y compañeros/as que aportaron ideas y comentarios.</p>
-            </div></div>
+            <!-- AGRADECIMIENTOS FULL WIDTH Y CENTRADO -->
+            <div class="card card--full">
+              <div class="card-inner">
+                <div class="title" style="color:#4c1d95">Agradecimientos</div>
+                <p>A docentes y compañeros/as que aportaron ideas y comentarios.</p>
+              </div>
+            </div>
 
-          </div>
+          </div><!-- /.credits-grid -->
         </div>
       </div>
     </section>
@@ -173,7 +197,7 @@
     <div class="container footer-inner">
       <div>
         <div class="title">Voces del Anime</div>
-                <p>Prototipo conceptual para aprendizaje de lengua y cultura japonesa a través del anime..</p>
+        <p>Prototipo conceptual para aprendizaje de lengua y cultura japonesa a través del anime.</p>
       </div>
       <div>
         <div class="title">Enlaces</div>
