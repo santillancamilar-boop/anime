@@ -73,12 +73,15 @@
     .footer-inner{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:20px 0;color:#374151;max-width:var(--page-max);margin-inline:auto}
     .footer .title{font-weight:800;color:#5b21b6;margin-bottom:6px}
     ul{margin:0;padding-left:18px}
-    /* Violeta oscuro para las 4 tarjetas de la política */
+  /* Solo títulos de las tarjetas en violeta oscuro */
 .policy-grid .card .title{
-  color:#5B21B6 !important; /* violeta oscuro */
+  color:#5B21B6; /* violeta oscuro */
 }
-.policy-grid .card .card-inner p{
-  color:#5B21B6; /* el texto bajo cada título */
+
+/* Asegura que el contenido NO cambie de color (opcional por si antes lo tocaste) */
+.policy-grid .card .card-inner p,
+.policy-grid .card .card-inner li{
+  color: var(--ink);
 }
 
   </style>
@@ -285,6 +288,7 @@
   </div>
 </body>
 </html>
+
 
 
 
