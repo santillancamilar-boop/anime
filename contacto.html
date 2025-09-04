@@ -3,239 +3,245 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Anime•Edu — Contacto</title>
+    <title>Voces del Anime — Contacto</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <!-- Si usás styles.css global, podés dejarlo; este archivo también es autónomo -->
     <link rel="stylesheet" href="styles.css" />
-    <!-- Estilos extras solo para Contacto (visual) -->
     <style>
-      .contact-hero--visual {
-        position: relative;
-        overflow: hidden;
+      :root{
+        --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
+        --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
+        --page-max:1200px; --vio:#7c3aed;
+        --leading:1.65;
       }
+      *{box-sizing:border-box}
+      html,body{margin:0; height:100%}
+      body{
+        font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+        color:var(--ink);
+        /* Fondo pastel igual al de Créditos */
+        background:linear-gradient(135deg,#fdf2f8,#eef2ff,#ecfdf5);
+        background-attachment:fixed;
+        letter-spacing:.01em;
+      }
+      .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
+      a{color:#6d28d9;text-decoration:none}
+
+      /* NAV (coincide con el resto del sitio) */
+      .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.7);backdrop-filter:blur(6px);border-bottom:1px solid #e9d5ff}
+      .nav-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
+      .brand{font-weight:600;color:#6d28d9}
+      .tabs{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
+      .tab{font-weight:500}
+      .tab:hover,.tab:focus-visible{font-weight:600}
+      .tab.active{font-weight:800;text-decoration:underline}
+
+      /* HERO visual con leves destellos */
+      .contact-hero{padding:56px 0 64px;position:relative}
+      .contact-hero--visual{position:relative;overflow:hidden}
       .contact-hero--visual::before,
-      .contact-hero--visual::after {
-        content: "";
-        position: absolute;
-        inset: auto auto -60px -60px;
-        width: 180px;
-        height: 180px;
-        background: radial-gradient(closest-side, #fbcfe8, transparent 70%);
-        filter: blur(12px);
-        opacity: 0.8;
+      .contact-hero--visual::after{
+        content:""; position:absolute; width:180px; height:180px; filter:blur(12px); opacity:.8;
       }
-      .contact-hero--visual::after {
-        inset: -60px -60px auto auto;
-        background: radial-gradient(closest-side, #c7d2fe, transparent 70%);
+      .contact-hero--visual::before{
+        inset:auto auto -60px -60px;
+        background:radial-gradient(closest-side,#fbcfe8,transparent 70%);
       }
-      .card--glass {
-        background: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(10px);
-        border-radius: 18px;
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+      .contact-hero--visual::after{
+        inset:-60px -60px auto auto;
+        background:radial-gradient(closest-side,#c7d2fe,transparent 70%);
       }
-      .card--gradient-border {
-        position: relative;
+      .hero-frame{max-width:var(--page-max);margin:0 auto;border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08)}
+      .hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
+      h1{margin:0;color:var(--brand);font-size:clamp(26px,5vw,44px)}
+      .lead{margin:6px auto 0;max-width:66ch;text-align:center;font-weight:600;background:linear-gradient(90deg,#7c3aed,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+      /* Tarjetas glass con borde degradado (coherente con el resto) */
+      .card{position:relative;border-radius:18px}
+      .card--gradient-border::before{
+        content:""; position:absolute; inset:-1px; border-radius:20px;
+        background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));
+        z-index:-1;
       }
-      .card--gradient-border::before {
-        content: "";
-        position: absolute;
-        inset: -1px;
-        border-radius: 20px;
-        background: linear-gradient(135deg, #f0abfc, #93c5fd, #a7f3d0);
-        z-index: -1;
+      .card--glass{
+        background:rgba(255,255,255,.6);
+        backdrop-filter:blur(10px);
+        box-shadow:0 10px 24px rgba(0,0,0,.08);
       }
-      .card-inner--lg {
-        padding: 22px;
+      .card-inner{padding:16px}
+      .card-inner--lg{padding:22px}
+      @media(min-width:720px){ .card-inner--lg{ padding:28px 30px } }
+
+      /* Formulario */
+      .contact-form{display:grid;gap:16px}
+      .field{display:grid;gap:6px}
+      .field__label{font-weight:800;color:#4c1d95}
+      .field__wrap{
+        display:flex;align-items:center;gap:10px;
+        background:rgba(255,255,255,.9); border:1px solid #e9d5ff; border-radius:12px;
+        padding:10px 12px;
+        transition:box-shadow .2s ease, border-color .2s ease, transform .06s ease;
       }
-      @media (min-width: 720px) {
-        .card-inner--lg {
-          padding: 28px 30px;
-        }
+      .field__wrap--textarea{align-items:flex-start}
+      .field__icon{font-size:20px;line-height:1}
+      .field__input,.field__textarea{width:100%;border:0;background:transparent;color:#111827;font:inherit;outline:none}
+      .field__wrap:focus-within{border-color:#c7bdfc;box-shadow:0 0 0 4px rgba(199,189,252,.25);transform:translateY(-1px)}
+      input::placeholder,textarea::placeholder{color:#9ca3af}
+
+      /* Botón */
+      .btn{display:inline-block;cursor:pointer;border:0;border-radius:12px;padding:12px 18px;font-weight:800}
+      .btn--shine{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;position:relative;overflow:hidden}
+      .btn--shine::after{
+        content:""; position:absolute; inset:0;
+        background:linear-gradient(90deg,rgba(255,255,255,.35),transparent 40%,transparent 60%,rgba(255,255,255,.35));
+        transform:translateX(-100%); transition:transform .6s ease;
       }
-      .contact-form {
-        display: grid;
-        gap: 16px;
+      .btn--shine:hover::after{ transform:translateX(100%) }
+
+      /* Aviso enviado */
+      .alert-ok{border-left:6px solid #86efac;background:rgba(134,239,172,.15);border-radius:10px}
+
+      /* Footer */
+      .footer{margin-top:28px;border-top:1px solid #e9d5ff;background:rgba(255,255,255,.65)}
+      .footer-inner{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));padding:20px 0;color:#374151;max-width:var(--page-max);margin-inline:auto}
+      .footer .title{font-weight:800;color:#5b21b6;margin-bottom:6px}
+      ul{margin:0;padding-left:18px}
+
+      /* Accesibilidad */
+      a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+        outline:3px solid rgba(167,139,250,.45); outline-offset:3px; border-radius:8px;
       }
-      .field {
-        display: grid;
-        gap: 6px;
+      @media(prefers-reduced-motion:reduce){
+        *,*::before,*::after{animation:none !important; transition:none !important;}
       }
-      .field__label {
-        font-weight: 700;
-        color: #4c1d95;
-      }
-      .field__wrap {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid #e9d5ff;
-        border-radius: 12px;
-        padding: 10px 12px;
-        transition: box-shadow 0.2s ease, border-color 0.2s ease,
-          transform 0.06s ease;
-      }
-      .field__wrap--textarea {
-        align-items: flex-start;
-      }
-      .field__icon {
-        font-size: 20px;
-        line-height: 1;
-      }
-      .field__input,
-      .field__textarea {
-        width: 100%;
-        border: 0;
-        background: transparent;
-        color: #111827;
-        font: inherit;
-        outline: none;
-      }
-      .field__wrap:focus-within {
-        border-color: #c7bdfc;
-        box-shadow: 0 0 0 4px rgba(199, 189, 252, 0.25);
-        transform: translateY(-1px);
-      }
-      .btn--shine {
-        background: linear-gradient(135deg, #7c3aed, #6d28d9);
-        color: #fff;
-        border: 0;
-        border-radius: 12px;
-        padding: 12px 18px;
-        font-weight: 800;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-      }
-      .btn--shine::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0.35),
-          transparent 40%,
-          transparent 60%,
-          rgba(255, 255, 255, 0.35)
-        );
-        transform: translateX(-100%);
-        transition: transform 0.6s ease;
-      }
-      .btn--shine:hover::after {
-        transform: translateX(100%);
-      }
-      .btn--shine.pink {
-        background: linear-gradient(135deg, #f472b6, #ec4899);
-      }
-      input::placeholder,
-      textarea::placeholder {
-        color: #9ca3af;
-      }
-      .alert-ok {
-        border-left: 6px solid #86efac;
-        background: rgba(134, 239, 172, 0.15);
-        border-radius: 10px;
-      }
+      /* === Pasteles más claros para el formulario (override) === */
+
+/* Brillos del hero (más suaves) */
+.contact-hero--visual::before{
+  background: radial-gradient(closest-side, #FDE7F3, transparent 72%);
+  opacity:.70; filter: blur(14px);
+}
+.contact-hero--visual::after{
+  background: radial-gradient(closest-side, #E0E7FF, transparent 72%);
+  opacity:.70; filter: blur(14px);
+}
+
+/* Tarjeta glass y borde degradado más tenue */
+.card--glass{
+  background: rgba(255,255,255,.55); /* antes .6 */
+  backdrop-filter: blur(10px);
+}
+.card--gradient-border::before{
+  background: linear-gradient(135deg, #F8D8FE, #DBEAFE, #D1FAE5);
+}
+
+/* Campos: fondo y borde bien pastel */
+.field__label{ color:#7c3aed; } /* acento violeta */
+.field__wrap{
+  background: rgba(255,255,255,.92);
+  border: 1px solid #EDE9FE;    /* más clarito */
+}
+.field__wrap:focus-within{
+  border-color:#E9D5FF;
+  box-shadow:0 0 0 5px rgba(233,213,255,.35);
+  transform: translateY(-1px);
+}
+input::placeholder, textarea::placeholder{ color:#B8C0CC; }
+
+/* Botón con gradiente pastel claro */
+.btn--shine{
+  background: linear-gradient(135deg, #A78BFA, #93C5FD);
+  color:#fff;
+}
+.btn--shine:hover{ filter:brightness(1.03); transform: translateY(-1px); }
+.btn--shine::after{ /* brillo deslizante se mantiene */ }
+
+.btn--shine.pink{
+  background: linear-gradient(135deg, #FBCFE8, #F9A8D4);
+}
+
+/* Aviso de enviado más lavadito */
+.alert-ok{
+  border-left: 6px solid #BBF7D0;
+  background: rgba(187,247,208,.22);
+}
+
     </style>
   </head>
   <body>
     <!-- NAV -->
     <div class="nav">
       <div class="container nav-inner">
-        <a class="brand" href="index.html">Anime•Edu</a>
+        <a class="brand" href="index.html">Voces del Anime</a>
         <div class="tabs">
           <a class="tab" href="index.html">Inicio</a>
           <a class="tab" href="lengua.html">Lengua</a>
           <a class="tab" href="cultura.html">Cultura</a>
           <a class="tab" href="comunidad.html">Comunidad</a>
           <a class="tab" href="recursos.html">Recursos</a>
+          <a class="tab active" href="contacto.html">Contacto</a>
         </div>
       </div>
     </div>
 
     <main class="main">
-      <!-- Hero visual -->
+      <!-- HERO -->
       <section class="contact-hero contact-hero--visual">
         <div class="container">
-          <h1>Contacto</h1>
-          <p class="lead">Escribime y te respondo a la brevedad.</p>
+          <div class="hero-frame">
+            <div class="hero-glass">
+              <h1>Contacto</h1>
+              <p class="lead">Escribime y te respondo a la brevedad.</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <div class="container">
-        <section class="section">
+      <!-- FORM -->
+      <section class="section">
+        <div class="container" style="max-width:var(--page-max);">
           <!-- Aviso de enviado -->
-          <div
-            id="sent-ok"
-            class="card alert-ok"
-            style="display: none; margin-bottom: 12px"
-          >
+          <div id="sent-ok" class="card alert-ok" style="display:none; margin-bottom:12px;">
             <div class="card-inner">
-              <strong>¡Enviado!</strong> Gracias por tu mensaje. Te responderé
-              pronto.
+              <strong>¡Enviado!</strong> Gracias por tu mensaje. Te responderé pronto.
             </div>
           </div>
 
           <!-- Card con borde degradado y glass -->
           <div class="card card--glass card--gradient-border">
             <div class="card-inner card-inner--lg">
-              <form
-                class="contact-form"
-                onsubmit="event.preventDefault(); document.getElementById('sent-ok').style.display='block';"
-              >
+              <form class="contact-form" onsubmit="event.preventDefault(); document.getElementById('sent-ok').style.display='block'; this.reset();">
                 <!-- Nombre -->
                 <label class="field" for="nombre">
                   <span class="field__label">Nombre</span>
                   <div class="field__wrap">
                     <span class="field__icon" aria-hidden="true">👤</span>
-                    <input
-                      id="nombre"
-                      class="field__input"
-                      type="text"
-                      placeholder="Tu nombre"
-                      required
-                    />
+                    <input id="nombre" class="field__input" type="text" placeholder="Tu nombre" required />
                   </div>
                 </label>
-
                 <!-- Email -->
                 <label class="field" for="email">
                   <span class="field__label">Email</span>
                   <div class="field__wrap">
                     <span class="field__icon" aria-hidden="true">✉️</span>
-                    <input
-                      id="email"
-                      class="field__input"
-                      type="email"
-                      placeholder="tucorreo@mail.com"
-                      required
-                    />
+                    <input id="email" class="field__input" type="email" placeholder="tucorreo@mail.com" required />
                   </div>
                 </label>
-
                 <!-- Mensaje -->
                 <label class="field" for="mensaje">
                   <span class="field__label">Mensaje</span>
                   <div class="field__wrap field__wrap--textarea">
                     <span class="field__icon" aria-hidden="true">📝</span>
-                    <textarea
-                      id="mensaje"
-                      class="field__textarea"
-                      rows="6"
-                      placeholder="Contame en qué te puedo ayudar..."
-                      required
-                    ></textarea>
+                    <textarea id="mensaje" class="field__textarea" rows="6" placeholder="Contame en qué te puedo ayudar..." required></textarea>
                   </div>
                 </label>
-
                 <!-- Botón -->
-                <button class="btn btn--shine pink" type="submit">
-                  Enviar mensaje
-                </button>
+                <button class="btn btn--shine" type="submit">Enviar mensaje</button>
               </form>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
 
     <!-- FOOTER -->
@@ -243,10 +249,7 @@
       <div class="container footer-inner">
         <div>
           <div class="title">Voces del Anime</div>
-          <p>
-            Prototipo conceptual para aprendizaje de lengua y cultura japonesa a
-            través del anime.
-          </p>
+          <p>Prototipo conceptual para aprendizaje de lengua y cultura japonesa a través del anime.</p>
         </div>
         <div>
           <div class="title">Enlaces</div>
