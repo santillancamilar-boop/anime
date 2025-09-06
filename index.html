@@ -498,7 +498,14 @@ if (btnURL) {
   ;[playBtn, video, bigPlay].forEach(el=>el.addEventListener('click', togglePlay));
   video.addEventListener('play', ()=>{ iconPlay.textContent='⏸'; bigPlay.style.display='none'; });
   video.addEventListener('pause', ()=>{ iconPlay.textContent='▶';  bigPlay.style.display='grid'; });
+
+  let popLocked = false;
+function lockPopover(){ popLocked = true;  pop.setAttribute('data-locked','1'); }
+function unlockPopover(){ popLocked = false; pop.removeAttribute('data-locked'); }
+
 function placePopoverAtSpan(span){
+  if (popLocked) return; // si está bloqueado, no re-posicionar
+
   const rect = span.getBoundingClientRect();
   const vw = window.innerWidth, vh = window.innerHeight;
   const margin = 8;
@@ -512,7 +519,7 @@ function placePopoverAtSpan(span){
   let top = rect.top - pr.height - 12;
   if (top < margin) top = rect.bottom + 12;
 
-  // centrar en X y limitar a viewport
+  // centrar y limitar a viewport
   let left = rect.left + (rect.width - pr.width)/2;
   left = Math.max(margin, Math.min(left, vw - pr.width - margin));
   top  = Math.max(margin, Math.min(top , vh - pr.height - margin));
@@ -521,6 +528,7 @@ function placePopoverAtSpan(span){
   pop.style.top  = top  + 'px';
   pop.style.visibility = 'visible';
 }
+
   back10.addEventListener('click', ()=> video.currentTime=Math.max(0, (video.currentTime||0)-10));
   fwd10 .addEventListener('click', ()=> video.currentTime=Math.min(video.duration||0, (video.currentTime||0)+10));
 
