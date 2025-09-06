@@ -281,7 +281,7 @@ input[type="range"].vol-slider{ background:#E4EEFF; }  /* pista volumen */
       </p>
 
       <!-- Segundo texto (sobre el reproductor) -->
-      <p id="about-copy" class="muted"
+      <p id="about-copy-2" class="muted"
          style="max-width:760px; margin:0 auto; font-size:1.1rem; line-height:1.7; text-align:justify;">
         Una herramienta interactiva sería el siguiente reproductor, que permite explorar escenas con subtítulos en
         <strong>japonés</strong>, <strong>rōmaji</strong>, <strong>español</strong> e <strong>inglés</strong>.
@@ -499,12 +499,23 @@ if (btnURL) {
   video.addEventListener('play', ()=>{ iconPlay.textContent='⏸'; bigPlay.style.display='none'; });
   video.addEventListener('pause', ()=>{ iconPlay.textContent='▶';  bigPlay.style.display='grid'; });
 
-  let popLocked = false;
-function lockPopover(){ popLocked = true;  pop.setAttribute('data-locked','1'); }
-function unlockPopover(){ popLocked = false; pop.removeAttribute('data-locked'); }
+let popLocked = false;
+let popAnchor = null;  // <- ancla actual
 
-function placePopoverAtSpan(span){
-  if (popLocked) return; // si está bloqueado, no re-posicionar
+function lockPopover(anchor){
+  popLocked = true;
+  popAnchor = anchor || popAnchor;
+  pop.setAttribute('data-locked','1');
+}
+function unlockPopover(){
+  popLocked = false;
+  popAnchor = null;
+  pop.removeAttribute('data-locked');
+}
+
+// force=true permite reposicionar aun estando bloqueado (para scroll/resize)
+function placePopoverAtSpan(span, force=false){
+  if (popLocked && !force) return;
 
   const rect = span.getBoundingClientRect();
   const vw = window.innerWidth, vh = window.innerHeight;
@@ -527,6 +538,12 @@ function placePopoverAtSpan(span){
   pop.style.left = left + 'px';
   pop.style.top  = top  + 'px';
   pop.style.visibility = 'visible';
+}
+
+// Reposicionar cuando cambie el viewport
+function repositionIfNeeded(){
+  if (!popLocked || !popAnchor || !document.body.contains(popAnchor)) return;
+  placePopoverAtSpan(popAnchor, /*force*/ true);
 }
 
   back10.addEventListener('click', ()=> video.currentTime=Math.max(0, (video.currentTime||0)-10));
@@ -1099,6 +1116,9 @@ function makeRubyKanjiOnly(surface, yomi){
 
   /* ======== Popover + highlight ======== */
   const pop=$('#popover'), pvWord=$('#pv-word'), pvRead=$('#pv-read'), pvMeaning=$('#pv-meaning');
+  
+window.addEventListener('scroll', repositionIfNeeded, { passive: true });
+window.addEventListener('resize', repositionIfNeeded);
 
   function longestDictAt(line, pos){
     let best = null;
@@ -1281,11 +1301,11 @@ const lineText = lineWrap ? (lineWrap.dataset.text || '') : '';
   pvRead.textContent = 'Lectura: ' + (entry?.yomi || '—');
   pvMeaning.textContent = 'Significado: ' + (entry?.gloss || '—') + (entry?.note ? ' · Uso: ' + entry.note : '');
 
-// ⬇️ mostrar, posicionar y BLOQUEAR en el mismo tick
 unlockPopover();
 pop.style.display = 'block';
 placePopoverAtSpan(span);
-lockPopover();
+lockPopover(span);   // <- guardamos el ancla
+
 
 
   const romaOut = entry?.ro || (entry?.yomi ? hiraToRoma(entry.yomi) : '');
@@ -1334,7 +1354,7 @@ document.addEventListener('click',(e)=>{
 unlockPopover();
 pop.style.display = 'block';
 placePopoverAtSpan(roSpan);
-lockPopover();
+lockPopover(roSpan); // <- guardamos el ancla
 
 
   // highlight correcto en RO
