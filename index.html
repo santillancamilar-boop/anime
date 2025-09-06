@@ -187,7 +187,7 @@
 
     .word-ja{ cursor:pointer; padding:0 2px; border-radius:6px }
     .word-ja:hover{ background:rgba(0,0,0,.06) }
-    .track-romaji .word-ro{ pointer-events:none; cursor:default; padding:0 2px; border-radius:6px }
+    .track-romaji .word-ro{ cursor:pointer; padding:0 2px; border-radius:6px }
     .hl { outline:2px solid rgba(167,139,250,.45); background:rgba(167,139,250,.12); border-radius:6px }
     ruby{ ruby-position:over; } rt{ font-size:.65em; color:#6b7280 }
 
@@ -1255,35 +1255,44 @@ function makeRubyKanjiOnly(surface, yomi){
     if(state.showJA) clearJAHighlight();
   });
 
-  /* === CLICK EN JAPO: popover + sincroniza RO === */
-  document.addEventListener('click',(e)=>{
-    if(!state.showJA) return;
-    if(!capJA.contains(e.target)) { if(!e.target.closest('#popover')) pop.style.display='none'; return; }
+/* === CLICK EN JAPO: popover + sincroniza RO === */
+document.addEventListener('click',(e)=>{
+  if(!state.showJA) return;
+  if(!capJA.contains(e.target)) {
+    if(!e.target.closest('#popover')) { pop.style.display='none'; unlockPopover(); }
+    return;
+  }
 
-    const span=e.target.closest('.word-ja'); if(!span) return;
-    const lineWrap=span.closest('.line-ja');
-    const lineText=lineWrap?lineWrap.dataset.text||'':'';
-    const start=Number(span.dataset.start)||0, end=Number(span.dataset.end)||start+(span.textContent||'').length;
-    const pos=Math.floor((start+end)/2);
+  const span=e.target.closest('.word-ja'); if(!span) return;
+  const lineWrap=span.closest('.line-ja');
+const lineText = lineWrap ? (lineWrap.dataset.text || '') : '';
+  const start=Number(span.dataset.start)||0, end=Number(span.dataset.end)||start+(span.textContent||'').length;
+  const pos=Math.floor((start+end)/2);
 
-    let surface = span.dataset.word || span.textContent;
-    let entry = (span.dataset.dict==='1') ? {yomi:span.dataset.yomi,gloss:span.dataset.gloss,ro:span.dataset.roma,note:span.dataset.note} : null;
+  let surface = span.dataset.word || span.textContent;
+  let entry = (span.dataset.dict==='1') ? {yomi:span.dataset.yomi,gloss:span.dataset.gloss,ro:span.dataset.roma,note:span.dataset.note} : null;
 
-    if(!entry){
-      const best=longestDictAt(lineText, pos);
-      if(best){ surface=best.text; entry={yomi:best.entry.yomi,gloss:best.entry.gloss,ro:best.entry.ro,note:best.entry.note}; }
-    }
+  if(!entry){
+    const best=longestDictAt(lineText, pos);
+    if(best){ surface=best.text; entry={yomi:best.entry.yomi,gloss:best.entry.gloss,ro:best.entry.ro,note:best.entry.note}; }
+  }
 
-    pvWord.textContent = surface;
-    pvRead.textContent = 'Lectura: ' + (entry?.yomi || '—');
-    pvMeaning.textContent = 'Significado: ' + (entry?.gloss || '—') + (entry?.note ? ' · Uso: ' + entry.note : '');
+  pvWord.textContent = surface;
+  pvRead.textContent = 'Lectura: ' + (entry?.yomi || '—');
+  pvMeaning.textContent = 'Significado: ' + (entry?.gloss || '—') + (entry?.note ? ' · Uso: ' + entry.note : '');
 
+  // ⬇️ mostrar, posicionar y BLOQUEAR el popover para que no “persiga” el cursor
+  unlockPopover();
   pop.style.display='block';
-requestAnimationFrame(()=> placePopoverAtSpan(span));
+  requestAnimationFrame(()=>{
+    placePopoverAtSpan(span);
+    lockPopover();
+  });
 
-    const romaOut = entry?.ro || (entry?.yomi ? hiraToRoma(entry.yomi) : '');
-    if(romaOut) highlightInRO(romaOut);
-  }, true);
+  const romaOut = entry?.ro || (entry?.yomi ? hiraToRoma(entry.yomi) : '');
+  if(romaOut) highlightInRO(romaOut);
+}, true);
+
 
 /* === CLICK EN ROMAJI: popover + reflejo JA === */
 document.addEventListener('click',(e)=>{
@@ -1323,9 +1332,13 @@ document.addEventListener('click',(e)=>{
   pvRead.textContent = 'Lectura: ' + (entry.yomi || '—');
   pvMeaning.textContent = 'Significado: ' + (entry.gloss || '—') + (entry.note ? ' · Uso: ' + entry.note : '');
 
-  // mostrar popover bien posicionado (usa position:fixed en CSS)
-  pop.style.display='block';
-  requestAnimationFrame(()=> placePopoverAtSpan(roSpan));
+unlockPopover();
+pop.style.display='block';
+requestAnimationFrame(()=>{
+  placePopoverAtSpan(roSpan);
+  lockPopover();
+});
+
 
   // highlight correcto en RO
   clearROHighlight();
