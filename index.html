@@ -447,11 +447,45 @@ input[type="range"].vol-slider{ background:#E4EEFF; }  /* pista volumen */
         progressBar=$('#progressBar'), bufferedBar=$('#bufferedBar');
   const cur=$('#currentTime'), dur=$('#duration'), muteBtn=$('#mute'),
         vol=$('#volume'), speed=$('#speed'), fs=$('#fs'), badgeDur=$('#badgeDur');
-  const diag=$('#diag'), statusSrc=$('#statusSrc');
   const pillJA=$('#pillJA'), pillRO=$('#pillRO'), pillES=$('#pillES'), pillEN=$('#pillEN');
 
-  function log(msg){ diag.innerHTML = '['+new Date().toLocaleTimeString()+'] '+msg+'<br>'+diag.innerHTML; }
-  function setSrc(url){ srcEl.src=url; statusSrc.textContent='src: '+url; video.load(); }
+// ——— log seguro (no falla si #diag no existe)
+function log(msg){
+  const diag = document.querySelector('#diag');
+  if (!diag) return; // no hay panel de diagnóstico; no loguear
+  diag.innerHTML = '['+new Date().toLocaleTimeString()+'] '+msg+'<br>'+diag.innerHTML;
+}
+
+// ——— setSrc seguro (no falla si #statusSrc no existe)
+function setSrc(url){
+  const srcEl = document.querySelector('#src');
+  const video = document.querySelector('#video');
+  if(!srcEl || !video) return;
+  srcEl.src = url;
+  const statusSrc = document.querySelector('#statusSrc');
+  if (statusSrc) statusSrc.textContent = 'src: ' + url;
+  video.load();
+}
+
+// ——— botones opcionales (solo si existen)
+const btnTest = document.querySelector('#btnTest');
+if (btnTest) {
+  btnTest.addEventListener('click', ()=>{
+    setSrc('https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4');
+    log('Cargando video de prueba MDN');
+  });
+}
+
+const btnURL = document.querySelector('#btnURL');
+if (btnURL) {
+  btnURL.addEventListener('click', ()=>{
+    const u = prompt('Pegá una URL directa a .mp4 (https://...)');
+    if(!u) return;
+    setSrc(u.trim());
+    log('Cambié src a '+u);
+  });
+}
+
 
   function formatTime(s){
     if(!isFinite(s)) return '0:00';
@@ -1315,10 +1349,6 @@ document.addEventListener('click',(e)=>{
   // limpieza global
   document.addEventListener('mouseleave', ()=>{ clearJAHighlight(); clearROHighlight(); }, true);
 
-  // Herramientas y atajos
-  $('#btnTest').addEventListener('click', ()=>{ setSrc('https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4'); log('Cargando video de prueba MDN'); });
-  $('#btnURL').addEventListener('click', ()=>{ const u=prompt('Pegá una URL directa a .mp4 (https://...)'); if(!u) return; setSrc(u.trim()); log('Cambié src a '+u); });
-  document.addEventListener('keydown',(e)=>{ if(e.key==='j' || e.key==='J'){ togJA && togJA.click(); } if(e.key==='a' || e.key==='A'){ togRO && togRO.click(); } if(e.key==='e' || e.key==='E'){ togES && togES.click(); } if(e.key==='n' || e.key==='N'){ togEN && togEN.click(); } if(e.key==='g' || e.key==='G'){ togFG && togFG.click(); } });
 
   // inicial
   renderCue();
