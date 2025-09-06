@@ -184,6 +184,9 @@
 .popover .hint{ color:var(--muted); font-size:12px }
 .popover .meaning{ margin-top:6px }
 
+.popover .kv{ margin-top:6px; font-size:12px; color:#374151 }
+.popover .kv b{ color:#111 }
+.popover .kv ul{ margin:4px 0 0 16px; padding:0 }
 
     .word-ja{ cursor:pointer; padding:0 2px; border-radius:6px }
     .word-ja:hover{ background:rgba(0,0,0,.06) }
@@ -318,12 +321,15 @@ input[type="range"].vol-slider{ background:#E4EEFF; }  /* pista volumen */
           <div class="cap-line track-en"     id="cap-en" hidden></div>
         </div>
 
-        <div class="popover" id="popover">
-          <div><span class="word" id="pv-word">—</span></div>
-          <div class="hint" id="pv-read">Lectura: —</div>
-          <div class="meaning" id="pv-meaning">Significado: —</div>
-        </div>
-      </div>
+      <div class="popover" id="popover">
+  <div><span class="word" id="pv-word">—</span></div>
+  <div class="hint" id="pv-read">Lectura: —</div>
+  <div class="hint" id="pv-roma">Rōmaji: —</div>
+  <div class="meaning" id="pv-meaning">Significado: —</div>
+  <div class="kv" id="pv-forms" hidden></div>
+  <div class="kv" id="pv-examples" hidden></div>
+</div>
+
 
       <div class="controls" role="group" aria-label="Controles">
         <div class="row">
@@ -1114,8 +1120,51 @@ function makeRubyKanjiOnly(surface, yomi){
   video.addEventListener('ratechange', renderCue);
   window.addEventListener('load', renderCue);
 
-  /* ======== Popover + highlight ======== */
-  const pop=$('#popover'), pvWord=$('#pv-word'), pvRead=$('#pv-read'), pvMeaning=$('#pv-meaning');
+const pop=$('#popover'), pvWord=$('#pv-word'), pvRead=$('#pv-read'), pvMeaning=$('#pv-meaning');
+const pvRoma=$('#pv-roma'), pvForms=$('#pv-forms'), pvExamples=$('#pv-examples');
+
+function fillExtra(entry){
+  // ocultar si no hay entrada
+  if(!entry){
+    if(pvRoma) pvRoma.hidden = true;
+    if(pvForms) pvForms.hidden = true;
+    if(pvExamples) pvExamples.hidden = true;
+    return;
+  }
+
+  // Rōmaji
+  if(pvRoma){
+    if(entry.ro && entry.ro.trim()){
+      pvRoma.hidden = false;
+      pvRoma.textContent = 'Rōmaji: ' + entry.ro;
+    }else{
+      pvRoma.hidden = true;
+    }
+  }
+
+  // Formas
+  if(pvForms){
+    if(Array.isArray(entry.forms) && entry.forms.length){
+      pvForms.hidden = false;
+      pvForms.innerHTML = '<b>Formas:</b> ' + entry.forms.join(' · ');
+    }else{
+      pvForms.hidden = true;
+    }
+  }
+
+  // Ejemplos
+  if(pvExamples){
+    if(Array.isArray(entry.examples) && entry.examples.length){
+      pvExamples.hidden = false;
+      pvExamples.innerHTML = '<b>Ejemplos:</b><ul>' +
+        entry.examples.map(x=>`<li>${x}</li>`).join('') +
+        '</ul>';
+    }else{
+      pvExamples.hidden = true;
+    }
+  }
+}
+
   
 window.addEventListener('scroll', repositionIfNeeded, { passive: true });
 window.addEventListener('resize', repositionIfNeeded);
@@ -1275,48 +1324,60 @@ window.addEventListener('resize', repositionIfNeeded);
     if(state.showJA) clearJAHighlight();
   });
 
-/* === CLICK EN JAPO: popover + sincroniza RO === */
+/* === CLICK EN JAPO: popover + sincroniza RO (con forms/ejemplos) === */
 document.addEventListener('click',(e)=>{
   if(!state.showJA) return;
+
+  // cerrar si clic fuera de JA y fuera del popover
   if(!capJA.contains(e.target)) {
     if(!e.target.closest('#popover')) { pop.style.display='none'; unlockPopover(); }
     return;
   }
 
   const span=e.target.closest('.word-ja'); if(!span) return;
+
   const lineWrap=span.closest('.line-ja');
-const lineText = lineWrap ? (lineWrap.dataset.text || '') : '';
+  const lineText = lineWrap ? (lineWrap.dataset.text || '') : '';
   const start=Number(span.dataset.start)||0, end=Number(span.dataset.end)||start+(span.textContent||'').length;
   const pos=Math.floor((start+end)/2);
 
-  let surface = span.dataset.word || span.textContent;
-  let entry = (span.dataset.dict==='1') ? {yomi:span.dataset.yomi,gloss:span.dataset.gloss,ro:span.dataset.roma,note:span.dataset.note} : null;
+  let surface = span.dataset.word || (span.textContent||'').trim();
 
+  // si venía marcado por el diccionario, intentamos recuperar la ENTRADA COMPLETA
+  let entry = (span.dataset.dict==='1') ? (JA_DICT[surface] || {
+    yomi:span.dataset.yomi, gloss:span.dataset.gloss, ro:span.dataset.roma, note:span.dataset.note
+  }) : null;
+
+  // si no hay entrada directa, buscamos la mejor coincidencia en la línea (máxima longitud)
   if(!entry){
     const best=longestDictAt(lineText, pos);
-    if(best){ surface=best.text; entry={yomi:best.entry.yomi,gloss:best.entry.gloss,ro:best.entry.ro,note:best.entry.note}; }
+    if(best){ surface=best.text; entry=best.entry; }
   }
 
+  // completar campos del popover
   pvWord.textContent = surface;
   pvRead.textContent = 'Lectura: ' + (entry?.yomi || '—');
   pvMeaning.textContent = 'Significado: ' + (entry?.gloss || '—') + (entry?.note ? ' · Uso: ' + entry.note : '');
+  fillExtra(entry);
 
-unlockPopover();
-pop.style.display = 'block';
-placePopoverAtSpan(span);
-lockPopover(span);   // <- guardamos el ancla
+  // mostrar y posicionar
+  unlockPopover();
+  pop.style.display = 'block';
+  placePopoverAtSpan(span);
+  lockPopover(span);   // <- ancla para reposicionar en scroll/resize
 
-
-
+  // resaltar en RO, si corresponde
   const romaOut = entry?.ro || (entry?.yomi ? hiraToRoma(entry.yomi) : '');
   if(romaOut) highlightInRO(romaOut);
 }, true);
 
 
-/* === CLICK EN ROMAJI: popover + reflejo JA === */
+
+/* === CLICK EN ROMAJI: popover + reflejo JA (con forms/ejemplos) === */
 document.addEventListener('click',(e)=>{
   if(!state.showRO) return;
   if(!capRO.contains(e.target)) return;
+
   const roSpan = e.target.closest('.word-ro'); if(!roSpan) return;
 
   const toks = Array.from(capRO.querySelectorAll('.word-ro'));
@@ -1334,7 +1395,7 @@ document.addEventListener('click',(e)=>{
     }
   }
 
-  // encontrar el candidato que coincide con el diccionario (por rōmaji normalizado)
+  // buscar coincidencia con el diccionario por romaji normalizado
   let match=null, entry=null, key=null;
   const keysWithRO = DICT_KEYS.filter(k => JA_DICT[k]?.ro);
   for (const cand of candidates) {
@@ -1346,16 +1407,17 @@ document.addEventListener('click',(e)=>{
   }
   if(!entry || !match) return;
 
-  // llenar popover
+  // completar popover (incluye forms/ejemplos)
   pvWord.textContent = key;
   pvRead.textContent = 'Lectura: ' + (entry.yomi || '—');
   pvMeaning.textContent = 'Significado: ' + (entry.gloss || '—') + (entry.note ? ' · Uso: ' + entry.note : '');
+  fillExtra(entry);
 
-unlockPopover();
-pop.style.display = 'block';
-placePopoverAtSpan(roSpan);
-lockPopover(roSpan); // <- guardamos el ancla
-
+  // mostrar y posicionar
+  unlockPopover();
+  pop.style.display = 'block';
+  placePopoverAtSpan(roSpan);
+  lockPopover(roSpan);
 
   // highlight correcto en RO
   clearROHighlight();
@@ -1381,7 +1443,7 @@ lockPopover(roSpan); // <- guardamos el ancla
       });
     }
   }
-});
+}, true);
 
 
   // limpieza global
