@@ -395,7 +395,6 @@ input[type="range"].vol-slider{ background:#E4EEFF; }  /* pista volumen */
           <div class="title">Sincronía JA ⇄ RO</div>
           <p class="muted">
             Al pasar el mouse o hacer clic, se resalta el segmento equivalente en rōmaji y en japonés.
-            Útil para detectar <em>frases hechas</em> y correspondencias reales, incluso en multi-palabra.
           </p>
         </div></div>
       </div>
@@ -549,45 +548,290 @@ function placePopoverAtSpan(span){
   togFG && togFG.addEventListener('click', ()=>{ state.showFG=!state.showFG; syncToggles(); renderCue(); });
 
   /* ======== Diccionario ======== */
-  const JA_DICT={
-    "孫悟飯":{yomi:"そんごはん",gloss:"Son Gohan (nombre propio)",ro:"son gohan"},
-    "正しい":{yomi:"ただしい",gloss:"correcto; justo",ro:"tadashii"},
-    "こと":{yomi:"こと",gloss:"cosa; hecho",ro:"koto"},
-    "ために":{yomi:"ために",gloss:"para; por el bien de",ro:"tame ni"},
-    "戦う":{yomi:"たたかう",gloss:"pelear; luchar",ro:"tatakau"},
-    "罪":{yomi:"つみ",gloss:"pecado; culpa",ro:"tsumi"},
-    "ではない":{yomi:"ではない",gloss:"no es; no ser (neg. de だ)",ro:"de wa nai"},
-    "話し合い":{yomi:"はなしあい",gloss:"diálogo; discusión",ro:"hanashiai"},
-    "など":{yomi:"など",gloss:"etc.; cosas como ~",ro:"nado"},
-    "通用しない":{yomi:"つうようしない",gloss:"no funciona; no surte efecto",ro:"tsūyō shinai"},
-    "相手":{yomi:"あいて",gloss:"oponente; interlocutor",ro:"aite"},
-    "もいるのだ":{yomi:"もいるのだ",gloss:"también hay/existen (explicativo)",ro:"mo iru no da"},
-    "いるのだ":{yomi:"いるのだ",gloss:"(alguien) está/hay (explicativo)",ro:"iru no da"},
-    "精神":{yomi:"せいしん",gloss:"espíritu; mente",ro:"seishin"},
-    "光":{yomi:"ひかり",gloss:"luz",ro:"hikari"},
-    "まま":{yomi:"まま",gloss:"tal cual; manteniendo el estado",ro:"mama",note:"X のまま = 'tal como X'."},
-    "自由に":{yomi:"じゆうに",gloss:"libremente",ro:"jiyū ni"},
-    "解放してやれ":{yomi:"かいほうしてやれ",gloss:"libéralo",ro:"kaihō shite yare"},
-    "気持ち":{yomi:"きもち",gloss:"sentimiento",ro:"kimochi"},
-    "分かる":{yomi:"わかる",gloss:"entender",ro:"wakaru"},
-    "もう":{yomi:"もう",gloss:"ya; más",ro:"mō"},
-    "我慢する":{yomi:"がまんする",gloss:"aguantarse",ro:"gaman suru"},
-    "ことはない":{yomi:"ことはない",gloss:"no hace falta",ro:"koto wa nai"},
-    "のが":{yomi:"のが",gloss:"(nominalizador+が)",ro:"no ga"},
-    // partículas
-    "を":{yomi:"を",gloss:"objeto directo",ro:"wo"},
-    "は":{yomi:"は",gloss:"tema/contraste",ro:"wa"},
-    "が":{yomi:"が",gloss:"sujeto/énfasis",ro:"ga"},
-    "に":{yomi:"に",gloss:"tiempo/destino",ro:"ni"},
-    "で":{yomi:"で",gloss:"lugar/medio",ro:"de"},
-    "と":{yomi:"と",gloss:"y/con/cita",ro:"to"},
-    "も":{yomi:"も",gloss:"también",ro:"mo"},
-    "の":{yomi:"の",gloss:"posesivo/nominaliza",ro:"no"},
-    "へ":{yomi:"へ",gloss:"hacia",ro:"e"},
-    "から":{yomi:"から",gloss:"desde/porque",ro:"kara"},
-    "まで":{yomi:"まで",gloss:"hasta",ro:"made"},
-    "より":{yomi:"より",gloss:"comparativo",ro:"yori"}
-  };
+const JA_DICT = {
+  "孫悟飯": {
+    yomi: "そんごはん",
+    gloss: "Son Gohan (nombre propio)",
+    ro: "son gohan",
+    forms: ["悟飯 (abreviado)", "孫悟飯くん (trato infantil)", "孫悟飯さん (trato neutro)"],
+    examples: ["孫悟飯は悟空の息子だ。= Son Gohan es el hijo de Gokū."]
+  },
+
+  "正しい": {
+    yomi: "ただしい",
+    gloss: "correcto; justo",
+    ro: "tadashii",
+    forms: ["正しく (adv.)", "正しさ (sust.)", "正しくない (neg.)"],
+    examples: ["正しい答えを選ぶ。= Elegir la respuesta correcta.", "正しく生きる。= Vivir con rectitud."]
+  },
+
+  "こと": {
+    yomi: "こと",
+    gloss: "cosa; hecho; nominalizador",
+    ro: "koto",
+    forms: ["V-ことがある (haber hecho/ocurrido)", "V-ことになる (quedar decidido)", "V-ことにする (decidir hacer)"],
+    examples: ["日本に行ったことがある。= He estado en Japón.", "出発は明日ということになった。= Se decidió salir mañana."]
+  },
+
+  "ために": {
+    yomi: "ために",
+    gloss: "para; por el bien de / a causa de",
+    ro: "tame ni",
+    forms: ["N のために (por/para N)", "V-辞書形 ために (para ~)"],
+    examples: ["健康のために運動する。= Hago ejercicio por mi salud.", "合格するために勉強する。= Estudio para aprobar."]
+  },
+
+  "戦う": {
+    yomi: "たたかう",
+    gloss: "pelear; luchar",
+    ro: "tatakau",
+    forms: ["戦って (te-form)", "戦い (sust.)", "戦わない (neg.)", "戦える (potencial)"],
+    examples: ["自由のために戦う。= Luchar por la libertad.", "最後まで戦った。= Luchó hasta el final."]
+  },
+
+  "罪": {
+    yomi: "つみ",
+    gloss: "pecado; culpa; delito",
+    ro: "tsumi",
+    forms: ["有罪 (culpable)", "無罪 (inocente)", "罪人 (criminal)", "罪悪感 (sentimiento de culpa)"],
+    examples: ["罪を犯す。= Cometer un delito.", "罪悪感を抱く。= Sentir culpa."]
+  },
+
+  "ではない": {
+    yomi: "ではない",
+    gloss: "no es; negación de だ",
+    ro: "de wa nai",
+    forms: ["じゃない (coloquial)", "ではありません (formal)"],
+    examples: ["それは真実ではない。= Eso no es verdad.", "学生じゃない。= No soy estudiante."]
+  },
+
+  "話し合い": {
+    yomi: "はなしあい",
+    gloss: "diálogo; discusión",
+    ro: "hanashiai",
+    forms: ["話し合う (verbo)", "話し合いで解決する (resolver por diálogo)"],
+    examples: ["問題を話し合いで解決する。= Resolver un problema mediante diálogo."]
+  },
+
+  "など": {
+    yomi: "など",
+    gloss: "etc.; cosas como ~; y así",
+    ro: "nado",
+    forms: ["N など (entre otros)", "N や N など (N y N, etc.)"],
+    examples: ["本や雑誌などを読む。= Leer libros, revistas, etc."]
+  },
+
+  "通用しない": {
+    yomi: "つうようしない",
+    gloss: "no funciona; no surte efecto",
+    ro: "tsūyō shinai",
+    rov: ["tsuuyou shinai"],
+    forms: ["通用する (funcionar; ser válido)", "通用しなかった (pasado neg.)"],
+    examples: ["この手は彼には通用しない。= Esta táctica no funciona con él."]
+  },
+
+  "相手": {
+    yomi: "あいて",
+    gloss: "oponente; interlocutor; pareja (de juego/conversación)",
+    ro: "aite",
+    forms: ["話し相手 (conversador)", "相手にする (tomar en cuenta/tratar con)"],
+    examples: ["強い相手だ。= Es un oponente fuerte.", "彼を相手にしない。= No le des bola."]
+  },
+
+  "もいるのだ": {
+    yomi: "もいるのだ",
+    gloss: "también hay/existen (tono explicativo)",
+    ro: "mo iru no da",
+    forms: ["もいるんだ (coloquial)", "もいるんです (cortés)"],
+    examples: ["理解できない人もいるのだ。= También hay gente que no puede entender."],
+    note: "のだ/んだ añade matiz explicativo o enfático."
+  },
+
+  "いるのだ": {
+    yomi: "いるのだ",
+    gloss: "hay/está (explicativo; seres animados)",
+    ro: "iru no da",
+    forms: ["いるんだ (coloquial)", "いるんです (cortés)"],
+    examples: ["ここに助けてくれる人がいるのだ。= Aquí hay alguien que puede ayudar."],
+    note: "のだ/んだ explica, enfatiza o justifica."
+  },
+
+  "精神": {
+    yomi: "せいしん",
+    gloss: "espíritu; mente; mentalidad",
+    ro: "seishin",
+    forms: ["精神的 (mental)", "精神力 (fuerza mental)", "精神状態 (estado mental)"],
+    examples: ["精神を鍛える。= Fortalecer el espíritu."]
+  },
+
+  "光": {
+    yomi: "ひかり",
+    gloss: "luz",
+    ro: "hikari",
+    forms: ["光る (brillar)", "日光 (luz solar)", "光景 (escena; vista)"],
+    examples: ["光が差し込む。= Entra la luz."]
+  },
+
+  "まま": {
+    yomi: "まま",
+    gloss: "tal cual; manteniendo el estado",
+    ro: "mama",
+    forms: ["N のまま (tal como N)", "V-た まま (quedarse tras V)", "V-ない まま (sin V)"],
+    examples: ["靴のまま入らないで。= No entres con zapatos.", "電気をつけたまま寝た。= Dormí con la luz encendida."],
+    note: "X のまま = 'tal como X'. Mantiene estado/situación."
+  },
+
+  "自由に": {
+    yomi: "じゆうに",
+    gloss: "libremente",
+    ro: "jiyū ni",
+    rov: ["jiyuu ni"],
+    forms: ["自由 (sust.)", "自由な (adj.)"],
+    examples: ["自由に選んでください。= Elija libremente."]
+  },
+
+  "解放してやれ": {
+    yomi: "かいほうしてやれ",
+    gloss: "¡libéralo! (benefactivo, tono imperativo)",
+    ro: "kaihō shite yare",
+    rov: ["kaihou shite yare"],
+    forms: ["解放する (liberar)", "〜してやる (hacer por alguien; benefactivo ‘yo→vos/él’)"],
+    examples: ["精神を光のまま自由に解放してやれ。= Libera el espíritu tal como luz, libremente."],
+    note: "してやる: ‘hacerle un favor’ a alguien de estatus similar/inferior; tono cercano."
+  },
+
+  "気持ち": {
+    yomi: "きもち",
+    gloss: "sentimiento; sensación; ánimo",
+    ro: "kimochi",
+    forms: ["気持ちいい (agradable)", "気持ち悪い (asqueroso/malestar)", "いい気持ち (buen ánimo)", "気持ちになる (sentirse ~)"],
+    examples: ["気持ちが分かる。= Entiendo cómo te sentís.", "気持ちいい風だ。= Es un viento agradable."]
+  },
+  "分かる": {
+    yomi: "わかる",
+    gloss: "entender; comprender",
+    ro: "wakaru",
+    forms: ["分かった (pasado)", "分からない (neg.)", "分かりやすい (fácil de entender)", "分かりにくい (difícil de entender)"],
+    examples: ["少し日本語が分かる。= Entiendo un poco de japonés.", "意味が分からない。= No entiendo el significado."]
+  },
+  "もう": {
+    yomi: "もう",
+    gloss: "ya; más; (frustración) ‘¡basta!’",
+    ro: "mō",
+    rov: ["mou"],
+    forms: ["もうすぐ (muy pronto)", "もう一度 (una vez más)", "もう〜ない (ya no)"],
+    examples: ["もう我慢できない。= Ya no puedo aguantar.", "もうすぐ始まる。= Ya empieza."]
+  },
+  "我慢する": {
+    yomi: "がまんする",
+    gloss: "aguantarse; soportar; contenerse",
+    ro: "gaman suru",
+    forms: ["我慢できる/できない (poder/no poder soportar)", "我慢強い (paciente)"],
+    examples: ["痛みを我慢する。= Soportar el dolor.", "彼は我慢強い。= Es muy paciente."]
+  },
+  "ことはない": {
+    yomi: "ことはない",
+    gloss: "no hace falta; no es necesario / no necesariamente",
+    ro: "koto wa nai",
+    forms: ["V(辞書形)+ことはない (no es necesario V)", "必ずしも〜ということはない (no necesariamente)"],
+    examples: ["心配することはない。= No hace falta preocuparse.", "高いからといって良いということはない。= Que sea caro no significa que sea bueno."]
+  },
+  "のが": {
+    yomi: "のが",
+    gloss: "(nominalizador + が: ‘el hecho de ~’ como sujeto)",
+    ro: "no ga",
+    forms: ["V(辞書形) のが〜 (me/te/le ~ el hecho de V)", "Adj-い のが〜"],
+    examples: ["走るのが好きだ。= Me gusta correr.", "早起きするのが苦手だ。= Se me da mal madrugar."]
+  },
+
+  // === Partículas ===
+  "を": {
+    yomi: "を",
+    gloss: "marca de objeto directo; también ruta/espacio atravesado",
+    ro: "o",
+    rov: ["wo"],
+    forms: ["目的語: 水を飲む", "経路: 橋を渡る", "起点の離脱: 家を出る"],
+    examples: ["パンを食べる。= Comer pan.", "道を歩く。= Caminar por la calle."]
+  },
+  "は": {
+    yomi: "は",
+    gloss: "tema; contraste",
+    ro: "wa",
+    forms: ["主題提示: 私は〜", "対比: Aは〜が、Bは〜", "取り立て強調: 今日は暑い"],
+    examples: ["私は学生です。= Yo soy estudiante.", "犬は好きだが、猫は苦手だ。= Me gustan los perros, pero los gatos no tanto."]
+  },
+  "が": {
+    yomi: "が",
+    gloss: "sujeto; énfasis; existencia",
+    ro: "ga",
+    forms: ["新情報提示", "存在: 庭に猫がいる", "逆接(〜が、): ‘pero’ (más escrito)"],
+    examples: ["雨が降っている。= Está lloviendo.", "問題がある。= Hay un problema."]
+  },
+  "に": {
+    yomi: "に",
+    gloss: "tiempo; destino; punto; receptor; propósito",
+    ro: "ni",
+    forms: ["時間点: 3時に", "到着/存在: 学校に行く / いすに座る", "受け手: 彼にあげる", "目的: 勉強しに行く"],
+    examples: ["７時に起きる。= Me levanto a las 7.", "友だちに手紙を出す。= Enviar una carta a un amigo."]
+  },
+  "で": {
+    yomi: "で",
+    gloss: "lugar de acción; medio; causa; material",
+    ro: "de",
+    forms: ["場所: 学校で", "手段: バスで行く", "材料/範囲: 木で作る / 日本で一番", "原因: 地震で家が壊れた"],
+    examples: ["図書館で読む。= Leer en la biblioteca.", "箸で食べる。= Comer con palitos."]
+  },
+  "と": {
+    yomi: "と",
+    gloss: "y; con; cita textual; condición natural (‘si/cuando’)",
+    ro: "to",
+    forms: ["並列: AとB", "共同: 彼と行く", "引用: 〜と言う", "確定条件: 春になると暖かい"],
+    examples: ["家族と住む。= Vivo con mi familia.", "『行く』と言った。= Dijo ‘voy’.", "ボタンを押すと開く。= Si/Al apretar el botón, se abre."]
+  },
+  "も": {
+    yomi: "も",
+    gloss: "también; incluso",
+    ro: "mo",
+    forms: ["追加: 私も", "強調: 一分もない (ni un minuto)", "並列強調: AもBも"],
+    examples: ["私も行く。= Yo también voy.", "一円もない。= No tengo ni un yen."]
+  },
+  "の": {
+    yomi: "の",
+    gloss: "posesivo; nominalizador; explicativo (coloquial con んだ)",
+    ro: "no",
+    forms: ["連体修飾: 私の本", "名詞化: 日本語を勉強するのが好き", "説明: 〜の？ / 〜んだ"],
+    examples: ["彼の車。= Su auto.", "歌うのが好きだ。= Me gusta cantar."]
+  },
+  "へ": {
+    yomi: "へ",
+    gloss: "hacia (dirección, más suave que に)",
+    ro: "e",
+    forms: ["方向: 東京へ行く", "宛名: 田中さんへ (en cartas)"],
+    examples: ["学校へ急ぐ。= Apurarse hacia la escuela."]
+  },
+  "から": {
+    yomi: "から",
+    gloss: "desde; porque",
+    ro: "kara",
+    forms: ["起点: 9時から", "材料/情報源: 友だちから聞いた", "理由: 寒いから帰る"],
+    examples: ["家から駅まで歩く。= Camino desde casa hasta la estación.", "雨だから行かない。= No voy porque llueve."]
+  },
+  "まで": {
+    yomi: "まで",
+    gloss: "hasta; incluso (énfasis)",
+    ro: "made",
+    forms: ["終点: 〜まで", "範囲強調: 子どもまで知っている (hasta los niños)"],
+    examples: ["三時まで勉強する。= Estudio hasta las 3.", "彼は泣くまで笑った。= Se rió hasta llorar."]
+  },
+  "より": {
+    yomi: "より",
+    gloss: "comparativo (‘más que’); origen formal",
+    ro: "yori",
+    forms: ["比較: AよりBのほうが〜", "起点(書き言葉): これより始まる (a partir de ahora)"],
+    examples: ["昨日より暖かい。= Más cálido que ayer.", "これより会議を始めます。= A partir de ahora iniciamos la reunión (formal)."]
+  }
+};
+
   const DICT_KEYS=Object.keys(JA_DICT).sort((a,b)=>b.length-a.length);
 
   // Segmentación JA priorizando diccionario
