@@ -676,6 +676,16 @@
       }
       flush(); return out;
     }
+// ¿Tiene kanji?
+const hasKanjiIn = s => Array.from(s||'').some(ch => /[\u3400-\u9FFF]/.test(ch));
+
+// Genera <ruby> solo sobre kanji usando la yomi de la entrada
+function wordWithFurigana(surface, entry){
+  if (hasKanjiIn(surface) && entry?.yomi) {
+    return makeRubyKanjiOnly(surface, entry.yomi);
+  }
+  return surface || '—';
+}
 
     /* ======== Romaji helpers ======== */
     const PUNC_RE = /^[\s、。．，！？・：；「」『』（）［］【】〈〉《》〔〕…—.,:;!?-]+$/;
@@ -902,7 +912,7 @@ function romVariantsTokensFor(key){
           pvForms=$('#pv-forms'),
           pvExamples=$('#pv-examples');
 
-    let popLocked=false, popAnchor=null, lastEntry=null; // para refrescar cuando cambie FG
+   let popLocked=false, popAnchor=null, lastEntry=null, lastSurface=null;
 
     function lockPopover(anchor){ popLocked=true; popAnchor=anchor||popAnchor; pop.setAttribute('data-locked','1'); }
     function unlockPopover(){ popLocked=false; popAnchor=null; pop.removeAttribute('data-locked'); }
@@ -1192,43 +1202,45 @@ capRO.addEventListener('mouseleave', ()=>{
   clearROHighlight();
   if(state.showJA) clearJAHighlight();
 });
+function fillExtra(entry, surface){
+  // Título con furigana (si hay kanji + yomi)
+  pvWord.innerHTML = wordWithFurigana(surface, entry);
 
-    /* === POPUP Helpers === */
-    function fillExtra(entry){
-      // Rōmaji al lado del término
-      pvRoma.textContent = entry?.ro ? ` · ${entry.ro}` : '';
+  // Rōmaji al lado del término
+  pvRoma.textContent = entry?.ro ? ` · ${entry.ro}` : '';
 
-      // Formas
-      if (entry?.forms?.length){
-        pvForms.innerHTML = `<div><strong>Formas:</strong></div><ul>
-          ${entry.forms.map(f=>`<li>${f}</li>`).join('')}
-        </ul>`;
-      } else {
-        pvForms.innerHTML = '';
-      }
+  // Formas (opción: poner furigana a lo que reconozca del JA dentro del string)
+  if (entry?.forms?.length){
+    pvForms.innerHTML = `<div><strong>Formas:</strong></div><ul>
+      ${entry.forms.map(f => `<li>${rubyKnownWordsInJa(f)}</li>`).join('')}
+    </ul>`;
+  } else {
+    pvForms.innerHTML = '';
+  }
 
-      // Ejemplos (con furigana opcional por FG)
-      if (entry?.examples?.length){
-        const items = entry.examples.map(ex=>{
-          const parts = ex.split('=');
-          const ja = parts[0] ? parts[0].trim() : '';
-          const es = parts[1] ? parts[1].trim() : '';
-          const jaOut = state.showFG ? rubyKnownWordsInJa(ja) : ja;
-          return `<li><span class="ex-ja">${jaOut}</span>${es? ` = <span class="ex-es">${es}</span>`:''}</li>`;
-        }).join('');
-        pvExamples.innerHTML = `<div><strong>Ejemplos:</strong></div><ul>${items}</ul>`;
-      } else {
-        pvExamples.innerHTML = '';
-      }
-    }
+  // Ejemplos (ya tenían furigana condicional a FG)
+  if (entry?.examples?.length){
+    const items = entry.examples.map(ex=>{
+      const parts = ex.split('=');
+      const ja = parts[0] ? parts[0].trim() : '';
+      const es = parts[1] ? parts[1].trim() : '';
+      const jaOut = state.showFG ? rubyKnownWordsInJa(ja) : ja;
+      return `<li><span class="ex-ja">${jaOut}</span>${es? ` = <span class="ex-es">${es}</span>`:''}</li>`;
+    }).join('');
+    pvExamples.innerHTML = `<div><strong>Ejemplos:</strong></div><ul>${items}</ul>`;
+  } else {
+    pvExamples.innerHTML = '';
+  }
+}
 
-    function refreshPopoverFG(){
-      if(pop.style.display==='block' && lastEntry){
-        // volver a pintar ejemplos con/ sin furigana según FG
-        fillExtra(lastEntry);
-        if(popAnchor) placePopoverAtSpan(popAnchor, true);
-      }
-    }
+
+   function refreshPopoverFG(){
+  if(pop.style.display==='block' && lastEntry){
+    fillExtra(lastEntry, lastSurface);   // ← pasar surface usado
+    if(popAnchor) placePopoverAtSpan(popAnchor, true);
+  }
+}
+
 
    /* === CLICK EN JAPO: popover + sincroniza RO (con forms/ejemplos) === */
 document.addEventListener('click',(e)=>{
@@ -1272,11 +1284,11 @@ document.addEventListener('click',(e)=>{
   }
 
   // completar campos del popover
-  pvWord.textContent = surface;
   pvRead.textContent = 'Lectura: ' + (entry?.yomi || '—');
   pvMeaning.textContent = 'Significado: ' + (entry?.gloss || '—') + (entry?.note ? ' · Uso: ' + entry.note : '');
-  fillExtra(entry);
-  lastEntry = entry || null;
+  fillExtra(entry, surface);
+lastEntry = entry || null;
+lastSurface = surface || null;
 
   // mostrar y posicionar
   unlockPopover();
@@ -1326,11 +1338,12 @@ document.addEventListener('click',(e)=>{
   if(!entry || !match) return;
 
   // Popover
-  pvWord.textContent = key;
   pvRead.textContent = 'Lectura: ' + (entry.yomi || '—');
   pvMeaning.textContent = 'Significado: ' + (entry.gloss || '—') + (entry.note ? ' · Uso: ' + entry.note : '');
-  fillExtra(entry);
-  lastEntry = entry;
+ fillExtra(entry, key);
+lastEntry = entry;
+lastSurface = key;
+
 
   unlockPopover();
   pop.style.display = 'block';
