@@ -145,14 +145,15 @@
     /* Footer */
     footer .footer-inner{ row-gap:20px; }
 
- /* Footer: enlaces subrayados (Cultura) */
+    /* Footer: enlaces subrayados (más finos) */
 .footer-inner a{
   text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1.5px;
+  text-underline-offset: 1.5px;
+  text-decoration-thickness: 1px; /* antes 1.5px */
+  text-decoration-skip-ink: auto;
 }
 .footer-inner a:hover{
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1.25px; /* antes 2px */
 }
 
   </style>
@@ -500,6 +501,7 @@
   </script>
 </body>
 </html>
+
 
 
 
