@@ -118,17 +118,17 @@
     .functions-grid .card:hover .title{ color:#6d28d9; }
 
     /* Popover diccionario */
-    .popover{
-      position:fixed;
-      z-index:9999;
-      min-width:240px; max-width:360px;
-      background:#fff;
-      border:1px solid #e9d5ff;
-      border-radius:14px;
-      box-shadow:0 10px 30px rgba(0,0,0,.15);
-      padding:10px 12px;
-      display:none;
-    }
+   .popover{
+  position: absolute;      /* antes: fixed */
+  z-index: 20;             /* encima de captions (z-index:5) */
+  min-width:240px; max-width:360px;
+  background:#fff;
+  border:1px solid #e9d5ff;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+  padding:10px 12px;
+  display:none;
+}
     .popover .word{ font-weight:800 }
     .popover .hint{ color:var(--muted); font-size:12px }
     .popover .meaning{ margin-top:6px }
@@ -906,32 +906,43 @@ function romVariantsTokensFor(key){
 
     function lockPopover(anchor){ popLocked=true; popAnchor=anchor||popAnchor; pop.setAttribute('data-locked','1'); }
     function unlockPopover(){ popLocked=false; popAnchor=null; pop.removeAttribute('data-locked'); }
-    function placePopoverAtSpan(span, force=false){
-      if(popLocked && !force) return;
-      const rect = span.getBoundingClientRect();
-      const vw=innerWidth, vh=innerHeight, margin=8;
+  // Popover limitado al área del video (.stage)
+function placePopoverAtSpan(span, force=false){
+  if (popLocked && !force) return;
 
-      pop.style.visibility='hidden'; pop.style.display='block';
-      const pr = pop.getBoundingClientRect();
+  const stage = document.querySelector('.stage');
+  if (!stage) return;
 
-      let top = rect.top - pr.height - 12;
-      if(top < margin) top = rect.bottom + 12;
+  const sr = stage.getBoundingClientRect(); // contenedor (video)
+  const r  = span.getBoundingClientRect();  // ancla
+  const margin = 8;
 
-      let left = rect.left + (rect.width - pr.width)/2;
-      left = Math.max(margin, Math.min(left, vw - pr.width - margin));
-      top  = Math.max(margin, Math.min(top , vh - pr.height - margin));
+  // mostrar para medir tamaño
+  pop.style.visibility = 'hidden';
+  pop.style.display = 'block';
+  const pr = pop.getBoundingClientRect();
 
-      pop.style.left = left + 'px';
-      pop.style.top  = top  + 'px';
-      pop.style.visibility='visible';
-    }
-    function repositionIfNeeded(){
-      if (!popLocked || !popAnchor || !document.body.contains(popAnchor)) return;
-      placePopoverAtSpan(popAnchor, true);
-    }
-    window.addEventListener('scroll', repositionIfNeeded, { passive: true });
-    window.addEventListener('resize', repositionIfNeeded);
+  // coordenadas RELATIVAS a .stage
+  let top  = r.top  - sr.top  - pr.height - 12;       // arriba del ancla
+  if (top < margin) top = r.bottom - sr.top + 12;     // si no entra, abajo
 
+  let left = r.left - sr.left + (r.width - pr.width)/2;
+  left = Math.max(margin, Math.min(left, sr.width  - pr.width  - margin));
+  top  = Math.max(margin, Math.min(top , sr.height - pr.height - margin));
+
+  pop.style.left = left + 'px';
+  pop.style.top  = top  + 'px';
+  pop.style.visibility = 'visible';
+}
+
+function repositionIfNeeded(){
+  if (!popLocked || !popAnchor || !document.body.contains(popAnchor)) return;
+  placePopoverAtSpan(popAnchor, true);
+}
+
+// Ya no hace falta reposicionar en scroll
+// window.addEventListener('scroll', repositionIfNeeded, { passive: true });
+window.addEventListener('resize', repositionIfNeeded);
     function longestDictAt(line, pos){
       let best = null;
       for (const k of DICT_KEYS){
