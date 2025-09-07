@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Voces del Anime — Créditos</title>
+  <title>Voces del Anime — Comunidad</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
+  .compose .muted{ color:#4c1d95; font-weight:800; font-size:1.1rem; }
     :root{
       --ink:#111827; --brand:#5b21b6; --muted:#6b7280;
       --grad1:#f0abfc; --grad2:#93c5fd; --grad3:#a7f3d0;
@@ -21,7 +22,7 @@
       --space-4: 20px;
       --space-5: 28px;
     }
-    *{box-sizing:border-box}
+     *{box-sizing:border-box}
     html,body{margin:0}
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
@@ -32,52 +33,32 @@
     .container{max-width:var(--page-max);margin:0 auto;padding:0 16px}
     a{color:#6d28d9;text-decoration:none}
 
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.7);backdrop-filter:blur(6px);border-bottom:1px solid #e9d5ff}
+    .nav-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
+    .brand{font-weight:600;color:#6d28d9}
+    .tabs{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
+    .tab{font-weight:500}
+    .tab:hover,.tab:focus-visible{font-weight:600}
+    .tab.active{font-weight:800;text-decoration:underline}
 
-      /* NAV (coincide con el resto del sitio) */
-      .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.7);backdrop-filter:blur(6px);border-bottom:1px solid #e9d5ff}
-      .nav-inner{display:flex;align-items:center;gap:12px;padding:10px 0}
-      .brand{font-weight:600;color:#6d28d9}
-      .tabs{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
-      .tab{font-weight:500}
-      .tab:hover,.tab:focus-visible{font-weight:600}
-      .tab.active{font-weight:800;text-decoration:underline}
+    /* HERO */
+    .hero{padding:56px 0 64px}
+    .hero-frame{max-width:var(--page-max);margin:0 auto;border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08)}
+    .hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
+    .hero h1{margin:0;color:var(--brand);font-size:clamp(26px,5vw,44px)}
+    .lead{
+      margin:6px auto 0; max-width:100ch; text-align:center; font-weight:600;
+      background:linear-gradient(90deg,#7c3aed,#60a5fa);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
 
-      /* HERO visual con leves destellos */
-      .contact-hero{padding:56px 0 64px;position:relative}
-      .contact-hero--visual{position:relative;overflow:hidden}
-      .contact-hero--visual::before,
-      .contact-hero--visual::after{
-        content:""; position:absolute; width:180px; height:180px; filter:blur(12px); opacity:.8;
-      }
-      .contact-hero--visual::before{
-        inset:auto auto -60px -60px;
-        background:radial-gradient(closest-side,#fbcfe8,transparent 70%);
-      }
-      .contact-hero--visual::after{
-        inset:-60px -60px auto auto;
-        background:radial-gradient(closest-side,#c7d2fe,transparent 70%);
-      }
-      .hero-frame{max-width:var(--page-max);margin:0 auto;border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08)}
-      .hero-glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);text-align:center;padding:28px 32px}
-      h1{margin:0;color:var(--brand);font-size:clamp(26px,5vw,44px)}
-      .lead{margin:6px auto 0;max-width:66ch;text-align:center;font-weight:600;background:linear-gradient(90deg,#7c3aed,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
-
-      /* Tarjetas glass con borde degradado (coherente con el resto) */
-      .card{position:relative;border-radius:18px}
-      .card--gradient-border::before{
-        content:""; position:absolute; inset:-1px; border-radius:20px;
-        background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));
-        z-index:-1;
-      }
-      .card--glass{
-        background:rgba(255,255,255,.6);
-        backdrop-filter:blur(10px);
-        box-shadow:0 10px 24px rgba(0,0,0,.08);
-      }
-      .card-inner{padding:16px}
-      .card-inner--lg{padding:22px}
-      @media(min-width:720px){ .card-inner--lg{ padding:28px 30px } }
-
+    /* BLOQUES */
+    .section{padding:24px 0}
+    .frame{border-radius:18px;padding:1px;background:linear-gradient(135deg,var(--grad1),var(--grad2),var(--grad3));box-shadow:0 10px 24px rgba(0,0,0,.08);max-width:var(--page-max);margin-inline:auto}
+    .glass{border-radius:18px;background:rgba(255,255,255,.65);backdrop-filter:blur(10px);padding:28px}
+    .title{font-weight:800;color:#4c1d95;margin:0 0 10px}
+    .muted{color:#6b7280}
       /* Formulario */
       .contact-form{display:grid;gap:16px}
       .field{display:grid;gap:6px}
@@ -273,5 +254,6 @@ input::placeholder, textarea::placeholder{ color:#B8C0CC; }
     </div>
   </body>
 </html>
+
 
 
