@@ -976,6 +976,69 @@ function romSetFor(key){
       if(pick!==-1){ toks[pick].classList.add('hl'); return; }
       roBadgeEl=document.createElement('span'); roBadgeEl.className='ro-badge'; roBadgeEl.textContent=romaji; capRO.appendChild(roBadgeEl);
     }
+
+    /* === HOVER: Japonés -> Romaji (si RO visible) === */
+capJA.addEventListener('mousemove', (e)=>{
+  if(!state.showJA) return;
+
+  const jaSpan = e.target.closest('.word-ja');
+  clearJAHighlight();
+
+  // si no estoy sobre una palabra JA, limpio también el RO y salgo
+  if(!jaSpan){
+    if(state.showRO) clearROHighlight();
+    return;
+  }
+
+  // resalto la palabra JA bajo el cursor
+  jaSpan.classList.add('hl');
+
+  // si RO no está visible, no intento sincronizar
+  if(!state.showRO) return;
+
+  // reconstruyo la entrada de diccionario para esta posición
+  const wrap = jaSpan.closest('.line-ja');
+  const lineText = wrap ? (wrap.dataset.text || '') : '';
+  const start = Number(jaSpan.dataset.start)||0;
+  const end   = Number(jaSpan.dataset.end)||start+(jaSpan.textContent||'').length;
+  const mid   = Math.floor((start+end)/2);
+
+  let surface = jaSpan.dataset.word || (jaSpan.textContent||'').trim();
+  let entry = (jaSpan.dataset.dict==='1')
+    ? (JA_DICT[surface] || {
+        yomi: jaSpan.dataset.yomi,
+        ro:   jaSpan.dataset.roma
+      })
+    : null;
+
+  // si no venía marcada como diccionario, busco la mejor coincidencia en la línea
+  if(!entry){
+    const best = longestDictAt(lineText, mid);
+    if(best){ surface = best.text; entry = best.entry; }
+  }
+
+  // si detecté un término, resalto el span/segmento completo JA (multi-kanji)
+  if(surface && wrap){
+    const jStart = (wrap.dataset.text || '').indexOf(surface);
+    if(jStart >= 0){
+      capJA.querySelectorAll('.word-ja').forEach(sp=>{
+        const s = Number(sp.dataset.start)||0, e2 = Number(sp.dataset.end)||0;
+        if(s < jStart + surface.length && e2 > jStart) sp.classList.add('hl');
+      });
+    }
+  }
+
+  // y reflejo en RO
+  const romaOut = entry?.ro || (entry?.yomi ? hiraToRoma(entry.yomi) : '');
+  if(romaOut) highlightInRO(romaOut);
+});
+
+// limpiar cuando salgo del bloque JA
+capJA.addEventListener('mouseleave', ()=>{
+  clearJAHighlight();
+  if(state.showRO) clearROHighlight();
+});
+
 /* === HOVER: Romaji -> Japonés (si JA visible) — admite ro + rov === */
 capRO.addEventListener('mousemove', (e)=>{
   if(!state.showRO) return;
