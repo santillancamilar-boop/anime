@@ -678,6 +678,7 @@
     }
 
     /* ======== Romaji helpers ======== */
+    const PUNC_RE = /^[\s、。．，！？・：；「」『』（）［］【】〈〉《》〔〕…—.,:;!?-]+$/;
     const ROMA_MAP = {
       'きゃ':'kya','きゅ':'kyu','きょ':'kyo','しゃ':'sha','しゅ':'shu','しょ':'sho','ちゃ':'cha','ちゅ':'chu','ちょ':'cho',
       'にゃ':'nya','にゅ':'nyu','にょ':'nyo','ひゃ':'hya','ひゅ':'hyu','ひょ':'hyo','みゃ':'mya','みゅ':'myu','みょ':'myo',
@@ -1031,11 +1032,13 @@ function highlightJaFromRo(key, roStartIndex){
 capJA.addEventListener('mousemove', (e)=>{
   if(!state.showJA) return;
 
-  const jaSpan = e.target.closest('.word-ja');
+  const t = e.target && e.target.nodeType===3 ? e.target.parentElement : e.target;
+  const jaSpan = t.closest('.word-ja');
+
   clearJAHighlight();
 
-  // si no estoy sobre una palabra JA, limpio también el RO y salgo
-  if(!jaSpan){
+  // ignorar si no es palabra o si es sólo puntuación
+  if(!jaSpan || PUNC_RE.test(jaSpan.textContent)){
     if(state.showRO) clearROHighlight();
     return;
   }
@@ -1216,57 +1219,67 @@ capRO.addEventListener('mouseleave', ()=>{
       }
     }
 
-    /* === CLICK EN JAPO: popover + sincroniza RO (con forms/ejemplos) === */
-    document.addEventListener('click',(e)=>{
-      if(!state.showJA) return;
+   /* === CLICK EN JAPO: popover + sincroniza RO (con forms/ejemplos) === */
+document.addEventListener('click',(e)=>{
+  if(!state.showJA) return;
 
-      // cerrar si clic fuera de JA y fuera del popover
-      if(!capJA.contains(e.target)) {
-        if(!e.target.closest('#popover')) { pop.style.display='none'; unlockPopover(); }
-        return;
-      }
+  // Cerrar si el clic fue fuera de JA y fuera del popover
+  if(!capJA.contains(e.target)) {
+    if(!e.target.closest('#popover')) { pop.style.display='none'; unlockPopover(); }
+    return;
+  }
 
-      const span=e.target.closest('.word-ja'); if(!span) return;
+  // Normalizar target (por si el click cayó en un textNode dentro del span)
+  const t = e.target && e.target.nodeType===3 ? e.target.parentElement : e.target;
+  const span = t.closest('.word-ja');
+  if(!span) return;
 
-      const lineWrap=span.closest('.line-ja');
-      const lineText = lineWrap ? (lineWrap.dataset.text || '') : '';
-      const start=Number(span.dataset.start)||0, end=Number(span.dataset.end)||start+(span.textContent||'').length;
-      const pos=Math.floor((start+end)/2);
+  // Ignorar signos de puntuación
+  if (PUNC_RE.test(span.textContent)) return;
 
-      let surface = span.dataset.word || (span.textContent||'').trim();
+  const lineWrap = span.closest('.line-ja');
+  const lineText = lineWrap ? (lineWrap.dataset.text || '') : '';
+  const start = Number(span.dataset.start)||0;
+  const end   = Number(span.dataset.end)||start+(span.textContent||'').length;
+  const pos   = Math.floor((start+end)/2);
 
-      // si venía marcado por el diccionario, intentamos recuperar la ENTRADA COMPLETA
-      let entry = (span.dataset.dict==='1') ? (JA_DICT[surface] || {
-        yomi:span.dataset.yomi, gloss:span.dataset.gloss, ro:span.dataset.roma, note:span.dataset.note
-      }) : null;
+  let surface = span.dataset.word || (span.textContent||'').trim();
 
-      // si no hay entrada directa, buscamos la mejor coincidencia en la línea (máxima longitud)
-      if(!entry){
-        const best=longestDictAt(lineText, pos);
-        if(best){ surface=best.text; entry=best.entry; }
-      }
+  // si venía marcado por el diccionario, intentamos recuperar la ENTRADA COMPLETA
+  let entry = (span.dataset.dict==='1') ? (JA_DICT[surface] || {
+    yomi:  span.dataset.yomi,
+    gloss: span.dataset.gloss,
+    ro:    span.dataset.roma,
+    note:  span.dataset.note
+  }) : null;
 
-      // completar campos del popover
-      pvWord.textContent = surface;
-      pvRead.textContent = 'Lectura: ' + (entry?.yomi || '—');
-      pvMeaning.textContent = 'Significado: ' + (entry?.gloss || '—') + (entry?.note ? ' · Uso: ' + entry.note : '');
-      fillExtra(entry);
-      lastEntry = entry || null;
+  // si no hay entrada directa, buscamos la mejor coincidencia en la línea (máxima longitud)
+  if(!entry){
+    const best = longestDictAt(lineText, pos);
+    if(best){ surface = best.text; entry = best.entry; }
+  }
 
-      // mostrar y posicionar
-      unlockPopover();
-      pop.style.display = 'block';
-      placePopoverAtSpan(span);
-      lockPopover(span);
-// resaltar en RO
-const romaPreferred = entry ? pickBestRoVariant(entry) : '';
-const directRoma    = !entry && Array.from(surface).every(isKana)
-  ? hiraToRoma(kataToHira(surface))
-  : '';
-const romaOut = romaPreferred || directRoma;
-if (romaOut) highlightInRO(romaOut);
-}, true); // ← cierre del click de JA (faltaba)
+  // completar campos del popover
+  pvWord.textContent = surface;
+  pvRead.textContent = 'Lectura: ' + (entry?.yomi || '—');
+  pvMeaning.textContent = 'Significado: ' + (entry?.gloss || '—') + (entry?.note ? ' · Uso: ' + entry.note : '');
+  fillExtra(entry);
+  lastEntry = entry || null;
 
+  // mostrar y posicionar
+  unlockPopover();
+  pop.style.display = 'block';
+  placePopoverAtSpan(span);
+  lockPopover(span);
+
+  // resaltar en RO (prefiere la variante que está en la línea: "wo" u "o")
+  const romaPreferred = entry ? pickBestRoVariant(entry) : '';
+  const directRoma    = !entry && Array.from(surface).every(isKana)
+    ? hiraToRoma(kataToHira(surface))
+    : '';
+  const romaOut = romaPreferred || directRoma;
+  if (romaOut) highlightInRO(romaOut);
+}, true);
 /* === CLICK EN ROMAJI: popover + reflejo JA (con ro + rov) === */
 document.addEventListener('click',(e)=>{
   if(!state.showRO) return;
