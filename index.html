@@ -636,7 +636,120 @@
         examples:["昨日より暖かい。= Más cálido que ayer."] }
     };
 
-    const DICT_KEYS=Object.keys(JA_DICT).sort((a,b)=>b.length-a.length);
+
+
+    // Extras para furigana usados por: 孫悟飯 / 正しい / こと / ために / 戦う / 罪 / …
+const JA_EXTRA = {
+  "悟飯": { yomi:"ごはん", gloss:"Gohan (abreviado)", ro:"gohan" },
+  "悟空": { yomi:"ごくう", gloss:"Gokū (nombre propio)", ro:"gokū", rov:["goku"] },
+  "息子": { yomi:"むすこ", gloss:"hijo (varón)", ro:"musuko" },
+
+  "答え": { yomi:"こたえ", gloss:"respuesta", ro:"kotae" },
+  "選ぶ": { yomi:"えらぶ", gloss:"elegir", ro:"erabu" },
+  "生きる": { yomi:"いきる", gloss:"vivir", ro:"ikiru" },
+
+  "辞書形": { yomi:"じしょけい", gloss:"forma de diccionario", ro:"jisho-kei", rov:["jishokei"] },
+  "健康": { yomi:"けんこう", gloss:"salud", ro:"kenkō", rov:["kenkou"] },
+  "運動": { yomi:"うんどう", gloss:"ejercicio", ro:"undō", rov:["undou"] },
+  "運動する": { yomi:"うんどうする", gloss:"hacer ejercicio", ro:"undō suru", rov:["undou suru"] },
+  "合格": { yomi:"ごうかく", gloss:"aprobación (examen)", ro:"gōkaku", rov:["goukaku"] },
+  "合格する": { yomi:"ごうかくする", gloss:"aprobar (examen)", ro:"gōkaku suru", rov:["goukaku suru"] },
+  "勉強": { yomi:"べんきょう", gloss:"estudio", ro:"benkyō", rov:["benkyou"] },
+  "勉強する": { yomi:"べんきょうする", gloss:"estudiar", ro:"benkyō suru", rov:["benkyou suru"] },
+
+  "自由": { yomi:"じゆう", gloss:"libertad", ro:"jiyū", rov:["jiyuu"] },
+  "最後": { yomi:"さいご", gloss:"el final", ro:"saigo" },
+
+  "犯す": { yomi:"おかす", gloss:"cometer (un delito/falta)", ro:"okasu" },
+  "罪悪感": { yomi:"ざいあくかん", gloss:"sentimiento de culpa", ro:"zaiakukan" },
+  "抱く": { yomi:"いだく", gloss:"abrigar/tener (sentimiento); abrazar", ro:"idaku", rov:["daku"] },
+
+  "日本": { yomi:"にほん", gloss:"Japón", ro:"nihon", rov:["nippon"] },
+  "行く": { yomi:"いく", gloss:"ir", ro:"iku" },
+  "出発": { yomi:"しゅっぱつ", gloss:"salida; partida", ro:"shuppatsu" },
+  "明日": { yomi:"あした", gloss:"mañana (día siguiente)", ro:"ashita", rov:["asu"] },
+  "なる": { yomi:"なる", gloss:"llegar a ser; quedar", ro:"naru" },
+
+  // Extras para: ではない / 話し合い / など / 通用しない / 相手 / もいるのだ / …
+  "真実": { yomi:"しんじつ", gloss:"verdad", ro:"shinjitsu" },
+  "学生": { yomi:"がくせい", gloss:"estudiante", ro:"gakusei" },
+
+  "問題": { yomi:"もんだい", gloss:"problema", ro:"mondai" },
+  "解決": { yomi:"かいけつ", gloss:"solución", ro:"kaiketsu" },
+  "解決する": { yomi:"かいけつする", gloss:"resolver", ro:"kaiketsu suru" },
+  "話し合う": { yomi:"はなしあう", gloss:"dialogar; discutir", ro:"hanashiau" },
+
+  "本": { yomi:"ほん", gloss:"libro", ro:"hon" },
+  "雑誌": { yomi:"ざっし", gloss:"revista", ro:"zasshi" },
+  "読む": { yomi:"よむ", gloss:"leer", ro:"yomu" },
+
+  "通用": { yomi:"つうよう", gloss:"tener validez/funcionar", ro:"tsūyō", rov:["tsuuyou"] },
+  "通用する": { yomi:"つうようする", gloss:"funcionar; ser válido", ro:"tsūyō suru", rov:["tsuuyou suru"] },
+  "手": { yomi:"て", gloss:"mano; (táctica/forma)", ro:"te" },
+  "彼": { yomi:"かれ", gloss:"él", ro:"kare" },
+
+  "強い": { yomi:"つよい", gloss:"fuerte", ro:"tsuyoi" },
+  "話し相手": { yomi:"はなしあいて", gloss:"conversador", ro:"hanashiaite" },
+  "相手にする": { yomi:"あいてにする", gloss:"tomar en cuenta; tratar con", ro:"aite ni suru" },
+
+  "理解": { yomi:"りかい", gloss:"comprensión", ro:"rikai" },
+  "理解する": { yomi:"りかいする", gloss:"entender", ro:"rikai suru" },
+  "人": { yomi:"ひと", gloss:"persona; gente", ro:"hito" },
+
+  "助ける": { yomi:"たすける", gloss:"ayudar", ro:"tasukeru" },
+  "鍛える": { yomi:"きたえる", gloss:"entrenar; fortalecer", ro:"kitaeru" },
+
+  "光る": { yomi:"ひかる", gloss:"brillar", ro:"hikaru" },
+  "日光": { yomi:"にっこう", gloss:"luz solar", ro:"nikkō", rov:["nikkou"] },
+  "光景": { yomi:"こうけい", gloss:"escena; vista", ro:"kōkei", rov:["koukei"] },
+  "差し込む": { yomi:"さしこむ", gloss:"entrar (luz); insertar", ro:"sashikomu" },
+
+  "靴": { yomi:"くつ", gloss:"zapatos", ro:"kutsu" },
+  "入る": { yomi:"はいる", gloss:"entrar", ro:"hairu" },
+  "電気": { yomi:"でんき", gloss:"luz eléctrica", ro:"denki" },
+  "寝る": { yomi:"ねる", gloss:"dormir", ro:"neru" },
+
+  "解放": { yomi:"かいほう", gloss:"liberación", ro:"kaihō", rov:["kaihou"] },
+
+  "風": { yomi:"かぜ", gloss:"viento", ro:"kaze" },
+
+  "意味": { yomi:"いみ", gloss:"significado", ro:"imi" },
+  "日本語": { yomi:"にほんご", gloss:"idioma japonés", ro:"nihongo" },
+  "少し": { yomi:"すこし", gloss:"un poco", ro:"sukoshi" },
+
+  "始まる": { yomi:"はじまる", gloss:"empezar", ro:"hajimaru" },
+
+  "痛み": { yomi:"いたみ", gloss:"dolor", ro:"itami" },
+
+  "心配": { yomi:"しんぱい", gloss:"preocupación", ro:"shinpai" },
+  "高い": { yomi:"たかい", gloss:"caro; alto", ro:"takai" },
+  "良い": { yomi:"よい", gloss:"bueno", ro:"yoi", rov:["ii"] },
+
+  "走る": { yomi:"はしる", gloss:"correr", ro:"hashiru" },
+  "好き": { yomi:"すき", gloss:"gustar", ro:"suki" },
+  "早起き": { yomi:"はやおき", gloss:"madrugar", ro:"hayaoki" },
+  "早起きする": { yomi:"はやおきする", gloss:"madrugar (verbo)", ro:"hayaoki suru" },
+  "苦手": { yomi:"にがて", gloss:"no se le da bien", ro:"nigate" },
+
+  // Palabras de ejemplos de partículas
+  "庭": { yomi:"にわ", gloss:"jardín", ro:"niwa" },
+  "猫": { yomi:"ねこ", gloss:"gato", ro:"neko" },
+  "雨": { yomi:"あめ", gloss:"lluvia", ro:"ame" },
+  "降る": { yomi:"ふる", gloss:"caer (lluvia/nieve)", ro:"furu" },
+  "起きる": { yomi:"おきる", gloss:"levantarse", ro:"okiru" },
+  "図書館": { yomi:"としょかん", gloss:"biblioteca", ro:"toshokan" },
+  "家族": { yomi:"かぞく", gloss:"familia", ro:"kazoku" },
+  "住む": { yomi:"すむ", gloss:"vivir (residir)", ro:"sumu" },
+  "学校": { yomi:"がっこう", gloss:"escuela", ro:"gakkō", rov:["gakkou"] },
+  "急ぐ": { yomi:"いそぐ", gloss:"apurarse", ro:"isogu" },
+  "車": { yomi:"くるま", gloss:"auto", ro:"kuruma" }
+};
+
+  
+
+Object.assign(JA_DICT, JA_EXTRA);
+const DICT_KEYS = Object.keys(JA_DICT).sort((a,b)=>b.length-a.length);
+
 
     // Segmentación JA priorizando diccionario
     const segJA = (typeof Intl!=='undefined' && Intl.Segmenter)? new Intl.Segmenter('ja',{granularity:'word'}) : null;
