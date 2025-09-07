@@ -1093,91 +1093,73 @@ capRO.addEventListener('mousemove', (e)=>{
   }
 
   roSpan.classList.add('hl');
-
   if(!state.showJA) return;
 
-  const toks = Array.from(capRO.querySelectorAll('.word-ro'));
-  const idx  = toks.indexOf(roSpan);
-  const get  = i => (i>=0 && i<toks.length)? toks[i].textContent.trim() : null;
+  // tokens y formas normalizadas de la línea RO
+  const toks   = roTokens();
+  const norms  = roNorms();
+  const idx    = toks.indexOf(roSpan);
+  const cur    = norms[idx]; // token actual (p. ej. "kaiho")
 
-  let matchText=null, entry=null, key=null, win=null;
+  // Generar ventanas que TERMINAN en idx (4..1 tokens) — SIN espacios
+  const windows = [];
+  for(let w=4; w>=1; w--){
+    const start = idx-(w-1);
+    if(start<0) continue;
+    const seg = norms.slice(start, idx+1);
+    if(seg.length===w) windows.push({start, end:idx, text:seg.join('')});
+  }
 
- let matchText=null, entry=null, key=null, win=null;
-
-const toks = roTokens();
-const norms = roNorms();
-const idx  = toks.indexOf(roSpan);
-const cur  = norms[idx];                  // token actual (p. ej. "kaiho")
-
-// Generar ventanas que TERMINAN en idx (4..1 tokens)
-const windows=[];
-for(let w=4; w>=1; w--){
-  const start = idx-(w-1);
-  if(start<0) continue;
-  const seg = norms.slice(start, idx+1);
-  if(seg.length===w) windows.push({start, end:idx, text:seg.join(' ')});
-}
-
-// Buscar la mejor coincidencia en diccionario, EXIGIENDO que el token actual esté dentro del rōmaji del término
-let best=null;
-for(const winCand of windows){
-  for(const k of DICT_KEYS){
-    const roVars = romSetFor(k);                 // ej. ["kaihoshiteyare","kaihoushiteyare"]
-    for(const rv of roVars){
-      const rvTokens = tokenizeRoma(rv);         // ["kaiho","shite","yare"] o ["wo"]
-      // el token bajo cursor debe estar dentro de la variante
-      if(!rvTokens.includes(cur)) continue;
-      // y el span de la ventana debe coincidir exactamente con esa variante
-      if(rvTokens.join('') === winCand.text){
-        // preferimos el match más largo
-        if(!best || rvTokens.length > best.rvLen){
-          best = {k, entry:JA_DICT[k], win:winCand, rvLen:rvTokens.length};
+  // Buscar la mejor coincidencia en el diccionario
+  let best=null;
+  for(const winCand of windows){
+    for(const k of DICT_KEYS){
+      const roVars = romSetFor(k); // ["kaihoshiteyare","kaihoushiteyare"] o ["wo","o"]
+      for(const rv of roVars){
+        const rvTokens = tokenizeRoma(rv); // ["kaiho","shite","yare"] o ["wo"]
+        // el token bajo el cursor debe formar parte de esa variante
+        if(!rvTokens.includes(cur)) continue;
+        // y la ventana debe coincidir exactamente (sin espacios)
+        if(rvTokens.join('') === winCand.text){
+          if(!best || rvTokens.length > best.rvLen){
+            best = {k, entry:JA_DICT[k], win:winCand, rvLen:rvTokens.length};
+          }
         }
       }
     }
   }
-}
 
-if(best){
-  matchText = best.win.text;
-  entry     = best.entry;
-  key       = best.k;
-  win       = best.win;
-} else {
-  // Si nada coincide, no tocamos JA (evita resaltar "を" por error)
-  return;
-}
+  if(!best) return;
 
-    // highlight en RO
-    for (let i=win.start; i<=win.end; i++) toks[i].classList.add('hl');
+  // highlight en RO
+  for(let i=best.win.start; i<=best.win.end; i++){ toks[i].classList.add('hl'); }
 
-    // highlight en JA
-    clearJAHighlight();
-    let found=false;
-    capJA.querySelectorAll('.word-ja').forEach(sp=>{
-      if(sp.dataset.word===key){ sp.classList.add('hl'); found=true; }
-    });
+  // highlight en JA (directo por key; si no, por rōmaji)
+  clearJAHighlight();
+  let found=false;
+  capJA.querySelectorAll('.word-ja').forEach(sp=>{
+    if(sp.dataset.word===best.k){ sp.classList.add('hl'); found=true; }
+  });
 
-    if(!found){
-      const wrap=capJA.querySelector('.line-ja');
-      const line=wrap?(wrap.dataset.text||''):'';
-      const pos=line.indexOf(key);
-      if(pos>=0){
-        capJA.querySelectorAll('.word-ja').forEach(sp=>{
-          const s=Number(sp.dataset.start)||0, e2=Number(sp.dataset.end)||0;
-          if(s<pos+key.length && e2>pos) sp.classList.add('hl');
-        });
-      } else {
-        // fallback por rōmaji (ro + rov)
-        const byRoSet = new Set(romSetFor(key));
-        capJA.querySelectorAll('.word-ja').forEach(sp=>{
-          const r = sp.dataset.roma || (sp.dataset.yomi ? hiraToRoma(sp.dataset.yomi) : '');
-          if (r && byRoSet.has(norm(r))) sp.classList.add('hl');
-        });
-      }
+  if(!found){
+    const wrap=capJA.querySelector('.line-ja');
+    const line=wrap?(wrap.dataset.text||''):'';
+    const pos=line.indexOf(best.k);
+    if(pos>=0){
+      capJA.querySelectorAll('.word-ja').forEach(sp=>{
+        const s=Number(sp.dataset.start)||0, e2=Number(sp.dataset.end)||0;
+        if(s<pos+best.k.length && e2>pos) sp.classList.add('hl');
+      });
+    }else{
+      const byRoSet = new Set(romSetFor(best.k));
+      capJA.querySelectorAll('.word-ja').forEach(sp=>{
+        const r = sp.dataset.roma || (sp.dataset.yomi ? hiraToRoma(sp.dataset.yomi) : '');
+        if(r && byRoSet.has(norm(r))) sp.classList.add('hl');
+      });
     }
   }
 });
+
 
 capRO.addEventListener('mouseleave', ()=>{
   clearROHighlight();
@@ -1263,15 +1245,14 @@ capRO.addEventListener('mouseleave', ()=>{
       pop.style.display = 'block';
       placePopoverAtSpan(span);
       lockPopover(span);
-
-      // resaltar en RO
-    const romaPreferred = entry ? pickBestRoVariant(entry) : '';
-const directRoma    = !entry && Array.from(surface).every(isKana) ? hiraToRoma(kataToHira(surface)) : '';
-const romaOut       = romaPreferred || directRoma;
+// resaltar en RO
+const romaPreferred = entry ? pickBestRoVariant(entry) : '';
+const directRoma    = !entry && Array.from(surface).every(isKana)
+  ? hiraToRoma(kataToHira(surface))
+  : '';
+const romaOut = romaPreferred || directRoma;
 if (romaOut) highlightInRO(romaOut);
-
-      if(romaOut) highlightInRO(romaOut);
-    }, true);
+}, true); // ← cierre del click de JA (faltaba)
 
 /* === CLICK EN ROMAJI: popover + reflejo JA (con ro + rov) === */
 document.addEventListener('click',(e)=>{
