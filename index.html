@@ -716,6 +716,15 @@ function romSetFor(key){
   const list = [e.ro, ...(e.rov || [])].filter(Boolean);
   return list.map(x => norm(x));
 }
+// Variantes de rōmaji -> listas de tokens normalizados (["kaiho","shite","yare"], ["de","wa","nai"], etc.)
+function romVariantsTokensFor(key){
+  const e = JA_DICT[key];
+  if(!e) return [];
+  const cands = [e.ro, ...(e.rov || []), e.yomi ? hiraToRoma(e.yomi) : ''].filter(Boolean);
+  return cands
+    .map(s => tokenizeRoma(s))   // usa norm() por dentro
+    .filter(arr => arr.length);
+}
 
     function makeRubyKanjiOnly(surface, yomi){
       if(!surface || !yomi) return surface;
@@ -1084,7 +1093,7 @@ capJA.addEventListener('mouseleave', ()=>{
   if(state.showRO) clearROHighlight();
 });
 
-/* === HOVER: Romaji -> Japonés (si JA visible) — admite ro + rov === */
+/* === HOVER: Romaji -> Japonés (si JA visible) — usa variantes tokenizadas === */
 capRO.addEventListener('mousemove', (e)=>{
   if(!state.showRO) return;
 
@@ -1103,59 +1112,59 @@ capRO.addEventListener('mousemove', (e)=>{
   const toks   = roTokens();
   const norms  = roNorms();
   const idx    = toks.indexOf(roSpan);
-  const cur    = norms[idx]; // token actual (p. ej. "kaiho")
+  const cur    = norms[idx]; // token actual bajo el cursor (p. ej. "wa", "shite", "wo")
 
-  // Generar ventanas que TERMINAN en idx (4..1 tokens) — SIN espacios
+  // Ventanas que INCLUYEN idx (tamaños 1..4), probando a izquierda y derecha
   const windows = [];
-  for(let w=4; w>=1; w--){
-    const start = idx-(w-1);
-    if(start<0) continue;
-    const seg = norms.slice(start, idx+1);
-    if(seg.length===w) windows.push({start, end:idx, text:seg.join('')});
+  for (let w = 4; w >= 1; w--) {
+    const minStart = Math.max(0, idx - (w - 1));
+    const maxStart = Math.min(idx, norms.length - w);
+    for (let start = minStart; start <= maxStart; start++) {
+      const end = start + w - 1;
+      const seg = norms.slice(start, end + 1);
+      windows.push({ start, end, text: seg.join('') });
+    }
   }
 
-  // Buscar la mejor coincidencia en el diccionario
-  let best=null;
-  for(const winCand of windows){
-    for(const k of DICT_KEYS){
-      const roVars = romSetFor(k); // ["kaihoshiteyare","kaihoushiteyare"] o ["wo","o"]
-      for(const rv of roVars){
-        const rvTokens = tokenizeRoma(rv); // ["kaiho","shite","yare"] o ["wo"]
-        // el token bajo el cursor debe formar parte de esa variante
-        if(!rvTokens.includes(cur)) continue;
-        // y la ventana debe coincidir exactamente (sin espacios)
-        if(rvTokens.join('') === winCand.text){
-          if(!best || rvTokens.length > best.rvLen){
-            best = {k, entry:JA_DICT[k], win:winCand, rvLen:rvTokens.length};
+  // Matching contra el diccionario usando variantes tokenizadas
+  let best = null;
+  for (const winCand of windows) {
+    for (const k of DICT_KEYS) {
+      const variants = romVariantsTokensFor(k); // arrays de tokens: ["kaiho","shite","yare"], ["de","wa","nai"], ["wo"], etc.
+      for (const rvTokens of variants) {
+        if (!rvTokens.includes(cur)) continue;           // el token bajo el cursor debe estar en la variante
+        if (rvTokens.join('') === winCand.text) {        // y la ventana debe calzar EXACTO (sin espacios)
+          if (!best || rvTokens.length > best.rvLen) {
+            best = { k, entry: JA_DICT[k], win: winCand, rvLen: rvTokens.length };
           }
         }
       }
     }
   }
-
-  if(!best) return;
+  if (!best) return;
 
   // highlight en RO
-  for(let i=best.win.start; i<=best.win.end; i++){ toks[i].classList.add('hl'); }
+  for(let i = best.win.start; i <= best.win.end; i++){ toks[i].classList.add('hl'); }
 
-  // highlight en JA (directo por key; si no, por rōmaji)
+  // highlight en JA (directo por clave; si no, por rōmaji)
   clearJAHighlight();
-  let found=false;
+  let found = false;
   capJA.querySelectorAll('.word-ja').forEach(sp=>{
-    if(sp.dataset.word===best.k){ sp.classList.add('hl'); found=true; }
+    if(sp.dataset.word === best.k){ sp.classList.add('hl'); found = true; }
   });
 
   if(!found){
-    const wrap=capJA.querySelector('.line-ja');
-    const line=wrap?(wrap.dataset.text||''):'';
-    const pos=line.indexOf(best.k);
-    if(pos>=0){
+    const wrap = capJA.querySelector('.line-ja');
+    const line = wrap ? (wrap.dataset.text || '') : '';
+    const pos  = line.indexOf(best.k);
+    if(pos >= 0){
       capJA.querySelectorAll('.word-ja').forEach(sp=>{
-        const s=Number(sp.dataset.start)||0, e2=Number(sp.dataset.end)||0;
-        if(s<pos+best.k.length && e2>pos) sp.classList.add('hl');
+        const s = Number(sp.dataset.start)||0, e2 = Number(sp.dataset.end)||0;
+        if(s < pos + best.k.length && e2 > pos) sp.classList.add('hl');
       });
     }else{
-      const byRoSet = new Set(romSetFor(best.k));
+      // último recurso: comparar rōmaji normalizado
+      const byRoSet = new Set(romVariantsTokensFor(best.k).map(arr => arr.join('')));
       capJA.querySelectorAll('.word-ja').forEach(sp=>{
         const r = sp.dataset.roma || (sp.dataset.yomi ? hiraToRoma(sp.dataset.yomi) : '');
         if(r && byRoSet.has(norm(r))) sp.classList.add('hl');
