@@ -1235,6 +1235,7 @@ document.addEventListener('click',(e)=>{
   if(!state.showJA) return;
 
   // Cerrar si el clic fue fuera de JA y fuera del popover
+
   if(!capJA.contains(e.target)) {
     if(!e.target.closest('#popover')) { pop.style.display='none'; unlockPopover(); }
     return;
