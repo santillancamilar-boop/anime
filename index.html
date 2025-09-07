@@ -1069,12 +1069,16 @@ capJA.addEventListener('mousemove', (e)=>{
     }
   }
 
-  // y reflejo en RO
-  const romaOut = entry?.ro || (entry?.yomi ? hiraToRoma(entry.yomi) : '');
-  if(romaOut) highlightInRO(romaOut);
-});
+// y reflejo en RO (prefiere la variante que está en la línea: "wo" u "o")
+const romaPreferred = entry ? pickBestRoVariant(entry) : '';
+  const directRoma    = !entry && Array.from(surface).every(isKana)
+    ? hiraToRoma(kataToHira(surface))
+    : '';
+  const romaOut = romaPreferred || directRoma;
+  if (romaOut) highlightInRO(romaOut);
+}); // ← cerrar AQUÍ el mousemove de JA ✅
 
-// limpiar cuando salgo del bloque JA
+// limpiar cuando salgo del bloque JA (fuera del mousemove)
 capJA.addEventListener('mouseleave', ()=>{
   clearJAHighlight();
   if(state.showRO) clearROHighlight();
