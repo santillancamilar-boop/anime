@@ -124,8 +124,24 @@
 
     /* Player: botón con hover/pulse y barra de progreso fluida */
     .player .btn-play{
-      transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+      transition: transform .15s ease, background .15s ease, box-shadow .15s ease, opacity .18s ease;
       animation: pulse 1.6s ease-in-out infinite;
+      opacity:0;
+      pointer-events:none;
+    }
+    .player:hover .btn-play,
+    .player:focus-within .btn-play,
+    .player .screen:hover .btn-play,
+    .player .screen:focus-within .btn-play,
+    .player .btn-play:focus-visible{
+      opacity:1;
+      pointer-events:auto;
+    }
+    @media (hover: none){
+      .player .btn-play{
+        opacity:1;
+        pointer-events:auto;
+      }
     }
     .player .btn-play:hover{
       background:rgba(0,0,0,.65);
