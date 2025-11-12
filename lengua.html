@@ -124,6 +124,21 @@
 
     /* Player: botón con hover/pulse y barra de progreso fluida */
     .player .btn-play{
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:70px;
+      height:70px;
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,.65);
+      background:rgba(0,0,0,.45);
+      color:#fff;
+      cursor:pointer;
+      z-index:3;
+      box-shadow:0 8px 18px rgba(0,0,0,.25);
       transition: transform .18s ease, background .15s ease, box-shadow .18s ease, opacity .18s ease;
       animation: pulse 1.6s ease-in-out infinite;
       opacity:0;
@@ -240,7 +255,7 @@
                   <video preload="metadata" playsinline webkit-playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
                     <source src="itadakimasu.mp4" type="video/mp4">
                   </video>
-                  <button class="btn-play" aria-label="Reproducir/Pausar" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.65);border-radius:999px;width:70px;height:70px;display:grid;place-items:center;color:#fff;cursor:pointer;z-index:3;font-size:22px;box-shadow:0 8px 18px rgba(0,0,0,.25);">▶</button>
+                  <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
                   <div class="progress" style="position:absolute;left:0;right:0;bottom:0;height:6px;border-radius:999px;background:linear-gradient(90deg,#7c3aed,#60a5fa,#34d399);width:0%;opacity:.95;z-index:2"></div>
                 </div>
                 <p class="caption" style="font-size:.95rem;text-align:center;line-height:1.5;color:#4b5563">『いただきます！』 (Itadakimasu) — “¡A comer! / ¡Buen provecho!”</p>
@@ -252,7 +267,7 @@
                   <video preload="metadata" playsinline webkit-playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
                     <source src="yoroshiku onegaishimasu.mp4" type="video/mp4">
                   </video>
-                  <button class="btn-play" aria-label="Reproducir/Pausar" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.65);border-radius:999px;width:70px;height:70px;display:grid;place-items:center;color:#fff;cursor:pointer;z-index:3;font-size:22px;box-shadow:0 8px 18px rgba(0,0,0,.25);">▶</button>
+                  <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
                   <div class="progress" style="position:absolute;left:0;right:0;bottom:0;height:6px;border-radius:999px;background:linear-gradient(90deg,#7c3aed,#60a5fa,#34d399);width:0%;opacity:.95;z-index:2"></div>
                 </div>
                 <p class="caption" style="font-size:.95rem;text-align:center;line-height:1.5;color:#4b5563">『よろしくお<ruby><rb>願</rb><rt>ねが</rt></ruby>いします』(Yoroshiku onegaishimasu) — “Encantado / Espero que nos llevemos bien.”</p>
@@ -264,7 +279,7 @@
                   <video preload="metadata" playsinline webkit-playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
                     <source src="ohayou gozaimasu senpai.mp4" type="video/mp4">
                   </video>
-                  <button class="btn-play" aria-label="Reproducir/Pausar" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.65);border-radius:999px;width:70px;height:70px;display:grid;place-items:center;color:#fff;cursor:pointer;z-index:3;font-size:22px;box-shadow:0 8px 18px rgba(0,0,0,.25);">▶</button>
+                  <button class="btn-play" aria-label="Reproducir/Pausar">▶</button>
                   <div class="progress" style="position:absolute;left:0;right:0;bottom:0;height:6px;border-radius:999px;background:linear-gradient(90deg,#7c3aed,#60a5fa,#34d399);width:0%;opacity:.95;z-index:2"></div>
                 </div>
                 <p class="caption" style="font-size:.95rem;text-align:center;line-height:1.5;color:#4b5563">『おはようございます<ruby><rb>先輩</rb><rt>せんぱい</rt></ruby>』 (Ohayō gozaimasu, Senpai) — “Saludando a alguien con más experiencia”.</p>
