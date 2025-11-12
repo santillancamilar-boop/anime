@@ -146,6 +146,12 @@
       pointer-events:none;
       transform: translate(-50%,-50%) scale(.92);
     }
+    .player.is-control-visible .btn-play{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+      transform: translate(-50%,-50%) scale(1);
+    }
     .player:hover .btn-play,
     .player:focus-within .btn-play,
     .player .btn-play:focus-visible{
@@ -420,6 +426,16 @@
         const btn = el.querySelector(".btn-play");
         const video = el.querySelector("video");
         const progress = el.querySelector(".progress");
+        const card = el.closest(".player");
+
+        const showControls = () => card?.classList.add("is-control-visible");
+        const hideControls = () => card?.classList.remove("is-control-visible");
+
+        showControls();
+
+        card?.addEventListener("pointerleave", () => {
+          if (!video.paused) { hideControls(); }
+        });
 
         const toggle = () => {
           if (video.paused) { video.play(); btn.textContent = "⏸"; }
@@ -430,10 +446,16 @@
         el.addEventListener("keydown", (e) => {
           if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
         });
+        video.addEventListener("play", () => { hideControls(); btn.textContent = "⏸"; });
+        video.addEventListener("pause", () => { showControls(); btn.textContent = "▶"; });
         video.addEventListener("timeupdate", () => {
           progress.style.width = ((video.currentTime / (video.duration || 1)) * 100) + "%";
         });
-        video.addEventListener("ended", () => { btn.textContent = "▶"; progress.style.width = "0%"; });
+        video.addEventListener("ended", () => {
+          btn.textContent = "▶";
+          progress.style.width = "0%";
+          showControls();
+        });
       });
     </script>
   </main>
