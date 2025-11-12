@@ -124,23 +124,27 @@
 
     /* Player: botón con hover/pulse y barra de progreso fluida */
     .player .btn-play{
-      transition: transform .15s ease, background .15s ease, box-shadow .15s ease, opacity .18s ease;
+      transition: transform .18s ease, background .15s ease, box-shadow .18s ease, opacity .18s ease;
       animation: pulse 1.6s ease-in-out infinite;
       opacity:0;
+      visibility:hidden;
       pointer-events:none;
+      transform: translate(-50%,-50%) scale(.92);
     }
     .player:hover .btn-play,
     .player:focus-within .btn-play,
-    .player .screen:hover .btn-play,
-    .player .screen:focus-within .btn-play,
     .player .btn-play:focus-visible{
       opacity:1;
+      visibility:visible;
       pointer-events:auto;
+      transform: translate(-50%,-50%) scale(1);
     }
     @media (hover: none){
       .player .btn-play{
         opacity:1;
+        visibility:visible;
         pointer-events:auto;
+        transform: translate(-50%,-50%) scale(1);
       }
     }
     .player .btn-play:hover{
