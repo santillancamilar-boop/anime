@@ -152,8 +152,8 @@
       pointer-events:none;
       transform: translate(-50%,-50%) scale(.92);
     }
-    .player.is-playing:hover .btn-play,
-    .player.is-playing:focus-within .btn-play,
+    .player.is-playing .screen:hover .btn-play,
+    .player.is-playing .screen:focus-within .btn-play,
     .player .btn-play:focus-visible{
       opacity:1;
       visibility:visible;
@@ -433,7 +433,28 @@
 
         syncState();
 
-        btn.addEventListener("click", toggle);
+        let lastPointerType = "keyboard";
+
+        btn.addEventListener("pointerdown", (event) => {
+          lastPointerType = event.pointerType || "mouse";
+        });
+
+        btn.addEventListener("click", (event) => {
+          toggle();
+
+          if (lastPointerType !== "keyboard" && !video.paused) {
+            btn.blur();
+          }
+
+          lastPointerType = "keyboard";
+        });
+
+        el.addEventListener("pointerleave", () => {
+          if (!video.paused && document.activeElement === btn) {
+            btn.blur();
+          }
+        });
+
         el.addEventListener("keydown", (e) => {
           if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); }
         });
@@ -473,7 +494,6 @@
   </div>
 </body>
 </html>
-
 
 
 
